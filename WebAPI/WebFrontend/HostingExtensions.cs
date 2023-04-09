@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Otterly.Database.DataObjects;
 using Otterly.Database;
-using WebFrontend.Areas.Identity;
 
 namespace WebFrontend
 {
@@ -21,8 +20,7 @@ namespace WebFrontend
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddIdentity<OtterlyAppsUser, IdentityRole>()
-                .AddEntityFrameworkStores<OtterlyAppsContext>()
-                .AddDefaultUI();
+                .AddEntityFrameworkStores<OtterlyAppsContext>();
             //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -46,7 +44,6 @@ namespace WebFrontend
             });
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
-            builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<OtterlyAppsUser>>();
 
             return builder;
 
