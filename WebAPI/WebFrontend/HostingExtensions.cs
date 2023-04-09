@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,12 +16,19 @@ namespace WebFrontend
             var connectionString = builder.Configuration.GetConnectionString("LocalTest") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<OtterlyAppsContext>(options =>
             {
-                options.UseSqlite(connectionString);
+                options.UseSqlite(connectionString, b =>
+				{
+					b.MigrationsAssembly("WebFrontend");
+				});
+
+                
             });
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddIdentity<OtterlyAppsUser, IdentityRole>()
-                .AddEntityFrameworkStores<OtterlyAppsContext>();
+			builder.Services.AddIdentity<OtterlyAppsUser, IdentityRole>()
+				   .AddEntityFrameworkStores<OtterlyAppsContext>()
+				   .AddDefaultTokenProviders()
+				   .AddDefaultUI();
             //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
