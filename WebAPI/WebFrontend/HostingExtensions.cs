@@ -15,14 +15,9 @@ namespace WebFrontend
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("LocalTest") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<OtterlyAppsContext>(options =>
-            {
-                options.UseSqlite(connectionString, b =>
-				{
-					b.MigrationsAssembly("WebFrontend");
-				});
-
-                
-            });
+			{
+				options.UseMySQL(connectionString, optionsBuilder => optionsBuilder.MigrationsAssembly("WebFrontend"));
+			});
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 			builder.Services.AddIdentity<OtterlyAppsUser, IdentityRole>()

@@ -1,10 +1,14 @@
-﻿namespace Otterly.Database.DataObjects;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Otterly.Database.DataObjects;
 
 public class UserBingoOptions
 {
+
+	[Key]
 	public Guid UserID { get; set; }
 
-	public Guid ActiveBingoCard { get; set; }
+	public int ActiveBingoCard { get; set; }
 
 	public int Cost { get; set; }
 

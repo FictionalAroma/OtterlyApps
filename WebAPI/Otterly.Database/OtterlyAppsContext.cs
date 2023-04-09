@@ -6,7 +6,6 @@ namespace Otterly.Database
 {
     public class OtterlyAppsContext : IdentityDbContext
     {
-        public DbSet<OtterlyAppsUser> OtterlyAppsUsers { get; set; }
 
         public OtterlyAppsContext(DbContextOptions<OtterlyAppsContext> options)
             : base(options)
@@ -17,5 +16,11 @@ namespace Otterly.Database
 		{
 			base.OnModelCreating(builder);
 		}
-	}
+
+		public DbSet<OtterlyAppsUser> OtterlyAppsUsers { get; set; }
+		public DbSet<BingoCard> BingoCards { get; set; }
+        public DbSet<BingoSlot> BingoSlots { get; set; }
+        public DbSet<UserBingoOptions> UserBingoOptions { get; set; }
+
+    }
 }
