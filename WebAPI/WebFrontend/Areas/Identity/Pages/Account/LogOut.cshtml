@@ -1,7 +1,8 @@
 ﻿@page
 @using Microsoft.AspNetCore.Identity
+@using Otterly.Database.DataObjects
 @attribute [IgnoreAntiforgeryToken]
-@inject SignInManager<IdentityUser> SignInManager
+@inject SignInManager<OtterlyAppsUser> SignInManager
 @functions {
     public async Task<IActionResult> OnPost()
     {
