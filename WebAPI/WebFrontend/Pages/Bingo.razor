@@ -1,0 +1,59 @@
+﻿@page "/Bingo"
+@using Otterly.Database.DataObjects
+@using WebFrontend.PageServices
+@using WebFrontend.Pages.Components
+@inject BingoPageService BingoService;
+
+<h3>Bingo</h3>
+<div>
+@if (cards == null)
+{
+    <p>Loading Please Wait</p>
+}
+else
+{
+    @if (cards.Any())
+    {
+        @foreach (var card in cards)
+        {
+            <BingoCardDisplay Card=card/>
+        }
+    }
+    else
+    {
+        <p>No Cards Yet!</p> 
+    }
+
+    <div>
+        <p>Create New Card</p>
+        <input type="text" placeholder="My Cool New Bingo Card" @bind="_newCardText"/>
+        <button type="submit" @onclick="CreateNewCard" value="New Item"></button>
+    </div>
+}
+</div>
+
+
+@code {
+
+    private List<BingoCard>? cards = null;
+    private string? _newCardText = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateCards();
+    }
+
+    private async Task UpdateCards() { cards = await BingoService.GetCards(); }
+
+
+    private async Task CreateNewCard()
+    {
+        if (!string.IsNullOrWhiteSpace(_newCardText))
+        {
+            await BingoService.CreateNewCard(_newCardText);
+            _newCardText = string.Empty;
+            await UpdateCards();
+        }
+    }
+
+}

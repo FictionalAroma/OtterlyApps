@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Otterly.Database.DataObjects;
 using Otterly.Database;
+using WebFrontend.PageServices;
+using WebFrontend.Areas.Identity;
 
 namespace WebFrontend
 {
@@ -14,7 +16,7 @@ namespace WebFrontend
         {
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("LocalTest") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<OtterlyAppsContext>(options =>
+            builder.Services.AddDbContextFactory<OtterlyAppsContext>(options =>
 			{
 				options.UseMySQL(connectionString, optionsBuilder => optionsBuilder.MigrationsAssembly("WebFrontend"));
 			});
@@ -47,6 +49,10 @@ namespace WebFrontend
             });
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
+			builder.Services.AddHttpContextAccessor();
+			builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<OtterlyAppsUser>>();
+            // and now our services
+            builder.Services.AddScoped<BingoPageService>();
 
             return builder;
 
