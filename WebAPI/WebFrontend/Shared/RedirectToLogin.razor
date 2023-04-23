@@ -1,0 +1,15 @@
+﻿@using System.Security.Claims
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NavigationManager _navigationManager;
+
+@code {  
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (!user.Identity.IsAuthenticated)
+        {
+            _navigationManager.NavigateTo(_navigationManager.BaseUri + "Identity/Account/Login", false);
+        }
+    }
+}

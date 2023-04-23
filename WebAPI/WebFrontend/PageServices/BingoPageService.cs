@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Otterly.Database;
 using Otterly.Database.DataObjects;
 
@@ -27,6 +26,7 @@ namespace WebFrontend.PageServices
 		{
 			var user = await GetUser();
 
+			if (user == null) return new List<BingoCard>();
             return await _context.BingoCards.Where(card => card.UserID == user.UserIDParsed).ToListAsync();
 		}
 
