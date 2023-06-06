@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Otterly.Database.DataObjects;
 
 namespace Otterly.Database
 {
-    public class OtterlyAppsContext : IdentityDbContext
+    public class OtterlyAppsContext : DbContext
     {
 
         public OtterlyAppsContext(DbContextOptions<OtterlyAppsContext> options)
