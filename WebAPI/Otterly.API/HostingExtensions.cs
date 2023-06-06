@@ -4,9 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Otterly.Database;
-using Otterly.Database.DataObjects;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Otterly.API.Configuration;
+using Otterly.API.Handlers;
+using Otterly.API.Handlers.Interfaces;
 
 namespace Otterly.API;
 
@@ -22,6 +22,7 @@ public static class HostingExtensions
 		services.AddEndpointsApiExplorer();
 		services.AddSwaggerGen();
 
+		services.AddScoped<ICardHandler, CardHandler>();
 
 
 		return builder;
