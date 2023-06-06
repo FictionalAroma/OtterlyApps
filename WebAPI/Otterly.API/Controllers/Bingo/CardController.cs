@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Otterly.ClientLib.Bingo.DTO;
+using Otterly.ClientLib.Bingo.Messaging;
 using Otterly.Database;
-using Otterly.Database.DataObjects;
 
 namespace Otterly.API.Controllers.Bingo
 {
@@ -16,16 +15,38 @@ namespace Otterly.API.Controllers.Bingo
     public class CardController : ControllerBase
 	{
         private readonly OtterlyAppsContext _context;
+		private readonly IMapper _mapper;
 
-		public CardController(OtterlyAppsContext context)
+		public CardController(OtterlyAppsContext context, IMapper mapper)
 		{
 			_context = context;
+			_mapper = mapper;
 		}
 
 		[HttpGet]
-		public async Task<List<BingoCard>> GetCards()
+		public async Task<IActionResult> GetCards()
 		{
-			return await _context.BingoCards.ToListAsync();
+			return Ok(await _context.BingoCards.ToListAsync());
 		}
+
+		[HttpGet]
+		[Route("Details")]
+		public async Task<IActionResult> GetCardDetail(int cardID)
+		{
+			var card = await _context.BingoCards.FindAsync(cardID);
+			if (card == null) return NotFound();
+
+			var response = new GetCardDetails()
+						   {
+							   Card = _mapper.Map<BingoCardDTO>(card),
+						   };
+			await _context.BingoSlots
+						  .Where(slot => slot.CardID == cardID)
+						  .ForEachAsync(slot =>
+											response.CardFields.Add(_mapper.Map<BingoSlotDTO>(slot)));
+
+			return Ok(response);
+		}
+
 	}
 }

@@ -6,7 +6,10 @@ using Otterly.API;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.ConfigureServices();
+builder.ConfigureServices()
+	   .ConfigureAutomapper()
+	   .ConfigureDatabase();
+
 //builder.ConfigureAuthentication();
 
 var app = builder.Build();

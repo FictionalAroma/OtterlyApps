@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Otterly.Database;
 using Otterly.Database.DataObjects;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Otterly.API.Configuration;
 
 namespace Otterly.API;
 
@@ -21,21 +22,35 @@ public static class HostingExtensions
 		services.AddEndpointsApiExplorer();
 		services.AddSwaggerGen();
 
-		var connectionString = builder.Configuration.GetConnectionString("LocalTest") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-		services.AddDbContext<OtterlyAppsContext>(options =>
-		{
-			options.UseMySQL(connectionString, optionsBuilder => optionsBuilder.MigrationsAssembly("Otterly.API"));
-		});
-		
-		
+
 
 		return builder;
 	}
 
+	public static void ConfigureDatabase(this WebApplicationBuilder builder)
+	{
+		var connectionString = builder.Configuration.GetConnectionString("LocalTest") ??
+							   throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+		builder.Services.AddDbContext<OtterlyAppsContext>(options =>
+		{
+			options.UseMySQL(connectionString,
+							 optionsBuilder => optionsBuilder.MigrationsAssembly("Otterly.API"));
+		});
+
+		//builder.Services.AddIdentityCore<OtterlyAppsUser>()
+		//	   .AddEntityFrameworkStores<OtterlyAppsContext>();
+
+	}
+
 	public static WebApplicationBuilder ConfigureAuthentication(this WebApplicationBuilder builder)
 	{
-		builder.Services.AddIdentityCore<OtterlyAppsUser>()
-			   .AddEntityFrameworkStores<OtterlyAppsContext>();
+
+		return builder;
+	}
+
+	public static WebApplicationBuilder ConfigureAutomapper(this WebApplicationBuilder builder)
+	{
+		builder.Services.AddAutoMapper(typeof(AutomapperConfig));
 		return builder;
 	}
 }
