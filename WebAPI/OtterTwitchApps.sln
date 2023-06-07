@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.Database", "Otterly
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.API", "Otterly.API\Otterly.API.csproj", "{B84CCD1A-1722-478D-A2D2-956BB3D64D59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otterly.ClientLib", "Otterly.ClientLib\Otterly.ClientLib.csproj", "{DD6509E8-B26C-4F46-9E6B-F29E8BEE2A6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.ClientLib", "Otterly.ClientLib\Otterly.ClientLib.csproj", "{DD6509E8-B26C-4F46-9E6B-F29E8BEE2A6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otterly.API.Tests", "Otterly.API.Tests\Otterly.API.Tests.csproj", "{FA44A378-5FA6-43AD-921F-7AB1962BBC8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.API.Tests", "Otterly.API.Tests\Otterly.API.Tests.csproj", "{FA44A378-5FA6-43AD-921F-7AB1962BBC8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtterlyApps.BFF", "OtterlyAppsClient\OtterlyApps.BFF.csproj", "{874FC60F-13B9-4532-A285-C9F5529EB041}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FA44A378-5FA6-43AD-921F-7AB1962BBC8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA44A378-5FA6-43AD-921F-7AB1962BBC8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA44A378-5FA6-43AD-921F-7AB1962BBC8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{874FC60F-13B9-4532-A285-C9F5529EB041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{874FC60F-13B9-4532-A285-C9F5529EB041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{874FC60F-13B9-4532-A285-C9F5529EB041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{874FC60F-13B9-4532-A285-C9F5529EB041}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
