@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Otterly.Database;
 using Otterly.API.Configuration;
 using Otterly.API.Handlers;
@@ -45,7 +48,17 @@ public static class HostingExtensions
 
 	public static WebApplicationBuilder ConfigureAuthentication(this WebApplicationBuilder builder)
 	{
-
+		var domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
+		builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+			   .AddJwtBearer(options =>
+			   {
+				   options.Authority = domain;
+				   options.Audience = builder.Configuration["Auth0:Audience"];
+				   options.TokenValidationParameters = new TokenValidationParameters
+													   {
+														   NameClaimType = ClaimTypes.NameIdentifier
+													   };
+			   });
 		return builder;
 	}
 

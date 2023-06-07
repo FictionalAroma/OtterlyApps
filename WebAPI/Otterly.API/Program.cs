@@ -10,7 +10,7 @@ builder.ConfigureServices()
 	   .ConfigureAutomapper()
 	   .ConfigureDatabase();
 
-//builder.ConfigureAuthentication();
+builder.ConfigureAuthentication();
 
 var app = builder.Build();
 
@@ -22,7 +22,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

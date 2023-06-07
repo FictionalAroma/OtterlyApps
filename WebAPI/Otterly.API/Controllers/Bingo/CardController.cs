@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Otterly.API.Handlers.Interfaces;
 
 namespace Otterly.API.Controllers.Bingo
 {
-	//[Authorize]
+	[Authorize]
     [Route("api/bingo/[controller]")]
     [ApiController]
     public class CardController : ControllerBase
