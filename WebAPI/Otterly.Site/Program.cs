@@ -27,7 +27,7 @@ namespace Otterly.Site
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller}/{action=Index}/{id?}");
+                pattern: "bff/{controller}/{action=Index}/{id?}");
 
             app.MapFallbackToFile("index.html");
 

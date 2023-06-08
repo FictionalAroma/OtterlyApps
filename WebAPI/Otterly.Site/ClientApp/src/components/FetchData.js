@@ -3,9 +3,11 @@ import React, { Component } from 'react';
 export class FetchData extends Component {
   static displayName = FetchData.name;
 
+  
+
   constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true };
+    this.state = { forecasts: [], loading: true, debugText: "" };
   }
 
   componentDidMount() {
@@ -39,7 +41,7 @@ export class FetchData extends Component {
 
   render() {
     let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
+      ? <p><em>Loading...</em>{this.state.debugText.toString()}</p>
       : FetchData.renderForecastsTable(this.state.forecasts);
 
     return (
@@ -51,9 +53,12 @@ export class FetchData extends Component {
     );
   }
 
+
   async populateWeatherData() {
-    const response = await fetch('weatherforecast');
-    const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
+    
+    await fetch('/bff/weatherforecast')
+    .then((response) => response.json())
+    .then((payload)=> this.setState({ forecasts: payload, loading: false }))
+    .catch((error)=> this.setState({debugText: error}));
   }
 }
