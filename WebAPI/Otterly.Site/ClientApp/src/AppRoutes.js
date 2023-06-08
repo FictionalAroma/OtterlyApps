@@ -1,6 +1,9 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
+import {CLogin} from "./components/CLogin"
+import {CLogout} from "./components/CLogout"
+
 
 const AppRoutes = [
   {
@@ -15,7 +18,16 @@ const AppRoutes = [
     path: '/fetch-data',
     authenticate: true,
     element: <FetchData />
-  }
+  },
+  {
+    path: '/login',
+    element: <CLogin />
+  },
+  {
+    path: '/logout',
+    element: <CLogout />
+  },
+
 ];
 
 export default AppRoutes;

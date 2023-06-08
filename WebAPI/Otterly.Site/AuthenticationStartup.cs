@@ -55,6 +55,7 @@ public static class AuthenticationStartup
             // Set the callback path, so Auth0 will call back to http://localhost:3000/callback
             // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
             options.CallbackPath = new PathString("/bff/auth/callback");
+			//options.SignedOutCallbackPath = new PathString("/bff/auth/callback");
 
             // Configure the Claims Issuer to be Auth0
             options.ClaimsIssuer = "Auth0";

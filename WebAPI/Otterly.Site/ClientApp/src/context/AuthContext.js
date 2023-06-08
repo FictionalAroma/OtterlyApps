@@ -10,7 +10,7 @@ export const AuthProvider = ({
     const [isLoading, setIsLoading] = useState(false);
 
     const getUser = async () => {
-        const response = await fetch('/auth/getUser');
+        const response = await fetch('bff/auth/getUser');
         const json = await response.json();
 
         setIsAuthenticated(json.isAuthenticated);
@@ -23,11 +23,11 @@ export const AuthProvider = ({
     }, []);
 
     const login = () => {
-        window.location.href = '/auth/login';
+        window.location.href = 'bff/auth/login';
     }
 
     const logout = () => {
-        window.location.href = '/auth/logout';
+        window.location.href = 'bff/auth/logout';
     }
 
     return (

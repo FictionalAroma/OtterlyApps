@@ -3,7 +3,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Otterly.Site.Controllers;
 
@@ -22,11 +24,11 @@ public class AuthController : ControllerBase
 
 		return new SignOutResult("Auth0", new AuthenticationProperties
 										  {
-											  RedirectUri = Url.Action("Index", "Home")
+											  RedirectUri = "/"
 										  });
 	}
 
-
+	[Authorize]
 	public ActionResult GetUser()
 	{
 		if (User.Identity.IsAuthenticated)
