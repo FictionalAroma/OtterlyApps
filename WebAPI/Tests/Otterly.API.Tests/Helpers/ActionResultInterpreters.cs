@@ -14,7 +14,7 @@ namespace Otterly.API.Tests.Helpers
             if (r == null) return default;
             Assert.That((int)expectedCode, Is.EqualTo(r.StatusCode));
 
-            return (TPayload)r.Value;
+            return (TPayload)r.Value!;
         }
 
         public static bool GetStatusCode<TActionType>(this IActionResult result,
