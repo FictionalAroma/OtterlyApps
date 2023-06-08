@@ -13,6 +13,7 @@ const AppRoutes = [
   },
   {
     path: '/fetch-data',
+    authenticate: true,
     element: <FetchData />
   }
 ];

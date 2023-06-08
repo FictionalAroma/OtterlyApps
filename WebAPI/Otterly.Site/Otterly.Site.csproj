@@ -10,10 +10,11 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
     <SpaProxyServerUrl>https://localhost:44469</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.15" />
   </ItemGroup>
 

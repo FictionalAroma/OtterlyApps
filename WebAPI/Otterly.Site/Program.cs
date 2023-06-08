@@ -1,4 +1,8 @@
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 namespace Otterly.Site
 {
     public class Program
@@ -10,6 +14,7 @@ namespace Otterly.Site
             // Add services to the container.
 
             builder.Services.AddControllersWithViews();
+			builder.AddAuthentication();
 
             var app = builder.Build();
 
@@ -23,6 +28,9 @@ namespace Otterly.Site
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+
+			app.UseAuthentication();
+			app.UseAuthorization();
 
 
             app.MapControllerRoute(
