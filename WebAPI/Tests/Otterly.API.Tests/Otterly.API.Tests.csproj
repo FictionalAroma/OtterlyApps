@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Lib\Otterly.ClientLib\Otterly.ClientLib.csproj" />
+    <ProjectReference Include="..\..\Lib\Otterly.ClientLib\Otterly.API.ClientLib.csproj" />
     <ProjectReference Include="..\..\Otterly.API\Otterly.API.csproj" />
   </ItemGroup>
 

@@ -3,6 +3,7 @@ import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import {CLogin} from "./components/CLogin"
 import {CLogout} from "./components/CLogout"
+import { User } from "./components/User";
 
 
 const AppRoutes = [
@@ -19,6 +20,12 @@ const AppRoutes = [
     authenticate: true,
     element: <FetchData />
   },
+  {
+    path: '/user',
+    authenticate: true,
+    element: <User />
+  },
+
   {
     path: '/login',
     element: <CLogin />

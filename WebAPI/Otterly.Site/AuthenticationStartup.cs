@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +32,7 @@ public static class AuthenticationStartup
 				})
 				.AddOpenIdConnect("Auth0", options => ConfigureOpenIdConnect(options, builder.Configuration));
 
+
 		return builder;
 	}
 
@@ -50,16 +53,19 @@ public static class AuthenticationStartup
             // Configure the scope
             options.Scope.Clear();
             options.Scope.Add("openid");
-            options.Scope.Add("offline_access");
-            
-            // Set the callback path, so Auth0 will call back to http://localhost:3000/callback
+			options.Scope.Add("offline_access");
+
+			options.GetClaimsFromUserInfoEndpoint = true;
+			options.ClaimActions.Add(new MapAllClaimsAction());
+
+			// Set the callback path, so Auth0 will call back to http://localhost:3000/callback
             // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
-            options.CallbackPath = new PathString("/bff/auth/callback");
-			//options.SignedOutCallbackPath = new PathString("/bff/auth/callback");
+            options.CallbackPath = new PathString("/bff/auth/logincallback");
 
             // Configure the Claims Issuer to be Auth0
             options.ClaimsIssuer = "Auth0";
-
+        
+            
             options.SaveTokens = true;
 
             
@@ -81,6 +87,7 @@ public static class AuthenticationStartup
                         }
                         logoutUri += $"&returnTo={ Uri.EscapeDataString(postLogoutUri)}";
                     }
+                    
                     context.Response.Redirect(logoutUri);
                     context.HandleResponse();
 
@@ -88,7 +95,7 @@ public static class AuthenticationStartup
                 },
                 OnRedirectToIdentityProvider = context => {
                     context.ProtocolMessage.SetParameter("audience", config["Auth0:ApiAudience"]);
-                    return Task.CompletedTask;
+					return Task.CompletedTask;
                 }
             };
         }

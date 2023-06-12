@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Otterly.API.ClientLib.Bingo;
+using Otterly.API.ClientLib.DTO;
 using Otterly.API.Handlers.Interfaces;
-using Otterly.ClientLib.Bingo.DTO;
-using Otterly.ClientLib.Bingo.Messaging;
 using Otterly.Database;
 using Otterly.Database.DataObjects;
 
@@ -28,12 +28,12 @@ public class CardHandler : ICardHandler
 		return await _context.BingoCards.Where(card => card.UserID == userID).ToListAsync();
 	}
 
-	public async Task<GetCardDetails> GetCardDetail(int cardID)
+	public async Task<GetCardDetailsResponse> GetCardDetail(int cardID)
 	{
 		var card = await _context.BingoCards.FindAsync(cardID);
 		if (card == null) return null;
 
-		var response = new GetCardDetails()
+		var response = new GetCardDetailsResponse()
 					   {
 						   Card = _mapper.Map<BingoCardDTO>(card),
 					   };

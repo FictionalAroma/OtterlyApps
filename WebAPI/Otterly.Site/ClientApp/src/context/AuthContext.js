@@ -9,8 +9,8 @@ export const AuthProvider = ({
     const [user, setUser] = useState();
     const [isLoading, setIsLoading] = useState(false);
 
-    const getUser = async () => {
-        const response = await fetch('bff/auth/getUser');
+    const getUserSignedIn = async () => {
+        const response = await fetch('bff/auth/getUserSignedIn');
         const json = await response.json();
 
         setIsAuthenticated(json.isAuthenticated);
@@ -19,7 +19,7 @@ export const AuthProvider = ({
     }
 
     useEffect(() => {
-        getUser();
+        getUserSignedIn();
     }, []);
 
     const login = () => {

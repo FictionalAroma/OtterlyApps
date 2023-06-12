@@ -1,11 +1,8 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Otterly.API.Controllers.Bingo;
 using Otterly.API.Tests.Helpers;
 using Otterly.API.Tests.TestImplementations.Card;
-using Otterly.ClientLib.Bingo.DTO;
-using Otterly.ClientLib.Bingo.Messaging;
 using Otterly.Database.DataObjects;
 
 namespace Otterly.API.Tests

@@ -29,6 +29,9 @@ export const NavMenu = () => {
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
               </NavItem>
+              {isAuthenticated && <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/user">User Profile</NavLink>
+                </NavItem>}
               <NavItem>
               {!isAuthenticated &&  <NavLink tag={Link} className="text-dark" to="/login">Try Login</NavLink>}
               {isAuthenticated &&  <NavLink tag={Link} className="text-dark" to="/logout">Try LOGOUT</NavLink>}

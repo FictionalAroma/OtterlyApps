@@ -11,11 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{47E04E48-5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.Database", "Lib\Otterly.Database\Otterly.Database.csproj", "{1ABA275F-57F9-4352-872B-3835CCF828B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.ClientLib", "Lib\Otterly.ClientLib\Otterly.ClientLib.csproj", "{C7CD6695-9CFC-47B7-BABE-324327362D3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.API.ClientLib", "Lib\Otterly.ClientLib\Otterly.API.ClientLib.csproj", "{C7CD6695-9CFC-47B7-BABE-324327362D3C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.API.Tests", "Tests\Otterly.API.Tests\Otterly.API.Tests.csproj", "{50030376-2A38-4716-A5EE-085588BA1F01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otterly.Site", "Otterly.Site\Otterly.Site.csproj", "{727167C6-F820-4F5E-9453-FBDD3342B33F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.Site", "Otterly.Site\Otterly.Site.csproj", "{727167C6-F820-4F5E-9453-FBDD3342B33F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
