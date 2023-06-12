@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Otterly.ClientLib.Bingo.DTO;
+using Otterly.API.ClientLib.DTO;
 using Otterly.Database.DataObjects;
 
 namespace Otterly.API.Configuration;

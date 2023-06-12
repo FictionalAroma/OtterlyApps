@@ -26,6 +26,7 @@ public static class HostingExtensions
 		services.AddSwaggerGen();
 
 		services.AddScoped<ICardHandler, CardHandler>();
+		services.AddScoped<IAccountHandler, AccountHandler>();
 
 
 		return builder;
