@@ -13,6 +13,6 @@ public class OtterlyAPIClient : APIClientBase
 
 	public async Task<OtterlyAppsUserDTO> GetUserProfile()
 	{
-        
+		return new OtterlyAppsUserDTO();
 	}
 }
