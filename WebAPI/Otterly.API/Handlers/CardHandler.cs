@@ -3,47 +3,68 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.ClientLib.DTO;
 using Otterly.API.Handlers.Interfaces;
+using Otterly.ClientLib;
 using Otterly.Database;
-using Otterly.Database.DataObjects;
 
 namespace Otterly.API.Handlers;
 
 public class CardHandler : ICardHandler
 {
-	private OtterlyAppsContext _context;
-	private IMapper _mapper;
+	private readonly OtterlyAppsContext _context;
+	private readonly IMapper _mapper;
 	public CardHandler(OtterlyAppsContext context, IMapper mapper)
 	{
 		_context = context;
 		_mapper = mapper;
 	}
 
-	public async Task<List<BingoCard>> GetCardsForUser(Guid userID)
+	public async Task<List<BingoCardDTO>> GetCardsForUser(Guid userID)
 	{
-		return await _context.BingoCards.Where(card => card.UserID == userID).ToListAsync();
+		var card = await _context.BingoCards.
+								  Where(card => card.UserID == userID)
+								  .Include(bingoCard => bingoCard.Slots)
+								  .ToListAsync();
+
+		return _mapper.Map<List<BingoCardDTO>>(card);
 	}
 
 	public async Task<GetCardDetailsResponse> GetCardDetail(int cardID)
 	{
-		var card = await _context.BingoCards.FindAsync(cardID);
-		if (card == null) return null;
+		var foundCard = await _context.BingoCards.FindAsync(cardID);
+		if (foundCard == null) return null;
 
+		await _context.Entry(foundCard).Collection(card => card.Slots).LoadAsync();
 		var response = new GetCardDetailsResponse()
 					   {
-						   Card = _mapper.Map<BingoCardDTO>(card),
+						   Card = _mapper.Map<BingoCardDTO>(foundCard),
 					   };
-		await _context.BingoSlots
-					  .Where(slot => slot.CardID == cardID)
-					  .ForEachAsync(slot =>
-										response.CardFields.Add(_mapper.Map<BingoSlotDTO>(slot)));
 
 		return response;
 	}
 
+	public async Task<BaseResponse> UpdateCardDetails(UpdateCardDetailsRequest request)
+	{
+		var response = new BaseResponse();
+
+		var foundCard = await _context.BingoCards.
+											 Where(card => card.CardID == request.CardDetails.CardID)
+											 .Include(bingoCard => bingoCard.Slots)
+											 .FirstOrDefaultAsync();
+		if (foundCard == null)
+		{
+			response.SetError("Unable to find card !?");
+			return response;
+		}
+		
+		_mapper.Map(request.CardDetails, foundCard);
+		await _context.SaveChangesAsync();
+
+
+		return response;
+	}
 
 }

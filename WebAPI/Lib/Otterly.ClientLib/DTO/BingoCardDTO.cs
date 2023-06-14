@@ -12,4 +12,6 @@ public class BingoCardDTO
     public string TitleText { get; set; }
     public int CardSize { get; set; }
     public bool FreeSpace { get; set; }
+
+    public List<BingoSlotDTO> Slots { get; set; }
 }

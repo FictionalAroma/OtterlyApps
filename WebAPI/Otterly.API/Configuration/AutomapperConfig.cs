@@ -10,9 +10,14 @@ public class AutomapperConfig : Profile
 	{
 		CreateMap<OtterlyAppsUser, OtterlyAppsUserDTO>().ReverseMap();
 
-
-		CreateMap<BingoCard, BingoCardDTO>().ReverseMap();
 		CreateMap<BingoSlot, BingoSlotDTO>().ReverseMap();
+		
+		
+		CreateMap<BingoCard, BingoCardDTO>().ReverseMap();
+
+
+
+
 		CreateMap<UserBingoOptions, UserBingoOptionsDTO>().ReverseMap();
 
 	}

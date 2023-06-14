@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Protocols;
+using Otterly.API.ClientLib.Bingo;
 using Otterly.API.Handlers.Interfaces;
 
 namespace Otterly.API.Controllers.Bingo
@@ -11,6 +13,9 @@ namespace Otterly.API.Controllers.Bingo
     [ApiController]
     public class CardController : ControllerBase
 	{
+		// ReSharper disable once InconsistentNaming
+		private static readonly Guid TEST_USER = new Guid("e3aeefa0-b2df-4af7-9033-914ef6936bf0");
+
 		private readonly ICardHandler _cardHandler;
 
 		public CardController(ICardHandler cardHandler) { _cardHandler = cardHandler; }
@@ -18,7 +23,7 @@ namespace Otterly.API.Controllers.Bingo
 		[HttpGet]
 		public async Task<IActionResult> GetCards()
 		{
-			var results = await _cardHandler.GetCardsForUser(new Guid("e3aeefa0-b2df-4af7-9033-914ef6936bf0"));
+			var results = await _cardHandler.GetCardsForUser(TEST_USER);
 			return Ok(results);
 		}
 
@@ -30,6 +35,12 @@ namespace Otterly.API.Controllers.Bingo
 			if (details == null) return NotFound();
 
 			return Ok(details);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> UpdateCardDetails(UpdateCardDetailsRequest request)
+		{
+			return Ok(await _cardHandler.UpdateCardDetails(request));
 		}
 
 	}

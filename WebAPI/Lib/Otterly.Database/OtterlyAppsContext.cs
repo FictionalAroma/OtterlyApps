@@ -9,11 +9,21 @@ namespace Otterly.Database
         public OtterlyAppsContext(DbContextOptions<OtterlyAppsContext> options)
             : base(options)
         {
+			
         }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
+			
+
+			builder.Entity<BingoCard>(typeBuilder =>
+			{
+				typeBuilder.HasMany<BingoSlot>(card => card.Slots)
+						   .WithOne()
+						   .HasPrincipalKey(card => card.CardID)
+						   .HasForeignKey(slot => slot.CardID);
+			});
 		}
 
 		public DbSet<OtterlyAppsUser> OtterlyAppsUsers { get; set; }

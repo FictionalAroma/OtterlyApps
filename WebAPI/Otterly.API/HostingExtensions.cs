@@ -44,7 +44,6 @@ public static class HostingExtensions
 
 		//builder.Services.AddIdentityCore<OtterlyAppsUser>()
 		//	   .AddEntityFrameworkStores<OtterlyAppsContext>();
-
 	}
 
 	public static WebApplicationBuilder ConfigureAuthentication(this WebApplicationBuilder builder)

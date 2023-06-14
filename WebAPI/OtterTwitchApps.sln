@@ -9,13 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{86074EEE-7DC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{47E04E48-5430-4570-8CBC-9DB96E1770AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.Database", "Lib\Otterly.Database\Otterly.Database.csproj", "{1ABA275F-57F9-4352-872B-3835CCF828B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.Database.UserData", "Lib\Otterly.Database\Otterly.Database.UserData.csproj", "{1ABA275F-57F9-4352-872B-3835CCF828B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.API.ClientLib", "Lib\Otterly.ClientLib\Otterly.API.ClientLib.csproj", "{C7CD6695-9CFC-47B7-BABE-324327362D3C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.API.Tests", "Tests\Otterly.API.Tests\Otterly.API.Tests.csproj", "{50030376-2A38-4716-A5EE-085588BA1F01}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otterly.Site", "Otterly.Site\Otterly.Site.csproj", "{727167C6-F820-4F5E-9453-FBDD3342B33F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otterly.Database.ActivityData", "Lib\Otterly.Database.Mongo\Otterly.Database.ActivityData.csproj", "{E263B984-A41D-4150-8050-0A68CF803A98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{727167C6-F820-4F5E-9453-FBDD3342B33F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{727167C6-F820-4F5E-9453-FBDD3342B33F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{727167C6-F820-4F5E-9453-FBDD3342B33F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E263B984-A41D-4150-8050-0A68CF803A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E263B984-A41D-4150-8050-0A68CF803A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E263B984-A41D-4150-8050-0A68CF803A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E263B984-A41D-4150-8050-0A68CF803A98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +57,7 @@ Global
 		{1ABA275F-57F9-4352-872B-3835CCF828B4} = {86074EEE-7DC1-4F97-8241-04D56EBA0BA5}
 		{C7CD6695-9CFC-47B7-BABE-324327362D3C} = {86074EEE-7DC1-4F97-8241-04D56EBA0BA5}
 		{50030376-2A38-4716-A5EE-085588BA1F01} = {47E04E48-5430-4570-8CBC-9DB96E1770AE}
+		{E263B984-A41D-4150-8050-0A68CF803A98} = {86074EEE-7DC1-4F97-8241-04D56EBA0BA5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0951D81A-0F1B-477F-9B4F-7BD944CB8A1B}

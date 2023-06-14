@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lib\Otterly.ClientLib\Otterly.API.ClientLib.csproj" />
-    <ProjectReference Include="..\Lib\Otterly.Database\Otterly.Database.csproj" />
+    <ProjectReference Include="..\Lib\Otterly.Database\Otterly.Database.UserData.csproj" />
   </ItemGroup>
 
 </Project>

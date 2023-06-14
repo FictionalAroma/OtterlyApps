@@ -20,5 +20,7 @@ public class BingoCard
 	public bool FreeSpace { get; set; }
 
 	public bool Deleted { get; set; }
-	
+
+	public List<BingoSlot> Slots { get; set; }
+
 }
