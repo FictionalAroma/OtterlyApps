@@ -8,5 +8,6 @@ namespace Otterly.API.ClientLib.DTO
         public int Test { get; set; }
 
         public bool Deleted { get; set; }
-    }
+		public Guid TwitchID { get; set; }
+	}
 }

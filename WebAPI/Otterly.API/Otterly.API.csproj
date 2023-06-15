@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lib\Otterly.ClientLib\Otterly.API.ClientLib.csproj" />
+    <ProjectReference Include="..\Lib\Otterly.Database.Mongo\Otterly.Database.ActivityData.csproj" />
     <ProjectReference Include="..\Lib\Otterly.Database\Otterly.Database.UserData.csproj" />
   </ItemGroup>
 

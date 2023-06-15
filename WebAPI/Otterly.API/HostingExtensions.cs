@@ -6,10 +6,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
 using Otterly.Database;
 using Otterly.API.Configuration;
 using Otterly.API.Handlers;
 using Otterly.API.Handlers.Interfaces;
+using Otterly.Database.ActivityData;
+using Otterly.Database.ActivityData.Bingo.DataObjects;
+using Otterly.Database.ActivityData.Bingo.Services;
+using Otterly.Database.ActivityData.Configuration;
+using Otterly.API.Handlers.Bingo;
 
 namespace Otterly.API;
 
@@ -65,6 +71,17 @@ public static class HostingExtensions
 	public static WebApplicationBuilder ConfigureAutomapper(this WebApplicationBuilder builder)
 	{
 		builder.Services.AddAutoMapper(typeof(AutomapperConfig));
+		return builder;
+	}
+	public static WebApplicationBuilder ConfigureMongoAccessServices(this WebApplicationBuilder builder)
+	{
+		var mongoConfig = builder.Configuration.Get<MongoDBConfig>();
+
+		builder.Services.AddSingleton<MongoClient>(_ => new MongoClient(mongoConfig.ConnectionString));
+
+		builder.Services.AddSingleton<BingoSessionService>();
+		builder.Services.AddSingleton<PlayerCardDataService>();
+
 		return builder;
 	}
 }

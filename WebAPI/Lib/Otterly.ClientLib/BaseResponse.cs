@@ -2,6 +2,12 @@
 
 public class BaseResponse
 {
+	public BaseResponse() { }
+
+	public BaseResponse(string error)
+	{
+		SetError(error);
+	}
 	public bool Success { get; set; } = true;
 	public string Error { get; set; }
 
