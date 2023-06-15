@@ -1,21 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Otterly.Database.ActivityData.Configuration;
+using Otterly.Database.ActivityData.Interfaces;
 
 namespace Otterly.Database.ActivityData;
 
-public class MongoService<T> where T : MongoDataEntry
+public class MongoServiceBase<T> : IMongoServiceBase<T> where T : MongoDataEntry
 {
 	protected readonly IMapper Mapper;
 	protected readonly IMongoCollection<T> Collection;
 
-	public MongoService(IOptions<MongoDBConfig> config, MongoClient client, string collectionName, IMapper mapper)
+	public MongoServiceBase(MongoDBConfig config, MongoClient client, string collectionName, IMapper mapper)
 	{
 		Mapper = mapper;
-		var dbConn = client.GetDatabase(config.Value.DatabaseName);
+		var dbConn = client.GetDatabase(config.DatabaseName);
 		Collection = dbConn.GetCollection<T>(collectionName);
 	}
 

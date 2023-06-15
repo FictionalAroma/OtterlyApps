@@ -16,6 +16,7 @@ using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Bingo.Services;
 using Otterly.Database.ActivityData.Configuration;
 using Otterly.API.Handlers.Bingo;
+using Otterly.Database.ActivityData.Interfaces;
 
 namespace Otterly.API;
 
@@ -33,12 +34,13 @@ public static class HostingExtensions
 
 		services.AddScoped<ICardHandler, CardHandler>();
 		services.AddScoped<IAccountHandler, AccountHandler>();
+		services.AddScoped<IBingoGameHandler, BingoGameHandler>();
 
 
 		return builder;
 	}
 
-	public static void ConfigureDatabase(this WebApplicationBuilder builder)
+	public static WebApplicationBuilder ConfigureDatabase(this WebApplicationBuilder builder)
 	{
 		var connectionString = builder.Configuration.GetConnectionString("LocalTest") ??
 							   throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -48,6 +50,7 @@ public static class HostingExtensions
 							 optionsBuilder => optionsBuilder.MigrationsAssembly("Otterly.API"));
 		});
 
+		return builder;
 		//builder.Services.AddIdentityCore<OtterlyAppsUser>()
 		//	   .AddEntityFrameworkStores<OtterlyAppsContext>();
 	}
@@ -75,12 +78,13 @@ public static class HostingExtensions
 	}
 	public static WebApplicationBuilder ConfigureMongoAccessServices(this WebApplicationBuilder builder)
 	{
-		var mongoConfig = builder.Configuration.Get<MongoDBConfig>();
+		var thorwaway = new MongoDBConfig();
+		var mongoConfig = builder.Configuration.GetSection("MongoDBConfig").Get<MongoDBConfig>();
+		builder.Services.AddSingleton(provider => mongoConfig);
+		builder.Services.AddSingleton(_ => new MongoClient(mongoConfig.ConnectionString));
 
-		builder.Services.AddSingleton<MongoClient>(_ => new MongoClient(mongoConfig.ConnectionString));
-
-		builder.Services.AddSingleton<BingoSessionService>();
-		builder.Services.AddSingleton<PlayerCardDataService>();
+		builder.Services.AddSingleton<IBingoSessionService, BingoSessionService>();
+		builder.Services.AddSingleton<IPlayerCardDataService, PlayerCardDataService>();
 
 		return builder;
 	}
