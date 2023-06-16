@@ -2,7 +2,6 @@
 using Otterly.API.ClientLib.DTO;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.ClientLib;
-using Otterly.Database.DataObjects;
 
 namespace Otterly.API.Tests.TestImplementations.Card;
 

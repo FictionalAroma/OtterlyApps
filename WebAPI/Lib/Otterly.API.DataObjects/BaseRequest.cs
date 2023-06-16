@@ -1,4 +1,6 @@
-﻿namespace Otterly.API.ClientLib;
+﻿using System;
+
+namespace Otterly.API.ClientLib;
 
 public class BaseRequest
 {

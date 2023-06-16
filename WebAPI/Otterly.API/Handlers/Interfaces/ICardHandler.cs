@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.ClientLib.DTO;
 using Otterly.ClientLib;
-using Otterly.Database.DataObjects;
 
 namespace Otterly.API.Handlers.Interfaces;
 

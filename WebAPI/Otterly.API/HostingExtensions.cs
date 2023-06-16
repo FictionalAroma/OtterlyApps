@@ -8,15 +8,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using Otterly.Database;
-using Otterly.API.Configuration;
 using Otterly.API.Handlers;
 using Otterly.API.Handlers.Interfaces;
-using Otterly.Database.ActivityData;
-using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Bingo.Services;
-using Otterly.Database.ActivityData.Configuration;
 using Otterly.API.Handlers.Bingo;
+using Otterly.Database.ActivityData.Configuration;
 using Otterly.Database.ActivityData.Interfaces;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson;
 
 namespace Otterly.API;
 
@@ -73,12 +73,18 @@ public static class HostingExtensions
 
 	public static WebApplicationBuilder ConfigureAutomapper(this WebApplicationBuilder builder)
 	{
-		builder.Services.AddAutoMapper(typeof(AutomapperConfig));
+		builder.Services.AddAutoMapper(typeof(Otterly.API.Configuration.AutomapperConfig), 
+									   typeof(AutomapperConfig));
 		return builder;
 	}
 	public static WebApplicationBuilder ConfigureMongoAccessServices(this WebApplicationBuilder builder)
 	{
+
+		//BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+
 		var thorwaway = new MongoDBConfig();
+
+
 		var mongoConfig = builder.Configuration.GetSection("MongoDBConfig").Get<MongoDBConfig>();
 		builder.Services.AddSingleton(provider => mongoConfig);
 		builder.Services.AddSingleton(_ => new MongoClient(mongoConfig.ConnectionString));

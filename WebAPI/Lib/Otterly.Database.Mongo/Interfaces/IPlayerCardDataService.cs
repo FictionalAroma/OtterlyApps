@@ -1,5 +1,11 @@
-﻿namespace Otterly.Database.ActivityData.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Otterly.Database.ActivityData.Bingo.DataObjects;
 
-public interface IPlayerCardDataService
+namespace Otterly.Database.ActivityData.Interfaces;
+
+public interface IPlayerCardDataService : IMongoServiceBase<PlayerTicket>
 {
+	Task<PlayerTicket> CreatePlayerTicket(Guid playerTwitchID, string sessionId, IEnumerable<PlayerTicketItem> randomisedSlots);
 }

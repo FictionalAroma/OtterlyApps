@@ -3,9 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Otterly.API.ClientLib.DTO;
 using Otterly.API.Handlers.Interfaces;
-using Otterly.Database;
 
 namespace Otterly.API.Controllers;
 

@@ -1,5 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Options;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using MongoDB.Driver;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Configuration;
@@ -16,4 +18,22 @@ public class PlayerCardDataService : MongoServiceBase<PlayerTicket>, IPlayerCard
 	}
 
 
+	public async Task<PlayerTicket> CreatePlayerTicket(Guid playerTwitchID, string sessionId, IEnumerable<PlayerTicketItem> randomisedSlots)
+	{
+		var newTicket = new PlayerTicket()
+						{
+							SessionID = sessionId,
+							TwitchUserID = playerTwitchID,
+							Slots = randomisedSlots
+						};
+		await CreateAsync(newTicket);
+
+		return await FindTicket(playerTwitchID, sessionId);
+	}
+
+	public async Task<PlayerTicket> FindTicket(Guid playerTwitchID, string sessionId)
+	{
+		return await Collection.Find(ticket => ticket.TwitchUserID == playerTwitchID && ticket.SessionID == sessionId)
+							   .FirstOrDefaultAsync();
+	}
 }

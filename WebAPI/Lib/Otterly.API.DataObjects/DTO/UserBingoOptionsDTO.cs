@@ -1,4 +1,6 @@
-﻿namespace Otterly.API.ClientLib.DTO;
+﻿using System;
+
+namespace Otterly.API.ClientLib.DTO;
 
 public class UserBingoOptionsDTO
 {

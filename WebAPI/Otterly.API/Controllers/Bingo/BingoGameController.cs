@@ -23,20 +23,41 @@ public class BingoGameController : ControllerBase
 	[Route("startnew")]
 	public async Task<IActionResult> CreateNewSession(CreateSessionRequest request)
 	{
+		if (request.UserID == Guid.Empty)
+		{
+			return BadRequest();
+		}
 		var result = await _handler.CreateSession(request.UserID, request.CardID);
-		return Ok(result);
+		return result.Success ? StatusCode(500, result) : Ok(result);
 	}
 	[HttpPost]
-	public async Task<IActionResult> CreatePlayerTicket()
+	[Route("createTicket")]
+
+	public async Task<IActionResult> CreatePlayerTicket(CreateTicketRequest request)
 	{
-		return Ok();
+		if (request.PlayerTwitchID == Guid.Empty || request.StreamerTwitchID == Guid.Empty)
+		{
+			return BadRequest();
+		}
+		var session = await _handler.GetCurrentSessionForStreamer(request.StreamerTwitchID);
+		if (session == null)
+		{
+			return ValidationProblem("Streamer Bingo Not Active");
+		}
+        var result = await _handler.CreatePlayerTicket(request.PlayerTwitchID, session);
+        return result.Success ? StatusCode(500, result) : Ok(result);
 	}
-	[HttpPost]
-	public async Task<IActionResult> GetCurrentSession()
+    [HttpGet]
+	[Route("getSession")]
+
+	public async Task<IActionResult> GetCurrentSession(Guid streamerTwitchID)
 	{
-		return Ok();
+		var session = await _handler.GetCurrentSessionForStreamer(streamerTwitchID);
+		return session == null ? ValidationProblem("Streamer Bingo Not Active") : Ok(session);
 	}
 	[HttpPost]
+	[Route("getTicket")]
+
 	public async Task<IActionResult> GetTicketData()
 	{
 		return Ok();

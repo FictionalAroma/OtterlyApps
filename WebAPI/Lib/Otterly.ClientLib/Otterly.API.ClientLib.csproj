@@ -8,11 +8,14 @@
 
   <ItemGroup>
     <Folder Include="Account\" />
-    <Folder Include="Bingo\Messaging\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Otterly.API.DataObjects\Otterly.API.DataObjects.csproj" />
   </ItemGroup>
 
 </Project>
