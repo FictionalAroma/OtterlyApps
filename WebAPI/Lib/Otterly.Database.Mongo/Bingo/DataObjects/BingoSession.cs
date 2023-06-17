@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+using System.Text.Json.Serialization;
 
 namespace Otterly.Database.ActivityData.Bingo.DataObjects;
 
 public class BingoSession : MongoDataEntry
 {
 	public Guid UserID { get; set; }
-
 	public Guid TwitchUserID { get; set; }
 
 	public int Size { get; set; }

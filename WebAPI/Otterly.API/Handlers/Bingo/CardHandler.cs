@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Otterly.API.ClientLib.Bingo;
-using Otterly.API.ClientLib.DTO;
+using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.ClientLib;
 using Otterly.Database;

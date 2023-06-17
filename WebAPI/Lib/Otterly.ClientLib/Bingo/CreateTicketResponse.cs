@@ -1,9 +1,9 @@
-﻿using Otterly.ClientLib;
-using Otterly.Database.ActivityData.Bingo.DataObjects;
+﻿using Otterly.API.DataObjects.Bingo;
+using Otterly.ClientLib;
 
 namespace Otterly.API.ClientLib.Bingo;
 
 public class CreateTicketResponse : BaseResponse
 {
-    public PlayerTicket CreatedTicket { get; set; }
+    public PlayerTicketDTO CreatedTicket { get; set; }
 }

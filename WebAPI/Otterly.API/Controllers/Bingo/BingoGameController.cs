@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Otterly.API.ClientLib.Bingo;
+using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
 
 namespace Otterly.API.Controllers.Bingo;
@@ -12,12 +14,17 @@ namespace Otterly.API.Controllers.Bingo;
 public class BingoGameController : ControllerBase
 {
 	private readonly IBingoGameHandler _handler;
+	private readonly IMapper _mapper;
 
 	// GET
 	// ReSharper disable once InconsistentNaming
 	private static readonly Guid TEST_USER = new Guid("e3aeefa0-b2df-4af7-9033-914ef6936bf0");
 
-	public BingoGameController(IBingoGameHandler handler) { _handler = handler; }
+	public BingoGameController(IBingoGameHandler handler, IMapper mapper)
+	{
+		_handler = handler;
+		_mapper = mapper;
+	}
 
 	[HttpPost]
 	[Route("startnew")]
@@ -32,8 +39,7 @@ public class BingoGameController : ControllerBase
 	}
 	[HttpPost]
 	[Route("createTicket")]
-
-	public async Task<IActionResult> CreatePlayerTicket(CreateTicketRequest request)
+	public async Task<IActionResult> CreatePlayerTicket(StreamerTicketRequest request)
 	{
 		if (request.PlayerTwitchID == Guid.Empty || request.StreamerTwitchID == Guid.Empty)
 		{
@@ -45,23 +51,71 @@ public class BingoGameController : ControllerBase
 			return ValidationProblem("Streamer Bingo Not Active");
 		}
         var result = await _handler.CreatePlayerTicket(request.PlayerTwitchID, session);
-        return result.Success ? StatusCode(500, result) : Ok(result);
+		return result != null ? Ok(_mapper.Map<PlayerTicketDTO>(result)) : StatusCode(500, "unable to create ticket");
 	}
     [HttpGet]
 	[Route("getSession")]
-
 	public async Task<IActionResult> GetCurrentSession(Guid streamerTwitchID)
 	{
 		var session = await _handler.GetCurrentSessionForStreamer(streamerTwitchID);
-		return session == null ? ValidationProblem("Streamer Bingo Not Active") : Ok(session);
+		return session == null ? ValidationProblem("Streamer Bingo Not Active") : Ok(_mapper.Map<BingoSessionDTO>(session));
 	}
-	[HttpPost]
+
+	[HttpGet]
 	[Route("getTicket")]
-
-	public async Task<IActionResult> GetTicketData()
+	public async Task<IActionResult> GetTicketData(string ticketID)
 	{
-		return Ok();
+		var session = await _handler.GetLatestCardData(ticketID);
+		return session == null ? ValidationProblem("Streamer Bingo Not Active") : Ok(_mapper.Map<PlayerTicketDTO>(session));
 	}
 
+	[HttpGet]
+	[Route("GetSessionAndTicket")]
+	public async Task<IActionResult> GetSessionAndTicketData(StreamerTicketRequest request)
+	{
+		InitialSetupResponse resp = new InitialSetupResponse();
+		var session = await _handler.GetCurrentSessionForStreamer(request.StreamerTwitchID);
+		if (session == null || string.IsNullOrEmpty(session.Id))
+		{
+			return Ok(resp);
+		}
+
+		resp.Session = _mapper.Map<BingoSessionDTO>(session);
+		var ticket = await _handler.GetTicketForPlayer(request.PlayerTwitchID, session.Id);
+		if (ticket != null)
+		{
+			resp.PlayerTicket = _mapper.Map<PlayerTicketDTO>(ticket);
+		}
+		return Ok(resp);
+	}
+
+	[HttpPost]
+	[Route("markItem")]
+	public async Task<IActionResult> MarkItemOnTicket(MarkItemRequest request)
+	{
+		var ticket = await _handler.GetTicketForPlayer(request.PlayerTwitchID, request.SessionID);
+		if (ticket == null)
+		{
+			return StatusCode(500, "Ticket No Longer Valid");
+		}
+
+		var result = await _handler.MarkTicketItem(ticket, request.ItemIndex);
+		return result.Success ? Ok(result) : StatusCode(500, result);
+	}
+	
+	[HttpPost]
+	[Route("verifyItem")]
+	public async Task<IActionResult> VerifyItemInSession(VerifyItemRequest request)
+	{
+		var session = await _handler.GetSessionData(request.SessionID);
+		if (session == null || !session.Active )
+		{
+			return StatusCode(500, "Session No Longer Valid");
+		}
+
+		var result = await _handler.VerifySessionItem(session, request.ItemIndex);
+		return Ok(result);
+
+	}
 
 }

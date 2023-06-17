@@ -1,4 +1,4 @@
-﻿using Otterly.API.ClientLib.DTO;
+﻿using Otterly.API.DataObjects.Bingo;
 
 namespace Otterly.API.ClientLib.Bingo;
 

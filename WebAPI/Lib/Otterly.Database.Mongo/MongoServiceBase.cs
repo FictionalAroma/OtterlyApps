@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Otterly.Database.ActivityData.Configuration;
 using Otterly.Database.ActivityData.Interfaces;
@@ -9,11 +11,13 @@ namespace Otterly.Database.ActivityData;
 
 public class MongoServiceBase<T> : IMongoServiceBase<T> where T : MongoDataEntry
 {
+	private readonly MongoClient _client;
 	protected readonly IMapper Mapper;
 	protected readonly IMongoCollection<T> Collection;
 
 	public MongoServiceBase(MongoDBConfig config, MongoClient client, string collectionName, IMapper mapper)
 	{
+		_client = client;
 		Mapper = mapper;
 		var dbConn = client.GetDatabase(config.DatabaseName);
 		Collection = dbConn.GetCollection<T>(collectionName);
@@ -30,6 +34,22 @@ public class MongoServiceBase<T> : IMongoServiceBase<T> where T : MongoDataEntry
 
 	public async Task UpdateAsync(string id, T updatedT) =>
 		await Collection.ReplaceOneAsync(x => x.Id == id, updatedT);
+
+	public async Task UpdateListAsync(List<T> updated)
+	{
+		var session = await _client.StartSessionAsync();
+		session.StartTransaction();
+
+		var updates = updated.Select(
+									 entry =>
+										 new
+											 UpdateOneModel<T>(new FilterDefinitionBuilder<T>()
+																   .Eq(dataEntry => dataEntry.Id, entry.Id),
+															   new ObjectUpdateDefinition<T>(entry)));
+		var results = await Collection.BulkWriteAsync(updates);
+
+		await session.CommitTransactionAsync();
+	}
 
 	public async Task RemoveAsync(string id) =>
 		await Collection.DeleteOneAsync(x => x.Id == id);

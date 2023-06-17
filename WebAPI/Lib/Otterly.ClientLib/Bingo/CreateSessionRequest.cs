@@ -1,7 +1,8 @@
-﻿namespace Otterly.API.ClientLib.Bingo;
+﻿using System;
 
-public class CreateSessionRequest
+namespace Otterly.API.ClientLib.Bingo;
+
+public class CreateSessionRequest : BaseRequest
 {
-	public Guid UserID { get; set; }
 	public int CardID { get; set; }
 }

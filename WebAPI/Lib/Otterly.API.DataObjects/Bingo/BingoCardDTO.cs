@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Otterly.API.ClientLib.DTO;
+namespace Otterly.API.DataObjects.Bingo;
 
 public class BingoCardDTO
 {

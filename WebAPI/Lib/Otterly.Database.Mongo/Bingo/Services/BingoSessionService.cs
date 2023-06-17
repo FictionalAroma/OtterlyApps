@@ -6,7 +6,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
-using Otterly.API.ClientLib.DTO;
+using Otterly.API.DataObjects.Bingo;
 using Otterly.ClientLib;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Configuration;
@@ -43,7 +43,7 @@ public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSession
 			await CreateAsync(newSession);
 
 			var createdSession = await FindActiveSessionForStreamer(user.TwitchID);
-			if (createdSession == null)
+			if (createdSession == null || string.IsNullOrEmpty(createdSession.Id))
 			{
 				response.SetError("Somehow could not find new created Bingo Session");
 				return response;

@@ -28,12 +28,19 @@ public class PlayerCardDataService : MongoServiceBase<PlayerTicket>, IPlayerCard
 						};
 		await CreateAsync(newTicket);
 
-		return await FindTicket(playerTwitchID, sessionId);
+		return (await FindTicket(playerTwitchID, sessionId))!;
 	}
 
-	public async Task<PlayerTicket> FindTicket(Guid playerTwitchID, string sessionId)
+	public Task<PlayerTicket?> GetTicketByID(string cardID) => GetAsync(cardID);
+	public async Task<PlayerTicket?> FindTicket(Guid playerTwitchID, string sessionId)
 	{
 		return await Collection.Find(ticket => ticket.TwitchUserID == playerTwitchID && ticket.SessionID == sessionId)
 							   .FirstOrDefaultAsync();
+	}
+
+	public async Task<List<PlayerTicket>> GetAllTicketsForSession(string markedItemSessionID)
+	{
+		return await Collection.Find(ticket => ticket.SessionID == markedItemSessionID)
+							   .ToListAsync();
 	}
 }

@@ -1,5 +1,7 @@
-﻿using Interview.APIClients.Clients;
-using Otterly.API.ClientLib.DTO;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
+using Interview.APIClients.Clients;
+using Otterly.API.DataObjects.Bingo;
 
 namespace Otterly.ClientLib;
 

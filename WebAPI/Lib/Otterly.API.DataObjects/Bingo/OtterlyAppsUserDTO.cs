@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Otterly.API.ClientLib.DTO
+namespace Otterly.API.DataObjects.Bingo
 {
     public class OtterlyAppsUserDTO
     {
@@ -8,6 +8,6 @@ namespace Otterly.API.ClientLib.DTO
         public int Test { get; set; }
 
         public bool Deleted { get; set; }
-		public Guid TwitchID { get; set; }
-	}
+        public Guid TwitchID { get; set; }
+    }
 }

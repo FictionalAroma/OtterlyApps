@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Otterly.API.ClientLib.Bingo;
-using Otterly.API.ClientLib.DTO;
+using Otterly.API.DataObjects.Bingo;
 using Otterly.ClientLib;
 
 namespace Otterly.API.Handlers.Interfaces;
