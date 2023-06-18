@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Otterly.API.ClientLib.DTO;
+namespace Otterly.API.DataObjects.Bingo;
 
 public class BingoCardDTO
 {
@@ -12,4 +12,6 @@ public class BingoCardDTO
     public string TitleText { get; set; }
     public int CardSize { get; set; }
     public bool FreeSpace { get; set; }
+
+    public List<BingoSlotDTO> Slots { get; set; }
 }
