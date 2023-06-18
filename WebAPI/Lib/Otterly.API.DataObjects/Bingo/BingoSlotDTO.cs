@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Otterly.API.ClientLib.DTO;
+﻿namespace Otterly.API.DataObjects.Bingo;
 
 public class BingoSlotDTO
 {

@@ -1,7 +1,5 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace Otterly.Database.DataObjects;
 
@@ -20,5 +18,7 @@ public class BingoCard
 	public bool FreeSpace { get; set; }
 
 	public bool Deleted { get; set; }
-	
+
+	public List<BingoSlot> Slots { get; set; }
+
 }

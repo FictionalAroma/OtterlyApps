@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moq;
-using Otterly.Database;
 
 namespace Otterly.API.Tests.Helpers
 {

@@ -16,7 +16,7 @@ namespace Otterly.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Otterly.Database.DataObjects.BingoCard", b =>
@@ -65,6 +65,8 @@ namespace Otterly.API.Migrations
 
                     b.HasKey("SlotIndex");
 
+                    b.HasIndex("CardID");
+
                     b.ToTable("BingoSlots");
                 });
 
@@ -76,6 +78,9 @@ namespace Otterly.API.Migrations
 
                     b.Property<int>("Test")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("TwitchID")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("UserID");
 
@@ -103,6 +108,20 @@ namespace Otterly.API.Migrations
                     b.HasKey("UserIndex");
 
                     b.ToTable("UserBingoOptions");
+                });
+
+            modelBuilder.Entity("Otterly.Database.DataObjects.BingoSlot", b =>
+                {
+                    b.HasOne("Otterly.Database.DataObjects.BingoCard", null)
+                        .WithMany("Slots")
+                        .HasForeignKey("CardID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Otterly.Database.DataObjects.BingoCard", b =>
+                {
+                    b.Navigation("Slots");
                 });
 #pragma warning restore 612, 618
         }
