@@ -20,6 +20,7 @@ public class PlayerCardDataService : MongoServiceBase<PlayerTicket>, IPlayerCard
 
 	public async Task<PlayerTicket> CreatePlayerTicket(Guid playerTwitchID, string sessionId, IEnumerable<PlayerTicketItem> randomisedSlots)
 	{
+
 		var newTicket = new PlayerTicket()
 						{
 							SessionID = sessionId,

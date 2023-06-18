@@ -37,18 +37,11 @@ public class MongoServiceBase<T> : IMongoServiceBase<T> where T : MongoDataEntry
 
 	public async Task UpdateListAsync(List<T> updated)
 	{
-		var session = await _client.StartSessionAsync();
-		session.StartTransaction();
-
-		var updates = updated.Select(
-									 entry =>
-										 new
-											 UpdateOneModel<T>(new FilterDefinitionBuilder<T>()
-																   .Eq(dataEntry => dataEntry.Id, entry.Id),
-															   new ObjectUpdateDefinition<T>(entry)));
-		var results = await Collection.BulkWriteAsync(updates);
-
-		await session.CommitTransactionAsync();
+		await Collection.BulkWriteAsync(updated.Select(entry =>
+														   new
+															   ReplaceOneModel<T>(
+																new ExpressionFilterDefinition<T>(dataEntry => dataEntry.Id == entry.Id),
+																	  entry)));
 	}
 
 	public async Task RemoveAsync(string id) =>

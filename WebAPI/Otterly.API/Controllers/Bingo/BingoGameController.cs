@@ -45,11 +45,19 @@ public class BingoGameController : ControllerBase
 		{
 			return BadRequest();
 		}
+
 		var session = await _handler.GetCurrentSessionForStreamer(request.StreamerTwitchID);
-		if (session == null)
+		if (session == null || string.IsNullOrEmpty(session.Id))
 		{
 			return ValidationProblem("Streamer Bingo Not Active");
 		}
+
+		var existingTicket = await _handler.GetTicketForPlayer(request.PlayerTwitchID, session.Id);
+		if (existingTicket != null)
+		{
+			return Conflict(existingTicket);
+		}
+
         var result = await _handler.CreatePlayerTicket(request.PlayerTwitchID, session);
 		return result != null ? Ok(_mapper.Map<PlayerTicketDTO>(result)) : StatusCode(500, "unable to create ticket");
 	}
@@ -114,6 +122,20 @@ public class BingoGameController : ControllerBase
 		}
 
 		var result = await _handler.VerifySessionItem(session, request.ItemIndex);
+		return Ok(result);
+
+	}
+	[HttpPost]
+	[Route("endSession")]
+	public async Task<IActionResult> EndSession(string sessionID)
+	{
+		var session = await _handler.GetSessionData(sessionID);
+		if (session == null || !session.Active )
+		{
+			return StatusCode(500, "Session No Longer Valid");
+		}
+
+		var result = await _handler.EndSession(session);
 		return Ok(result);
 
 	}

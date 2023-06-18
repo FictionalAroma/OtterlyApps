@@ -8,5 +8,6 @@ public class AutomapperConfig : Profile
     public AutomapperConfig() : base()
 	{
 		CreateMap<BingoSessionItem, PlayerTicketItem>().ReverseMap();
+		
 	}
 }

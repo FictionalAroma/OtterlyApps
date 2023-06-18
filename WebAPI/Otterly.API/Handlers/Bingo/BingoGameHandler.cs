@@ -114,6 +114,19 @@ public class BingoGameHandler : IBingoGameHandler
 		return response;
 	}
 
+	public async Task<BaseResponse> EndSession(BingoSession session)
+	{
+		var response = new BaseResponse();
+		if (!string.IsNullOrEmpty(session.Id))
+		{
+			session.Active = false;
+			await _sessionService.UpdateAsync(session.Id, session);
+			return response;
+		}
+		response.SetError("Session Not Valid");
+		return response;
+	}
+
 	private async Task<BaseResponse> MarkAllSessionTicketItemsVerified(BingoSessionItem markedItem)
 	{
 		var response = new BaseResponse();
@@ -150,7 +163,7 @@ public class BingoGameHandler : IBingoGameHandler
 	public Task<BingoSession?> GetCurrentSessionForStreamer(Guid streamerTwitchID) => _sessionService.FindActiveSessionForStreamer(streamerTwitchID);
 
 	public Task<PlayerTicket?> GetTicketForPlayer(Guid playerTwitchID, string sessionID) => _ticketService.FindTicket(playerTwitchID, sessionID);
-	public Task<BingoSession?> GetSessionData(string requestSessionID) { throw new NotImplementedException(); }
+	public Task<BingoSession?> GetSessionData(string requestSessionID) => _sessionService.GetAsync(requestSessionID);
 
 	#endregion
 }

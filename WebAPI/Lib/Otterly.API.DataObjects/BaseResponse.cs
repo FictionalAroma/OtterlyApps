@@ -2,6 +2,7 @@
 
 public class BaseResponse
 {
+	public static BaseResponse SuccessfulRequest => new BaseResponse();
 	public BaseResponse() { }
 
 	public BaseResponse(string error)

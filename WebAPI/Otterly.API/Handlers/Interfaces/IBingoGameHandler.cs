@@ -18,4 +18,5 @@ public interface IBingoGameHandler
 	Task<BaseResponse> MarkTicketItem(PlayerTicket ticket, int requestItemIndex);
 	Task<BingoSession?> GetSessionData(string requestSessionID);
 	Task<BaseResponse> VerifySessionItem(BingoSession session, int requestItemIndex);
+	Task<BaseResponse> EndSession(BingoSession session);
 }
