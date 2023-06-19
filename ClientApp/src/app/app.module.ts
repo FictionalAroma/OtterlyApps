@@ -13,14 +13,17 @@ import { MatListModule } from '@angular/material/list';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginNavMenuComponent } from './navbar/login-nav-menu/login-nav-menu.component';
 import { LoginManagerService } from 'src/services/login-manager.service';
+import { BingoCardListViewComponent } from './bingo/bingo-card-list-view/bingo-card-list-view.component';
+import { BingoCardService } from 'src/services/bingo-card.service';
 
 @NgModule({
     declarations: [
         AppComponent,
         NavbarComponent,
         LoginNavMenuComponent,
+        BingoCardListViewComponent
     ],
-    providers: [ LoginManagerService,],
+    providers: [ LoginManagerService,BingoCardService],
     bootstrap: [AppComponent],
     imports: [
         BrowserModule,
