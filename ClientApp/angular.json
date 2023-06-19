@@ -69,7 +69,9 @@
               "browserTarget": "ClientApp:build:production"
             },
             "development": {
-              "browserTarget": "ClientApp:build:development"
+              "browserTarget": "ClientApp:build:development",
+              "proxyConfig": "proxy.conf.mjs"
+
             }
           },
           "defaultConfiguration": "development"

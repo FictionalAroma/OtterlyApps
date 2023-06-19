@@ -33,8 +33,6 @@ public class AuthController : ControllerBase
 	}
 
 
-
-	[Authorize]
 	public ActionResult GetUserSignedIn()
 	{
 		

@@ -1,0 +1,8 @@
+<a *ngIf="!loggedIn else logout" href="bff/auth/login">
+  Login
+</a>
+<ng-template #logout>
+  <a href="bff/auth/logout">Logout</a>
+</ng-template>
+
+<p>Are you logged in {{loggedIn}}</p>
