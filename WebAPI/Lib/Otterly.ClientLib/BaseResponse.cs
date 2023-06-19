@@ -1,4 +1,4 @@
-﻿namespace Otterly.ClientLib;
+﻿namespace Otterly.API.ClientLib;
 
 public class BaseResponse
 {
