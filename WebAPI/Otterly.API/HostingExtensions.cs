@@ -7,16 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
-using Otterly.Database;
 using Otterly.API.Handlers;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.Database.ActivityData.Bingo.Services;
 using Otterly.API.Handlers.Bingo;
 using Otterly.Database.ActivityData.Configuration;
 using Otterly.Database.ActivityData.Interfaces;
-using MongoDB.Bson.Serialization.Serializers;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson;
+using Otterly.Database.UserData;
 
 namespace Otterly.API;
 

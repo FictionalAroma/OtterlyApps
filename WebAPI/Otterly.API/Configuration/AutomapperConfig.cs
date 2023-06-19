@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
-using Otterly.Database.DataObjects;
+using Otterly.Database.UserData.DataObjects;
 
 namespace Otterly.API.Configuration;
 

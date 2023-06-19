@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Otterly.ClientLib;
+using Otterly.API.ClientLib;
+using Otterly.Site.StartupExtensions;
 
 namespace Otterly.Site
 {

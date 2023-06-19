@@ -2,12 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
+using Otterly.API.ClientLib;
 using Otterly.API.DataObjects.Bingo;
-using Otterly.ClientLib;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Configuration;
 using Otterly.Database.ActivityData.Interfaces;

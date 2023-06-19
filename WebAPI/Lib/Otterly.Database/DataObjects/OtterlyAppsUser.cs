@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Otterly.Database.DataObjects
+namespace Otterly.Database.UserData.DataObjects
 {
 	public class OtterlyAppsUser
 	{

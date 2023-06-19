@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Otterly.API.DataObjects.Bingo;
-using Otterly.Database.DataObjects;
+using Otterly.Database.UserData.DataObjects;
 
 namespace Otterly.API.Handlers.Interfaces;
 

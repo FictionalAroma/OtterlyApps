@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Interview.APIClients.Clients
+namespace Otterly.API.ClientLib
 {
     public abstract class APIClientBase
 	{
@@ -47,5 +47,9 @@ namespace Interview.APIClients.Clients
             return await ProcessRequest<TOut>(httpPayload);
         }
 
-    }
+		public virtual void AddAuthentication(HttpRequestMessage message) { 
+			// do nothing
+
+		}
+	}
 }

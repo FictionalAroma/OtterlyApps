@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Otterly.ClientLib;
+using Otterly.API.ClientLib;
 
 namespace Otterly.Site.Controllers;
 
@@ -53,6 +53,7 @@ public class AuthController : ControllerBase
 	public async Task<IActionResult> GetUserProfile()
 	{
 		var result = await _apiClient.GetUserProfile();
+
 		return new JsonResult(result);
 	}
 

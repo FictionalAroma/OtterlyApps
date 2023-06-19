@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
-using Otterly.Database;
-using Otterly.Database.DataObjects;
+using Otterly.Database.UserData;
+using Otterly.Database.UserData.DataObjects;
 
 namespace Otterly.API.Handlers;
 

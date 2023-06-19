@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Otterly.API.ClientLib;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
-using Otterly.ClientLib;
-using Otterly.Database;
+using Otterly.Database.UserData;
 
 namespace Otterly.API.Handlers.Bingo;
 

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Otterly.API.Controllers.Bingo;
 using Otterly.API.Tests.Helpers;
 using Otterly.API.Tests.TestImplementations.Card;
-using Otterly.Database.DataObjects;
+using Otterly.Database.UserData.DataObjects;
 
 namespace Otterly.API.Tests
 {

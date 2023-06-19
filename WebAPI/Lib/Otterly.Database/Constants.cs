@@ -1,4 +1,4 @@
-﻿namespace Otterly.Database;
+﻿namespace Otterly.Database.UserData;
 
 public enum TwitchCurrency
 {

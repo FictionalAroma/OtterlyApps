@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MySqlX.XDevAPI;
-using Otterly.API.ClientLib.Bingo;
-using Otterly.API.DataObjects.Bingo;
-using Otterly.ClientLib;
+using Otterly.API.ClientLib;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 
 namespace Otterly.API.Handlers.Interfaces;

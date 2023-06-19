@@ -1,7 +1,7 @@
-﻿using Otterly.API.ClientLib.Bingo;
+﻿using Otterly.API.ClientLib;
+using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
-using Otterly.ClientLib;
 
 namespace Otterly.API.Tests.TestImplementations.Card;
 

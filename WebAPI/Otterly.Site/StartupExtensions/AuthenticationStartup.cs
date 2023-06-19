@@ -9,8 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
-
-namespace Otterly.Site;
+namespace Otterly.Site.StartupExtensions;
 
 public static class AuthenticationStartup
 {
