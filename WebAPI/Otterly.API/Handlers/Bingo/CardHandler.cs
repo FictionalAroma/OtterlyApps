@@ -25,7 +25,7 @@ public class CardHandler : ICardHandler
     public async Task<List<BingoCardDTO>> GetCardsForUser(Guid userID)
     {
         var card = await _context.BingoCards.
-                                  Where(card => card.UserID == userID)
+                                  Where(card => card.UserID == userID && !card.Deleted)
                                   .Include(bingoCard => bingoCard.Slots)
                                   .ToListAsync();
 

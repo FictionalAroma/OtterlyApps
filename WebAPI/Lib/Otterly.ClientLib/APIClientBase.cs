@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -6,7 +7,8 @@ namespace Otterly.API.ClientLib
 {
     public abstract class APIClientBase
 	{
-		private HttpClient _client;
+		private readonly HttpClient _client;
+        public AuthenticationHeaderValue Authentication { get; set; }
 
 		public APIClientBase(HttpClient client)
 		{
@@ -22,7 +24,7 @@ namespace Otterly.API.ClientLib
         {
             httpPayload.Headers.Add("Accept", "*/*");
             httpPayload.Headers.Add("Accept-Encoding", "gzip, deflate, br");
-
+			httpPayload.Headers.Authorization = Authentication;
             var responseObject = await _client.SendAsync(httpPayload);
             if (responseObject.IsSuccessStatusCode)
             {
@@ -46,10 +48,5 @@ namespace Otterly.API.ClientLib
         {
             return await ProcessRequest<TOut>(httpPayload);
         }
-
-		public virtual void AddAuthentication(HttpRequestMessage message) { 
-			// do nothing
-
-		}
 	}
 }

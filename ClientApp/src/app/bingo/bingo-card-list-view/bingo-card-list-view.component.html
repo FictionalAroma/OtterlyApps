@@ -1,5 +1,4 @@
-<p>bingo-card-list-view works!</p>
 
-<div>
-  <p **ngFor="let card of userCards">{{card.cardName}}</p>
-</div>
+<ng-container *ngFor="let card of userCards">
+<app-bingo-card-display [card]="card"></app-bingo-card-display>
+</ng-container>

@@ -10,10 +10,6 @@ namespace Otterly.Site.Controllers;
 
 public class AuthController : ControllerBase
 {
-	private readonly OtterlyAPIClient _apiClient;
-
-	public AuthController(OtterlyAPIClient apiClient) { _apiClient = apiClient; }
-
 	// GET
 	public ActionResult Login(string returnUrl = "/")
 	{
@@ -21,7 +17,6 @@ public class AuthController : ControllerBase
 		return result;
 	}
 
-	[Authorize]
 	public async Task<ActionResult> Logout()
 	{
 		await HttpContext.SignOutAsync();
@@ -31,8 +26,6 @@ public class AuthController : ControllerBase
 											  RedirectUri = "/"
 										  });
 	}
-
-
 	public ActionResult GetUserSignedIn()
 	{
 		
@@ -48,13 +41,6 @@ public class AuthController : ControllerBase
 
         return new JsonResult(new { isAuthenticated = false });
 
-	}
-
-	public async Task<IActionResult> GetUserProfile()
-	{
-		var result = await _apiClient.GetUserProfile();
-
-		return new JsonResult(result);
 	}
 
 	public ActionResult LoginCallback()

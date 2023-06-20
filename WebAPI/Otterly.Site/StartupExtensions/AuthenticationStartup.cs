@@ -21,14 +21,25 @@ public static class AuthenticationStartup
 					options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 					options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 					options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+					options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
 				})
 				.AddCookie(o =>
 				{
 					o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 					o.Cookie.SameSite = SameSiteMode.Strict;
 					o.Cookie.HttpOnly = true;
+					o.Events.OnRedirectToLogin = context =>
+					{
+						context.RedirectUri = "/bff/auth/login";
+                        return Task.CompletedTask;
+					};
+
 				})
-				.AddOpenIdConnect("Auth0", options => ConfigureOpenIdConnect(options, builder.Configuration));
+				.AddOpenIdConnect("Auth0", options =>
+				{
+					ConfigureOpenIdConnect(options, builder.Configuration);
+				});
 
 
 		return builder;
@@ -43,7 +54,7 @@ public static class AuthenticationStartup
             options.ClientId = config["Auth0:ClientId"];
             options.ClientSecret = config["Auth0:ClientSecret"];
 
-            // Set response type to code
+			// Set response type to code
             options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
 
             options.ResponseMode = OpenIdConnectResponseMode.FormPost;
@@ -93,9 +104,11 @@ public static class AuthenticationStartup
                 },
                 OnRedirectToIdentityProvider = context => {
                     context.ProtocolMessage.SetParameter("audience", config["Auth0:ApiAudience"]);
+					context.Response.Redirect("/bff/auth/login");
+
 					return Task.CompletedTask;
                 }
-            };
+			};
         }
 }
 	

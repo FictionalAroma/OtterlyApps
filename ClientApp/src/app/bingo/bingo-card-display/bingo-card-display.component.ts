@@ -1,6 +1,6 @@
 import { BingoCardDTO } from 'api/otterlyapi';
 import { BingoCardService } from './../../../services/bingo-card.service';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-bingo-card-display',
@@ -8,12 +8,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./bingo-card-display.component.scss']
 })
 export class BingoCardDisplayComponent {
-  constructor(private bingoService : BingoCardService){}
-
-  public userCards : BingoCardDTO[] | undefined;
-
-  ngOnInit()
-  {
-    this.bingoService.getCards().subscribe((cards : BingoCardDTO[]) => this.userCards = {...cards})
+  @Input() card : BingoCardDTO = {
+    cardID: 0,
+    userID: '',
+    cardName: '',
+    titleText: '',
+    cardSize: 0,
+    freeSpace: false,
+    slots: []
   }
 }

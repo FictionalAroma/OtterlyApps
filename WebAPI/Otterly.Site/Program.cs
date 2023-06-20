@@ -16,9 +16,9 @@ namespace Otterly.Site
             // Add services to the container.
 
             builder.Services.AddControllersWithViews();
-			builder.Services.AddHttpClient<OtterlyAPIClient>();
+			builder.AddOtterlyAPIClient();
+			builder.Services.AddHttpClient();
 			builder.AddAuthentication();
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -28,7 +28,8 @@ namespace Otterly.Site
                 app.UseHsts();
             }
 			app.UseCors("CorsPolicy");
-            app.UseHttpsRedirection();
+			app.UseHttpsRedirection();
+
             app.UseStaticFiles();
             app.UseRouting();
 

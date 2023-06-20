@@ -15,13 +15,21 @@ import { LoginNavMenuComponent } from './navbar/login-nav-menu/login-nav-menu.co
 import { LoginManagerService } from 'src/services/login-manager.service';
 import { BingoCardListViewComponent } from './bingo/bingo-card-list-view/bingo-card-list-view.component';
 import { BingoCardService } from 'src/services/bingo-card.service';
+import { BingoCardDisplayComponent } from './bingo/bingo-card-display/bingo-card-display.component';
+import { BingoCardSlotComponent } from './bingo/bingo-card-slot/bingo-card-slot.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSliderModule} from '@angular/material/slider';
+
 
 @NgModule({
     declarations: [
         AppComponent,
         NavbarComponent,
         LoginNavMenuComponent,
-        BingoCardListViewComponent
+        BingoCardListViewComponent,
+        BingoCardDisplayComponent,
+        BingoCardSlotComponent
     ],
     providers: [ LoginManagerService,BingoCardService],
     bootstrap: [AppComponent],
@@ -36,6 +44,9 @@ import { BingoCardService } from 'src/services/bingo-card.service';
         MatListModule,
         BrowserAnimationsModule,
         HttpClientModule,
+        MatCardModule,
+        MatExpansionModule,
+        MatSliderModule
     ]
 })
 export class AppModule { }

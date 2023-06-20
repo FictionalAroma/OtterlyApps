@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { BingoCardDTO } from 'api/otterlyapi';
 import { BingoCardService } from 'src/services/bingo-card.service';
+import { BingoCardDisplayComponent } from '../bingo-card-display/bingo-card-display.component';
 
 @Component({
   selector: 'app-bingo-card-list-view',
@@ -15,6 +16,6 @@ export class BingoCardListViewComponent {
 
   ngOnInit()
   {
-    this.bingoService.getCards().subscribe((cards : BingoCardDTO[]) => this.userCards = {...cards})
+    this.bingoService.getCards().subscribe((cards : BingoCardDTO[]) => this.userCards = Array.from(cards))
   }
 }

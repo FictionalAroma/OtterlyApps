@@ -1,5 +1,21 @@
-<p>bingo-card-display works!</p>
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>{{card.cardName}}</mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-card>
+    <mat-slider min="3" max="9" step="1" value="card.cardSize" discrete showTickMarks>
+      <input matSliderThumb >
+    </mat-slider>
+    <mat-slide-toggle [checked]="card.freeSpace">Free Space</mat-slide-toggle>
+    <mat-card-content>
+      <div *ngFor="let slot of card.slots">
+        <app-bingo-card-slot [slot]="slot"></app-bingo-card-slot>
+        <mat-divider></mat-divider>
+      </div>
+          </mat-card-content>
+    <mat-card-actions align="start">
+       <button mat-button >Edit</button>
 
-<div>
-  <p **ngFor="let card of userCards">{{card.cardName}}</p>
-</div>
+    </mat-card-actions>
+</mat-card>
+</mat-expansion-panel>

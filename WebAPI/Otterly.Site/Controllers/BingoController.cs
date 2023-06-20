@@ -1,24 +1,30 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Http;
 using Otterly.API.ClientLib;
 
 namespace Otterly.Site.Controllers
 {
 	[Authorize]
 	[Controller]
-	[Route("bff/[controller]")]
-    public class BingoController : ControllerBase
-    {
-		private readonly OtterlyAPIClient _client;
+	[Route("bff/bingo")]
 
-		public BingoController(OtterlyAPIClient client) { this._client = client; }
+    public class BingoController : BFFBaseController
+    {
+
+		public BingoController(ITypedHttpClientFactory<OtterlyAPIClient> httpClientFactory, HttpClient baseClient) : base(httpClientFactory, baseClient)
+		{
+		}
 
 		[HttpGet]
 		[Route("GetCards")]
 		public async Task<IActionResult> GetCards()
 		{
-			return new JsonResult(await _client.GetCards());
+			var client = await GenerateClientAsync();
+			var cards = await client.GetCards();
+			return new JsonResult(cards);
 		}
     }
 }
