@@ -3,19 +3,22 @@
     <mat-panel-title>{{card.cardName}}</mat-panel-title>
   </mat-expansion-panel-header>
   <mat-card>
-    <mat-slider min="3" max="9" step="1" value="card.cardSize" discrete showTickMarks>
-      <input matSliderThumb >
+    <mat-slider min="3" max="9" step="1" discrete showTickMarks [disabled]="!isEditing">
+      <input matSliderThumb [(ngModel)]="binding")]>
     </mat-slider>
-    <mat-slide-toggle [checked]="card.freeSpace">Free Space</mat-slide-toggle>
+    <mat-slide-toggle [checked]="card.freeSpace" [disabled]="!isEditing">Free Space</mat-slide-toggle>
     <mat-card-content>
       <div *ngFor="let slot of card.slots">
-        <app-bingo-card-slot [slot]="slot"></app-bingo-card-slot>
-        <mat-divider></mat-divider>
+        <app-bingo-card-slot [slot]="slot" [isEditing]="isEditing"></app-bingo-card-slot>
       </div>
-          </mat-card-content>
-    <mat-card-actions align="start">
-       <button mat-button >Edit</button>
-
+      </mat-card-content>
+    <mat-card-actions align="start" >
+      <ng-container *ngIf="isEditing;else notEditing">
+      <button mat-fab extended (click)="discardChanges()"><mat-icon>cancel</mat-icon>Discard</button>
+      </ng-container>
     </mat-card-actions>
+    <ng-template #notEditing>
+      <button mat-fab extended (click)="startEdit()"><mat-icon>edit</mat-icon>Edit</button>
+    </ng-template>
 </mat-card>
 </mat-expansion-panel>
