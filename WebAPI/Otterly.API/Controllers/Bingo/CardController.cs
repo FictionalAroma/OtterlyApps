@@ -1,42 +1,36 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.Handlers.Interfaces;
+using Otterly.API.ClientLib;
 
 namespace Otterly.API.Controllers.Bingo
 {
 	[Authorize]
     [Route("api/bingo/[controller]")]
     [ApiController]
-    public class CardController : ControllerBase
+	public class CardController : ControllerBase
 	{
+		// ReSharper disable once InconsistentNaming
 
 		private readonly ICardHandler _cardHandler;
 
 		public CardController(ICardHandler cardHandler) { _cardHandler = cardHandler; }
 
 		[HttpGet]
-		public async Task<IActionResult> GetCards()
+		public async Task<IActionResult> GetCards(BaseRequest request)
 		{
-			var userGuid = User.FindFirst("uuid");
+			var results = await _cardHandler.GetCardsForUser(request.UserID);
 
-			if (userGuid != null)
-			{
-				var results = await _cardHandler.GetCardsForUser(Guid.Parse(userGuid.Value));
-				return Ok(results);
-			}
-
-			return BadRequest();
+			return Ok(results);
 		}
 
 		[HttpGet]
 		[Route("Details")]
-		public async Task<IActionResult> GetCardDetail(int cardID)
+		public async Task<IActionResult> GetCardDetail(GetCardDeatilsRequest request)
 		{
-			var details = await _cardHandler.GetCardDetail(cardID);
+			var details = await _cardHandler.GetCardDetail(request.CardID, request.UserID);
 			if (details == null) return NotFound();
 
 			return Ok(details);

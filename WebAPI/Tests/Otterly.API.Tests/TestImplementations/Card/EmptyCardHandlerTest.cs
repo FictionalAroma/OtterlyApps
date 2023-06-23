@@ -12,7 +12,7 @@ public class EmptyCardHandlerTest : ICardHandler
 		return Task.FromResult(new List<BingoCardDTO>());
 	}
 
-	public Task<GetCardDetailsResponse> GetCardDetail(int cardID)
+	public Task<GetCardDetailsResponse?> GetCardDetail(int cardID, Guid requestUserID)
 	{
 		GetCardDetailsResponse? result = null;
 		return Task.FromResult(result)!;

@@ -1,5 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Otterly.API.ClientLib;
+using Otterly.API.ClientLib.Bingo;
 using Otterly.API.Controllers.Bingo;
 using Otterly.API.Tests.Helpers;
 using Otterly.API.Tests.TestImplementations.Card;
@@ -18,7 +20,7 @@ namespace Otterly.API.Tests
         public async Task CardsEmpty()
         {
             var controller = new CardController(new EmptyCardHandlerTest());
-			var result = await controller.GetCards();
+			var result = await controller.GetCards(new BaseRequest(Guid.Empty));
 
 			var list = result.GetActionResultPayload<List<BingoCard>, OkObjectResult>(HttpStatusCode.OK);
 
@@ -29,7 +31,7 @@ namespace Otterly.API.Tests
 		public async Task CardDetailEmpty()
 		{
 			var controller = new CardController(new EmptyCardHandlerTest());
-			var result = await controller.GetCardDetail(1);
+			var result = await controller.GetCardDetail(new GetCardDeatilsRequest(){UserID = Guid.Empty, CardID = 1});
             
 			
 			//var list = result.<GetCardDetails, OkObjectResult>(HttpStatusCode.Accepted);

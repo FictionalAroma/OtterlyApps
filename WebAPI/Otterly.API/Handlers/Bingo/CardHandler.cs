@@ -25,6 +25,7 @@ public class CardHandler : ICardHandler
     public async Task<List<BingoCardDTO>> GetCardsForUser(Guid userID)
     {
         var card = await _context.BingoCards.
+                                  AsNoTracking().
                                   Where(card => card.UserID == userID && !card.Deleted)
                                   .Include(bingoCard => bingoCard.Slots)
                                   .ToListAsync();
@@ -32,12 +33,16 @@ public class CardHandler : ICardHandler
         return _mapper.Map<List<BingoCardDTO>>(card);
     }
 
-    public async Task<GetCardDetailsResponse> GetCardDetail(int cardID)
-    {
-        var foundCard = await _context.BingoCards.FindAsync(cardID);
+    public async Task<GetCardDetailsResponse?> GetCardDetail(int cardID, Guid requestUserID)
+	{
+		var foundCard = await _context.BingoCards
+									  .AsNoTracking()
+									  .Include(card => card.Slots)
+									  .FirstOrDefaultAsync(card => card.CardID == cardID &&
+																  card.UserID == requestUserID &&
+																  !card.Deleted);
         if (foundCard == null) return null;
 
-        await _context.Entry(foundCard).Collection(card => card.Slots).LoadAsync();
         var response = new GetCardDetailsResponse()
         {
             Card = _mapper.Map<BingoCardDTO>(foundCard),
@@ -51,7 +56,8 @@ public class CardHandler : ICardHandler
         var response = new BaseResponse();
 
         var foundCard = await _context.BingoCards.
-                                             Where(card => card.CardID == request.CardDetails.CardID)
+                                             Where(card => card.CardID == request.CardDetails.CardID && 
+														   card.UserID == request.UserID)
                                              .Include(bingoCard => bingoCard.Slots)
                                              .FirstOrDefaultAsync();
         if (foundCard == null)

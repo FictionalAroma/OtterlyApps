@@ -47,6 +47,7 @@ public class AuthController : ControllerBase
 	{
 		if (User.Identity == null || !User.Identity.IsAuthenticated)
 		{
+
 			// if we arent authenticated, go away!
 			return RedirectToAction("Index", "Home");
 		}

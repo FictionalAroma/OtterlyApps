@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -17,6 +18,20 @@ public class BFFBaseController : ControllerBase
 	{
 		_httpClientFactory = httpClientFactory;
 		this._baseClient = baseClient;
+	}
+
+	public Guid UserID
+	{
+		get
+		{
+			var claim = HttpContext.User.FindFirst("/uuid");
+			if (claim != null && Guid.TryParse(claim.Value, out var result))
+			{
+				return result;
+			}
+
+			return Guid.Empty;
+		}
 	}
 
 	protected async Task<OtterlyAPIClient> GenerateClientAsync()

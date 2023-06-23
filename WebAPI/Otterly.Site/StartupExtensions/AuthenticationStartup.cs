@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -29,6 +30,8 @@ public static class AuthenticationStartup
 					o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 					o.Cookie.SameSite = SameSiteMode.Strict;
 					o.Cookie.HttpOnly = true;
+                    o.LoginPath = "/bff/auth/login";
+					o.LogoutPath = "/bff/auth/logout";
 					o.Events.OnRedirectToLogin = context =>
 					{
 						context.RedirectUri = "/bff/auth/login";
@@ -73,14 +76,14 @@ public static class AuthenticationStartup
 
             // Configure the Claims Issuer to be Auth0
             options.ClaimsIssuer = "Auth0";
-        
+			
             
             options.SaveTokens = true;
 
             
             options.Events = new OpenIdConnectEvents
             {
-                // handle the logout redirection
+				// handle the logout redirection
                 OnRedirectToIdentityProviderForSignOut = (context) =>
                 {
                     var logoutUri = $"https://{config["Auth0:Domain"]}/v2/logout?client_id={config["Auth0:ClientId"]}";
@@ -107,7 +110,7 @@ public static class AuthenticationStartup
 					context.Response.Redirect("/bff/auth/login");
 
 					return Task.CompletedTask;
-                }
+				}
 			};
         }
 }

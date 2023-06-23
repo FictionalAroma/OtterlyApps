@@ -21,9 +21,10 @@ namespace Otterly.Site.Controllers
 		[HttpGet]
 		[Route("GetCards")]
 		public async Task<IActionResult> GetCards()
-		{
+		{			
 			var client = await GenerateClientAsync();
-			var cards = await client.GetCards();
+
+			var cards = await client.GetCards(UserID);
 			return new JsonResult(cards);
 		}
     }

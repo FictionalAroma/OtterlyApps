@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Otterly.API.DataObjects.Bingo;
@@ -20,9 +21,9 @@ public class OtterlyAPIClient : APIClientBase
 		return new OtterlyAppsUserDTO();
 	}
 
-	public async Task<List<BingoCardDTO>> GetCards()
+	public async Task<List<BingoCardDTO>> GetCards(Guid userID)
 	{
-		return await base.Get<List<BingoCardDTO>>($"{_config.BaseURL}/bingo/card");
+		return await Get<BaseRequest, List<BingoCardDTO>>(new BaseRequest(userID), $"{_config.BaseURL}/bingo/card");
 	}
 
 }
