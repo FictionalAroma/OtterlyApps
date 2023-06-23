@@ -1,4 +1,23 @@
+$link-color: #673ab7; // 1
+$label-margin-bottom: 0; // 2
+
+
 /* You can add global styles to this file, and also import other style files */
+// Import functions, variables, and mixins needed by other Bootstrap files
+@import "../node_modules/bootstrap/scss/bootstrap-reboot.scss";
+@import "../node_modules/bootstrap/scss/containers";
+@import "../node_modules/bootstrap/scss/grid";
+
+
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+a {
+  &.mat-button, &.mat-raised-button, &.mat-fab, &.mat-mini-fab, &.mat-list-item {
+    &:hover {
+      color: currentColor
+    }
+  }
+}

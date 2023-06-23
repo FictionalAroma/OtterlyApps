@@ -17,4 +17,28 @@ export class BingoCardDisplayComponent {
     freeSpace: false,
     slots: []
   }
+
+  private cachedCard : BingoCardDTO = {
+    cardID: 0,
+    userID: '',
+    cardName: '',
+    titleText: '',
+    cardSize: 0,
+    freeSpace: false,
+    slots: []
+  }
+
+  public isEditing : boolean = false;
+
+  public startEdit()
+  {
+    this.isEditing = true;
+    this.cachedCard = {...this.card};
+  }
+
+  public discardChanges()
+  {
+    this.isEditing = false;
+    this.card = {...this.cachedCard};
+  }
 }

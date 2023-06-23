@@ -12,4 +12,6 @@ export class BingoCardSlotComponent {
     cardID: 0,
     displayText: ''
   }
+
+  @Input() isEditing : boolean = false;
 }

@@ -1,1 +1,12 @@
-<p>{{slot.displayText}}</p>
+  <div class="row" *ngIf="isEditing;else notediting">
+      <mat-form-field>
+        <input matInput placeholder="Bingo Value" value="{{slot.displayText}}">
+      </mat-form-field>
+  </div>
+
+  <ng-template #notediting>
+    <div class="row">
+    <p>{{slot.displayText}}</p>
+    <mat-divider></mat-divider>
+  </div>
+  </ng-template>

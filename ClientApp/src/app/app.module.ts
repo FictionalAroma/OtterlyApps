@@ -20,6 +20,7 @@ import { BingoCardSlotComponent } from './bingo/bingo-card-slot/bingo-card-slot.
 import {MatCardModule} from '@angular/material/card';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
+import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import {MatSliderModule} from '@angular/material/slider';
         HttpClientModule,
         MatCardModule,
         MatExpansionModule,
-        MatSliderModule
+        MatSliderModule,
+        MatInputModule
     ]
 })
 export class AppModule { }
