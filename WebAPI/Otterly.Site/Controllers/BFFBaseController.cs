@@ -8,6 +8,7 @@ using Microsoft.Extensions.Http;
 using Otterly.API.ClientLib;
 
 namespace Otterly.Site.Controllers;
+[ApiController]
 public class BFFBaseController : ControllerBase
 {
 	private readonly ITypedHttpClientFactory<OtterlyAPIClient> _httpClientFactory;

@@ -1,4 +1,4 @@
 
 <ng-container *ngFor="let card of userCards">
-<app-bingo-card-display [card]="card"></app-bingo-card-display>
+<app-bingo-card-display [card]="card" (cardSaveEvent)="saveCardDetails($event)"></app-bingo-card-display>
 </ng-container>

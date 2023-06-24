@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { BingoSlotDTO } from 'api/otterlyapi';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-bingo-card-slot',

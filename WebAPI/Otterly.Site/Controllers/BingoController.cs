@@ -1,16 +1,17 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Http;
+using Newtonsoft.Json;
 using Otterly.API.ClientLib;
+using Otterly.API.DataObjects.Bingo;
 
 namespace Otterly.Site.Controllers
 {
-	[Authorize]
-	[Controller]
+	[ApiController]
 	[Route("bff/bingo")]
-
     public class BingoController : BFFBaseController
     {
 
@@ -26,6 +27,25 @@ namespace Otterly.Site.Controllers
 
 			var cards = await client.GetCards(UserID);
 			return new JsonResult(cards);
+		}
+
+		[HttpPost]
+		[Route("UpdateCard")]
+		public async Task<IActionResult> UpdateCard(BingoCardDTO cardToUpdate)
+		{
+			try
+			{
+				var client = await GenerateClientAsync();
+
+				var result = await client.UpdateCard(cardToUpdate, UserID);
+				return result.Success ? Ok() : StatusCode(500, result.Error);
+			}
+
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				return StatusCode(500, e.Message);
+			}
 		}
     }
 }

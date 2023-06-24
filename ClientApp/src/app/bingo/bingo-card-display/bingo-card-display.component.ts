@@ -1,6 +1,6 @@
 import { BingoCardDTO } from 'api/otterlyapi';
 import { Component, Input } from '@angular/core';
-
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-bingo-card-display',
@@ -16,7 +16,8 @@ export class BingoCardDisplayComponent {
     cardSize: 0,
     freeSpace: false,
     slots: []
-  }
+  };
+  @Output() cardSaveEvent = new EventEmitter<BingoCardDTO>;
 
   private cachedCard : BingoCardDTO = {
     cardID: 0,
@@ -45,5 +46,6 @@ export class BingoCardDisplayComponent {
   public saveChanges()
   {
     this.isEditing = false;
+    this.cardSaveEvent.emit(this.card)
   }
 }
