@@ -3,10 +3,25 @@
     <mat-panel-title>{{card.cardName}}</mat-panel-title>
   </mat-expansion-panel-header>
   <mat-card>
-    <mat-slider min="3" max="9" step="1" discrete showTickMarks [disabled]="!isEditing">
-      <input matSliderThumb [(ngModel)]="binding")]>
-    </mat-slider>
-    <mat-slide-toggle [checked]="card.freeSpace" [disabled]="!isEditing">Free Space</mat-slide-toggle>
+    <div class="row form-row">
+      <div class="col-md-2 col-sm-3">
+        <p>Card Size</p>
+      </div>
+      <div class="col-md-9 col-sm-9">
+      <mat-slider min="3" max="9" step="1" discrete showTickMarks [disabled]="!isEditing">
+        <input matSliderThumb [(ngModel)]="card.cardSize" >
+      </mat-slider>
+      </div>
+    </div>
+    <div class="row form-row">
+      <div class="col-md-1 col-sm-2">
+        <p>Free Space</p>
+      </div>
+      <div class="col-md-9 col-sm-9" >
+        <mat-slide-toggle [checked]="card.freeSpace" [disabled]="!isEditing" labelPosition="before"></mat-slide-toggle>
+      </div>
+    </div>
+
     <mat-card-content>
       <div *ngFor="let slot of card.slots">
         <app-bingo-card-slot [slot]="slot" [isEditing]="isEditing"></app-bingo-card-slot>
@@ -14,11 +29,12 @@
       </mat-card-content>
     <mat-card-actions align="start" >
       <ng-container *ngIf="isEditing;else notEditing">
-      <button mat-fab extended (click)="discardChanges()"><mat-icon>cancel</mat-icon>Discard</button>
+        <button mat-fab extended color="warn" (click)="discardChanges()" ><mat-icon>cancel</mat-icon>Discard</button>
+        <button mat-fab extended color="primary" (click)="saveChanges()" ><mat-icon>save</mat-icon>Save</button>
       </ng-container>
     </mat-card-actions>
     <ng-template #notEditing>
-      <button mat-fab extended (click)="startEdit()"><mat-icon>edit</mat-icon>Edit</button>
+      <button mat-fab extended color="accent" (click)="startEdit()"><mat-icon>edit</mat-icon>Edit</button>
     </ng-template>
 </mat-card>
 </mat-expansion-panel>

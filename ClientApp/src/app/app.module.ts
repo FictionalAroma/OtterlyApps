@@ -21,7 +21,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatInputModule} from '@angular/material/input';
-
+import {FormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
     declarations: [
@@ -48,7 +49,9 @@ import {MatInputModule} from '@angular/material/input';
         MatCardModule,
         MatExpansionModule,
         MatSliderModule,
-        MatInputModule
+        MatInputModule,
+        FormsModule,
+        MatFormFieldModule
     ]
 })
 export class AppModule { }

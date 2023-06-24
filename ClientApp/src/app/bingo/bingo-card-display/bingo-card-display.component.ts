@@ -1,6 +1,6 @@
 import { BingoCardDTO } from 'api/otterlyapi';
-import { BingoCardService } from './../../../services/bingo-card.service';
 import { Component, Input } from '@angular/core';
+
 
 @Component({
   selector: 'app-bingo-card-display',
@@ -40,5 +40,10 @@ export class BingoCardDisplayComponent {
   {
     this.isEditing = false;
     this.card = {...this.cachedCard};
+  }
+
+  public saveChanges()
+  {
+    this.isEditing = false;
   }
 }
