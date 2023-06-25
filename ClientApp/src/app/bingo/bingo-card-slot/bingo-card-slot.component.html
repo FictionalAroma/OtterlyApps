@@ -1,6 +1,6 @@
   <div class="row" *ngIf="isEditing;else notediting">
       <mat-form-field>
-        <input matInput placeholder="Bingo Value" value="{{slot.displayText}}">
+        <input matInput placeholder="Bingo Value" #slotInput (keyup)="slot.displayText = slotInput.value" value="{{slot.displayText}}">
       </mat-form-field>
   </div>
 

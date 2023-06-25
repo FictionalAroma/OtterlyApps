@@ -1,4 +1,4 @@
-import { BingoCardDTO } from 'api/otterlyapi';
+import { BingoCardDTO, BingoSlotDTO } from 'api/otterlyapi';
 import { Component, Input } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 
@@ -29,6 +29,12 @@ export class BingoCardDisplayComponent {
     slots: []
   }
 
+  ngOnInit()
+  {
+    this.card.slots = this.card.slots.sort((a, b) => a.slotIndex - b.slotIndex);
+  }
+
+
   public isEditing : boolean = false;
 
   public startEdit()
@@ -47,5 +53,31 @@ export class BingoCardDisplayComponent {
   {
     this.isEditing = false;
     this.cardSaveEvent.emit(this.card)
+  }
+
+  public updateFreeSpace(value : boolean)
+  {
+    this.card.freeSpace = value;
+  }
+
+  public addSlot()
+  {
+
+    var newIndex = 1;
+    if(this.card.slots.length > 0)
+    {
+      var foundIndex = this.card.slots.at(this.card.slots.length -1)?.slotIndex
+      if(foundIndex !== undefined)
+      {
+        newIndex = foundIndex + 1;
+      }
+    }
+
+    var slot : BingoSlotDTO = {
+      slotIndex: newIndex,
+      cardID: this.card.cardID,
+      displayText: "",
+    }
+    this.card.slots.push({...slot})
   }
 }

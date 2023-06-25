@@ -67,6 +67,9 @@ public class CardHandler : ICardHandler
         }
 
         _mapper.Map(request.CardDetails, foundCard);
+
+		_context.Entry(foundCard).State = EntityState.Modified;
+
         await _context.SaveChangesAsync();
 
 

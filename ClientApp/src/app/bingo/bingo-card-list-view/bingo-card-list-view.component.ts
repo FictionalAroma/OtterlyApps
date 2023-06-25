@@ -16,7 +16,7 @@ export class BingoCardListViewComponent {
 
   ngOnInit()
   {
-    this.bingoService.getCardsObservable().subscribe((cards : BingoCardDTO[]) => this.userCards = Array.from(cards))
+    this.bingoService.getCardsObservable().subscribe((cards : Array<BingoCardDTO>) => this.userCards = Array.from(cards))
   }
 
   saveCardDetails(updatedCard: BingoCardDTO) {

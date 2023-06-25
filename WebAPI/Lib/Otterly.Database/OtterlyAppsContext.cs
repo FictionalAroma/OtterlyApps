@@ -23,6 +23,7 @@ namespace Otterly.Database.UserData
 						   .WithOne()
 						   .HasPrincipalKey(card => card.CardID)
 						   .HasForeignKey(slot => slot.CardID);
+				
 			});
 		}
 
