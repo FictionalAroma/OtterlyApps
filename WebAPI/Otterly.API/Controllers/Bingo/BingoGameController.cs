@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
+using Otterly.API.ManualMapper;
 
 namespace Otterly.API.Controllers.Bingo;
 [Authorize]
@@ -14,16 +15,14 @@ namespace Otterly.API.Controllers.Bingo;
 public class BingoGameController : ControllerBase
 {
 	private readonly IBingoGameHandler _handler;
-	private readonly IMapper _mapper;
 
 	// GET
 	// ReSharper disable once InconsistentNaming
 	private static readonly Guid TEST_USER = new Guid("e3aeefa0-b2df-4af7-9033-914ef6936bf0");
 
-	public BingoGameController(IBingoGameHandler handler, IMapper mapper)
+	public BingoGameController(IBingoGameHandler handler)
 	{
 		_handler = handler;
-		_mapper = mapper;
 	}
 
 	[HttpPost]
@@ -59,14 +58,14 @@ public class BingoGameController : ControllerBase
 		}
 
         var result = await _handler.CreatePlayerTicket(request.PlayerTwitchID, session);
-		return result != null ? Ok(_mapper.Map<PlayerTicketDTO>(result)) : StatusCode(500, "unable to create ticket");
+		return result != null ? Ok(GameMapper.Map(result)) : StatusCode(500, "unable to create ticket");
 	}
     [HttpGet]
 	[Route("getSession")]
 	public async Task<IActionResult> GetCurrentSession(Guid streamerTwitchID)
 	{
 		var session = await _handler.GetCurrentSessionForStreamer(streamerTwitchID);
-		return session == null ? ValidationProblem("Streamer Bingo Not Active") : Ok(_mapper.Map<BingoSessionDTO>(session));
+		return session == null ? ValidationProblem("Streamer Bingo Not Active") : Ok(GameMapper.Map(session));
 	}
 
 	[HttpGet]
@@ -74,7 +73,7 @@ public class BingoGameController : ControllerBase
 	public async Task<IActionResult> GetTicketData(string ticketID)
 	{
 		var session = await _handler.GetLatestCardData(ticketID);
-		return session == null ? ValidationProblem("Streamer Bingo Not Active") : Ok(_mapper.Map<PlayerTicketDTO>(session));
+		return session == null ? ValidationProblem("Streamer Bingo Not Active") : Ok(GameMapper.Map(session));
 	}
 
 	[HttpGet]
@@ -88,11 +87,11 @@ public class BingoGameController : ControllerBase
 			return Ok(resp);
 		}
 
-		resp.Session = _mapper.Map<BingoSessionDTO>(session);
+		resp.Session = GameMapper.Map(session);
 		var ticket = await _handler.GetTicketForPlayer(request.PlayerTwitchID, session.Id);
 		if (ticket != null)
 		{
-			resp.PlayerTicket = _mapper.Map<PlayerTicketDTO>(ticket);
+			resp.PlayerTicket = GameMapper.Map(ticket);
 		}
 		return Ok(resp);
 	}

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using MongoDB.Driver;
 using Otterly.Database.ActivityData.Configuration;
 using Otterly.Database.ActivityData.Interfaces;
@@ -10,14 +9,10 @@ namespace Otterly.Database.ActivityData;
 
 public class MongoServiceBase<T> : IMongoServiceBase<T> where T : MongoDataEntry
 {
-	private readonly MongoClient _client;
-	protected readonly IMapper Mapper;
 	protected readonly IMongoCollection<T> Collection;
 
-	public MongoServiceBase(MongoDBConfig config, MongoClient client, string collectionName, IMapper mapper)
+	public MongoServiceBase(MongoDBConfig config, MongoClient client, string collectionName)
 	{
-		_client = client;
-		Mapper = mapper;
 		var dbConn = client.GetDatabase(config.DatabaseName);
 		Collection = dbConn.GetCollection<T>(collectionName);
 	}

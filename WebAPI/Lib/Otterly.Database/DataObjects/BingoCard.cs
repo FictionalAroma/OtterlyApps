@@ -19,7 +19,5 @@ public class BingoCard
 
 	public bool Deleted { get; set; }
 
-	
 	public List<BingoSlot> Slots { get; set; }
-
 }

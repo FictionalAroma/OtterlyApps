@@ -13,8 +13,8 @@ namespace Otterly.Database.ActivityData.Bingo.Services;
 
 public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSessionService
 {
-	public BingoSessionService(MongoDBConfig config, MongoClient client, IMapper mapper) : 
-		base(config, client, "bingo.streamerdata", mapper)
+	public BingoSessionService(MongoDBConfig config, MongoClient client) : 
+		base(config, client, "bingo.streamerdata")
 	{
 
 	}

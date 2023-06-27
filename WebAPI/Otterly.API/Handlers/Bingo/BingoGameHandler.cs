@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Otterly.API.ClientLib;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
+using Otterly.API.ManualMapper;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Interfaces;
 using Otterly.Database.UserData;
@@ -16,13 +16,11 @@ namespace Otterly.API.Handlers.Bingo;
 public class BingoGameHandler : IBingoGameHandler
 {
 	private readonly OtterlyAppsContext _context;
-	private readonly IMapper _mapper;
 	private readonly IBingoSessionService _sessionService;
 	private readonly IPlayerCardDataService _ticketService;
-	public BingoGameHandler(OtterlyAppsContext context, IMapper mapper, IBingoSessionService sessionService, IPlayerCardDataService ticketService)
+	public BingoGameHandler(OtterlyAppsContext context, IBingoSessionService sessionService, IPlayerCardDataService ticketService)
 	{
 		_context = context;
-		_mapper = mapper;
 		_sessionService = sessionService;
 		_ticketService = ticketService;
 	}
@@ -46,7 +44,7 @@ public class BingoGameHandler : IBingoGameHandler
 			return new BaseResponse("Unable to find appropriate card");
 		}
 		
-		return await _sessionService.CreateNewSession(_mapper.Map<BingoCardDTO>(card), _mapper.Map<OtterlyAppsUserDTO>(user));;
+		return await _sessionService.CreateNewSession(BingoMapper.Map(card), UserMapper.Map(user));;
 	}
 
 	public async Task<PlayerTicket?> CreatePlayerTicket(Guid playerTwitchID, BingoSession session)
@@ -62,7 +60,7 @@ public class BingoGameHandler : IBingoGameHandler
 
 		if (session.Id != null)
 		{
-			var ticket = await _ticketService.CreatePlayerTicket(playerTwitchID, session.Id, _mapper.Map<List<PlayerTicketItem>>(randomisedSlots));
+			var ticket = await _ticketService.CreatePlayerTicket(playerTwitchID, session.Id, GameMapper.Map(randomisedSlots));
 			return ticket;
 		}
 

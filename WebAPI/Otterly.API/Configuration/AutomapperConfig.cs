@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using AutoMapper.EquivalencyExpression;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.UserData.DataObjects;
@@ -12,16 +13,6 @@ public class AutomapperConfig : Profile
 {
 	public AutomapperConfig()
 	{
-
-		CreateMap<OtterlyAppsUser, OtterlyAppsUserDTO>().ReverseMap();
-		CreateMap<BingoSlot, BingoSlotDTO>().ReverseMap();
-		CreateMap<BingoCard, BingoCardDTO>().ReverseMap();
-		CreateMap<UserBingoOptions, UserBingoOptionsDTO>().ReverseMap();
-
-		CreateMap<PlayerTicket, PlayerTicketDTO>().ReverseMap();
-		CreateMap<BingoSession, BingoSessionDTO>().ReverseMap();
-		CreateMap<BingoSessionItem, BingoSessionItemDTO>().ReverseMap();
-		CreateMap<PlayerTicketItem, PlayerTicketItemDTO>().ReverseMap();
 
 
 	}
