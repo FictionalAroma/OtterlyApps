@@ -1,0 +1,87 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>{{card.cardName}}</mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-card>
+    <mat-card-actions >
+      <ng-container *ngIf="isEditing;else notEditing">
+        <button mat-fab extended color="warn" (click)="discardChanges()" ><mat-icon>cancel</mat-icon>Discard</button>
+        <button mat-fab extended color="primary" (click)="saveChanges()" ><mat-icon>save</mat-icon>Save</button>
+      </ng-container>
+      <button mat-fab extended color="warn" (click)="deleteCard()"><mat-icon>edit</mat-icon>Edit</button>
+
+    </mat-card-actions>
+    <ng-template #notEditing>
+      <button mat-fab extended color="accent" (click)="startEdit()"><mat-icon>edit</mat-icon>Edit</button>
+    </ng-template>
+
+    <div class="row form-row">
+      <div class="col-md-2 col-sm-3">
+        <p>Card Name</p>
+      </div>
+      <div class="col-md-9 col-sm-9" >
+        <mat-form-field *ngIf="isEditing; else plainCardName">
+          <input matInput placeholder="Bingo Value" #nameInput (keyup)="card.cardName = nameInput.value" value="{{card.cardName}}">
+        </mat-form-field>
+
+        <ng-template #plainCardName>
+          <p>{{card.cardName}}</p>
+        </ng-template>
+
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+
+
+    <div class="row form-row">
+      <div class="col-md-2 col-sm-3">
+        <p>Display Title Text</p>
+      </div>
+      <div class="col-md-9 col-sm-9" >
+        <mat-form-field *ngIf="isEditing; else plainDisplayText">
+          <input matInput placeholder="Bingo Value" #displayTextInput (keyup)="card.titleText= displayTextInput.value" value="{{card.titleText}}">
+        </mat-form-field>
+        <ng-template #plainDisplayText>
+          <p>{{card.titleText}}</p>
+        </ng-template>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+
+
+    <div class="row form-row">
+      <div class="col-md-2 col-sm-3">
+        <p>Card Size</p>
+      </div>
+      <div class="col-md-9 col-sm-9">
+      <mat-slider min="3" max="9" step="1" discrete showTickMarks [disabled]="!isEditing">
+        <input matSliderThumb [(ngModel)]="card.cardSize" >
+      </mat-slider>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div class="row form-row">
+      <div class="col-md-2 col-sm-3">
+        <p>Free Space</p>
+      </div>
+      <div class="col-md-9 col-sm-9" >
+        <mat-slide-toggle #freespace (change)="card.freeSpace = freespace.checked" [checked]="card.freeSpace" [disabled]="!isEditing" labelPosition="before"></mat-slide-toggle>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+
+    <mat-card-content>
+      <div *ngFor="let slot of card.slots">
+        <app-bingo-card-slot [slot]="slot" [isEditing]="isEditing"></app-bingo-card-slot>
+      </div>
+      </mat-card-content>
+
+      <mat-card-actions >
+        <ng-container *ngIf="isEditing">
+          <button mat-icon-button color="accent" (click)="addSlot()"><mat-icon>add</mat-icon></button>
+        </ng-container>
+      </mat-card-actions>
+
+</mat-card>
+</mat-expansion-panel>

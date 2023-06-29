@@ -1,70 +1,127 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
+using Otterly.API.ClientLib;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
-using Otterly.ClientLib;
-using Otterly.Database;
+using Otterly.API.ManualMapper;
+using Otterly.Database.UserData;
+using Otterly.Database.UserData.DataObjects;
 
 namespace Otterly.API.Handlers.Bingo;
 
 public class CardHandler : ICardHandler
 {
     private readonly OtterlyAppsContext _context;
-    private readonly IMapper _mapper;
-    public CardHandler(OtterlyAppsContext context, IMapper mapper)
+    public CardHandler(OtterlyAppsContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
     public async Task<List<BingoCardDTO>> GetCardsForUser(Guid userID)
     {
         var card = await _context.BingoCards.
-                                  Where(card => card.UserID == userID)
+                                  AsNoTracking().
+                                  Where(card => card.UserID == userID && !card.Deleted)
                                   .Include(bingoCard => bingoCard.Slots)
                                   .ToListAsync();
 
-        return _mapper.Map<List<BingoCardDTO>>(card);
+        return BingoMapper.Map(card);
     }
 
-    public async Task<GetCardDetailsResponse> GetCardDetail(int cardID)
+    public async Task<BingoCardDTO?> GetCardDetail(int cardID, Guid requestUserID)
+	{
+		var foundCard = await _context.BingoCards
+									  .AsNoTracking()
+									  .Include(card => card.Slots)
+									  .FirstOrDefaultAsync(card => card.CardID == cardID &&
+																  card.UserID == requestUserID &&
+																  !card.Deleted);
+        return foundCard == null ? null : BingoMapper.Map(foundCard);
+	}
+
+    public async Task<BingoCardDTO?> UpdateCardDetails(Guid requestUserID, BingoCardDTO cardDTO)
     {
-        var foundCard = await _context.BingoCards.FindAsync(cardID);
-        if (foundCard == null) return null;
+        var response = new GetCardDetailsResponse();
 
-        await _context.Entry(foundCard).Collection(card => card.Slots).LoadAsync();
-        var response = new GetCardDetailsResponse()
-        {
-            Card = _mapper.Map<BingoCardDTO>(foundCard),
-        };
 
-        return response;
-    }
-
-    public async Task<BaseResponse> UpdateCardDetails(UpdateCardDetailsRequest request)
-    {
-        var response = new BaseResponse();
-
-        var foundCard = await _context.BingoCards.
-                                             Where(card => card.CardID == request.CardDetails.CardID)
-                                             .Include(bingoCard => bingoCard.Slots)
-                                             .FirstOrDefaultAsync();
+        var foundCard = await FindCard(requestUserID, cardDTO);
         if (foundCard == null)
-        {
-            response.SetError("Unable to find card !?");
-            return response;
-        }
+		{
+			return null;
+		}
 
-        _mapper.Map(request.CardDetails, foundCard);
+		foundCard.CardName = cardDTO.CardName;
+		foundCard.TitleText = cardDTO.TitleText;
+		foundCard.CardSize = cardDTO.CardSize;
+		foundCard.FreeSpace = cardDTO.FreeSpace;
+
+		foreach (var dto in cardDTO.Slots)
+		{
+			var slot = foundCard.Slots.FirstOrDefault(slot => dto.SlotIndex == slot.SlotIndex);
+			if (slot != null)
+			{
+				slot = BingoMapper.Map(dto);
+			}
+			else
+			{
+				var newSlot = BingoMapper.Map(dto);
+				_context.BingoSlots.Add(newSlot);
+                foundCard.Slots.Add(newSlot);
+			}
+		}
+
+		await _context.SaveChangesAsync();
+		await _context.Entry(foundCard).ReloadAsync();
+
+		var endResultCard = BingoMapper.Map(foundCard);
         await _context.SaveChangesAsync();
 
 
-        return response;
+        return endResultCard;
     }
 
+	private async Task<BingoCard?> FindCard(Guid requestUserID, BingoCardDTO cardDTO)
+	{
+		return await _context.BingoCards.
+							  Where(card => card.CardID == cardDTO.CardID && 
+											card.UserID == requestUserID)
+							  .Include(bingoCard => bingoCard.Slots)
+							  .FirstOrDefaultAsync();
+	}
+
+	public async Task<BingoCardDTO?> AddNewCard(Guid requestUserID, BingoCardDTO card)
+	{
+		if (card.CardID != null)
+		{
+			return null;
+		}
+
+		var cardToInsert = BingoMapper.Map(card);
+		cardToInsert.UserID = requestUserID;
+		_context.BingoCards.Add(cardToInsert);
+		await _context.SaveChangesAsync();
+		await _context.Entry(cardToInsert).ReloadAsync();
+
+		return BingoMapper.Map(cardToInsert);
+
+	}
+
+	public async Task<bool> DeleteCard(Guid requestUserID, BingoCardDTO cardDTO)
+	{
+		var foundCard = await FindCard(requestUserID, cardDTO);
+		if (foundCard == null)
+		{
+			return false;
+		}
+
+		_context.BingoCards.Remove(foundCard);
+		await _context.SaveChangesAsync();
+		return true;
+	}
 }

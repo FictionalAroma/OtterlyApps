@@ -1,0 +1,26 @@
+{
+  "include": [
+      "../WebAPI/Lib/Otterly.API.DataObjects/Bingo/*.cs",
+      "../WebAPI/Lib/Otterly.ClientLib/Bingo/*.cs"
+  ],
+  "exclude": [
+
+  ],
+  "namespace": "Api",
+  "output": "./api.d.ts",
+  "camelCase": false,
+  "camelCaseEnums": false,
+  "camelCaseOptions": {
+      "pascalCase": false,
+      "preserveConsecutiveUppercase": false,
+      "locale": "en-US"
+  },
+  "numericEnums": false,
+  "omitFilePathComment": false,
+  "omitSemicolon": false,
+  "stringLiteralTypesInsteadOfEnums": false,
+  "customTypeTranslations": {
+      "ProductName": "string",
+      "ProductNumber": "string"
+  }
+}

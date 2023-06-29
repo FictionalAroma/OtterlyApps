@@ -1,29 +1,42 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Interview.APIClients.Clients
+namespace Otterly.API.ClientLib
 {
     public abstract class APIClientBase
 	{
-		private HttpClient _client;
+		private readonly HttpClient _client;
+        public AuthenticationHeaderValue Authentication { get; set; }
 
 		public APIClientBase(HttpClient client)
 		{
 			_client = client;
 		}
 
-        public async Task<TOut> Get<TOut>(string url)
-        {
-            return await ProcessRequest<TOut>(new HttpRequestMessage(HttpMethod.Get, url));
-        }
+		public Task<TOut> Get<TOut>(string url)
+		{
+			return ProcessRequest<TOut>(new HttpRequestMessage(HttpMethod.Get, url));
+		}
+		public Task<TOut> Get<TRequest, TOut> (TRequest request, string url)
+		{
+			var http = new HttpRequestMessage(HttpMethod.Get, url);
+			http.Content = new StringContent(JsonConvert.SerializeObject(request));
+			return ProcessRequest<TOut>(http);
+		}
 
         public async Task<TOut> ProcessRequest<TOut>(HttpRequestMessage httpPayload)
         {
             httpPayload.Headers.Add("Accept", "*/*");
             httpPayload.Headers.Add("Accept-Encoding", "gzip, deflate, br");
+			httpPayload.Headers.Authorization = Authentication;
+			if (httpPayload.Content != null)
+			{
+				httpPayload.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+			}
 
-            var responseObject = await _client.SendAsync(httpPayload);
+			var responseObject = await _client.SendAsync(httpPayload);
             if (responseObject.IsSuccessStatusCode)
             {
                 return JsonConvert.DeserializeObject<TOut>(await responseObject.Content.ReadAsStringAsync());
@@ -35,17 +48,31 @@ namespace Interview.APIClients.Clients
             }
         }
 
-        public async Task<TOut> Post<TRequest, TOut>(string url, TRequest request)
+        public Task<TOut> Post<TRequest, TOut>(string url, TRequest request)
         {
-            var http = new HttpRequestMessage(HttpMethod.Post, url);
-            http.Content = new StringContent(JsonConvert.SerializeObject(request));
-            return await Post<TOut>(http);
+            var http = new HttpRequestMessage(HttpMethod.Post, url)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(request))
+            };
+            return ProcessRequest<TOut>(http);
         }
+		public Task<TOut> Put<TRequest, TOut>(string url, TRequest request)
+		{
+            var http = new HttpRequestMessage(HttpMethod.Put, url)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(request))
+            };
+            return ProcessRequest<TOut>(http);
+		}
 
-        public async Task<TOut> Post<TOut>(HttpRequestMessage httpPayload)
-        {
-            return await ProcessRequest<TOut>(httpPayload);
-        }
+		public Task<TOut> Delete<TRequest, TOut>(string url, TRequest request)
+		{
+			var http = new HttpRequestMessage(HttpMethod.Delete, url)
+					   {
+						   Content = new StringContent(JsonConvert.SerializeObject(request))
+					   };
+			return ProcessRequest<TOut>(http);
+		}
 
-    }
+	}
 }

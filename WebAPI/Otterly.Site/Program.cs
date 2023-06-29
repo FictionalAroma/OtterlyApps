@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Otterly.ClientLib;
+using Otterly.API.ClientLib;
+using Otterly.Site.StartupExtensions;
 
 namespace Otterly.Site
 {
@@ -15,9 +16,9 @@ namespace Otterly.Site
             // Add services to the container.
 
             builder.Services.AddControllersWithViews();
-			builder.Services.AddHttpClient<OtterlyAPIClient>();
+			builder.AddOtterlyAPIClient();
+			builder.Services.AddHttpClient();
 			builder.AddAuthentication();
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -26,8 +27,9 @@ namespace Otterly.Site
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+			app.UseCors("CorsPolicy");
+			app.UseHttpsRedirection();
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Otterly.API.ClientLib.Bingo;
+﻿namespace Otterly.API.ClientLib.Bingo;
 
 public class VerifyItemRequest
 {

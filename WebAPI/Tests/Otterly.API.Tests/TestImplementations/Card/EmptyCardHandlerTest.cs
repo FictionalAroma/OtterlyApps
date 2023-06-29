@@ -1,22 +1,17 @@
-﻿using Otterly.API.ClientLib.Bingo;
-using Otterly.API.DataObjects.Bingo;
+﻿using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
-using Otterly.ClientLib;
 
 namespace Otterly.API.Tests.TestImplementations.Card;
 
 public class EmptyCardHandlerTest : ICardHandler
 {
-	public Task<List<BingoCardDTO>> GetCardsForUser(Guid userID)
-	{
-		return Task.FromResult(new List<BingoCardDTO>());
-	}
+	public Task<List<BingoCardDTO>> GetCardsForUser(Guid userID)=> Task.FromResult(new List<BingoCardDTO>()); 
 
-	public Task<GetCardDetailsResponse> GetCardDetail(int cardID)
-	{
-		GetCardDetailsResponse? result = null;
-		return Task.FromResult(result)!;
-	}
+	public Task<BingoCardDTO?> GetCardDetail(int cardID, Guid requestUserID) => Task.FromResult<BingoCardDTO?>(null);
 
-	public Task<BaseResponse> UpdateCardDetails(UpdateCardDetailsRequest request) { throw new NotImplementedException(); }
+	public Task<BingoCardDTO?> UpdateCardDetails(Guid requestUserID, BingoCardDTO card) => Task.FromResult<BingoCardDTO?>(null);
+	public Task<BingoCardDTO?> AddNewCard(Guid requestUserID, BingoCardDTO card) => Task.FromResult<BingoCardDTO?>(null);
+
+	public Task<bool> DeleteCard(Guid requestUserID, BingoCardDTO requestCardDetails) => Task.FromResult(false);
+
 }

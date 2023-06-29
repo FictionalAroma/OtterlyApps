@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Otterly.Database.DataObjects;
+using Otterly.Database.UserData.DataObjects;
 
-namespace Otterly.Database
+namespace Otterly.Database.UserData
 {
     public class OtterlyAppsContext : DbContext
     {
@@ -22,7 +22,8 @@ namespace Otterly.Database
 				typeBuilder.HasMany<BingoSlot>(card => card.Slots)
 						   .WithOne()
 						   .HasPrincipalKey(card => card.CardID)
-						   .HasForeignKey(slot => slot.CardID);
+						   .HasForeignKey(slot => slot.CardID).IsRequired();
+				
 			});
 		}
 

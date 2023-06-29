@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Otterly.Database.DataObjects;
+namespace Otterly.Database.UserData.DataObjects;
 
 public class BingoCard
 {
@@ -20,5 +20,4 @@ public class BingoCard
 	public bool Deleted { get; set; }
 
 	public List<BingoSlot> Slots { get; set; }
-
 }

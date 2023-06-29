@@ -2,12 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
+using Otterly.API.ClientLib;
 using Otterly.API.DataObjects.Bingo;
-using Otterly.ClientLib;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Configuration;
 using Otterly.Database.ActivityData.Interfaces;
@@ -16,8 +13,8 @@ namespace Otterly.Database.ActivityData.Bingo.Services;
 
 public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSessionService
 {
-	public BingoSessionService(MongoDBConfig config, MongoClient client, IMapper mapper) : 
-		base(config, client, "bingo.streamerdata", mapper)
+	public BingoSessionService(MongoDBConfig config, MongoClient client) : 
+		base(config, client, "bingo.streamerdata")
 	{
 
 	}

@@ -1,5 +1,11 @@
 ﻿using System;
 using System.Security.Claims;
+using AutoMapper;
+using AutoMapper.EquivalencyExpression;
+using AutoMapper.EntityFrameworkCore;
+using AutoMapper.Collection;
+using AutoMapper.Collection.Configuration;
+using AutoMapper.Extensions.ExpressionMapping;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -7,16 +13,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
-using Otterly.Database;
+using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.Database.ActivityData.Bingo.Services;
 using Otterly.API.Handlers.Bingo;
+using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Configuration;
 using Otterly.Database.ActivityData.Interfaces;
-using MongoDB.Bson.Serialization.Serializers;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson;
+using Otterly.Database.UserData;
+using Otterly.Database.UserData.DataObjects;
 
 namespace Otterly.API;
 
@@ -73,20 +79,38 @@ public static class HostingExtensions
 
 	public static WebApplicationBuilder ConfigureAutomapper(this WebApplicationBuilder builder)
 	{
-		builder.Services.AddAutoMapper(typeof(Otterly.API.Configuration.AutomapperConfig), 
-									   typeof(AutomapperConfig));
+		builder.Services.AddAutoMapper((provider, mapper) =>
+									   {
+										   
+										   mapper.AddCollectionMappers();
+										   mapper.UseEntityFrameworkCoreModel<OtterlyAppsContext>(provider);
+
+										   mapper.CreateMap<OtterlyAppsUser, OtterlyAppsUserDTO>().ReverseMap();
+										   mapper.CreateMap<BingoSlot, BingoSlotDTO>();
+
+										   mapper.CreateMap<BingoSlotDTO,BingoSlot>()
+												 .EqualityComparison((dto, slot) => dto.CardID == slot.CardID && dto.SlotIndex == slot.SlotIndex);
+
+										   mapper.CreateMap<BingoCard, BingoCardDTO>();
+										   mapper.CreateMap<BingoCardDTO, BingoCard>();
+
+										   mapper.CreateMap<UserBingoOptions, UserBingoOptionsDTO>().ReverseMap();
+
+										   mapper.CreateMap<PlayerTicket, PlayerTicketDTO>().ReverseMap();
+										   mapper.CreateMap<BingoSession, BingoSessionDTO>().ReverseMap();
+										   mapper.CreateMap<BingoSessionItem, BingoSessionItemDTO>().ReverseMap();
+										   mapper.CreateMap<PlayerTicketItem, PlayerTicketItemDTO>().ReverseMap();
+
+									   },
+									   typeof(AutomapperConfig).Assembly, 
+									   typeof(Otterly.API.Configuration.AutomapperConfig).Assembly, typeof(OtterlyAppsContext).Assembly);
 		return builder;
 	}
 	public static WebApplicationBuilder ConfigureMongoAccessServices(this WebApplicationBuilder builder)
 	{
 
-		//BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
-
-		var thorwaway = new MongoDBConfig();
-
-
 		var mongoConfig = builder.Configuration.GetSection("MongoDBConfig").Get<MongoDBConfig>();
-		builder.Services.AddSingleton(provider => mongoConfig);
+		builder.Services.AddSingleton(_ => mongoConfig);
 		builder.Services.AddSingleton(_ => new MongoClient(mongoConfig.ConnectionString));
 
 		builder.Services.AddSingleton<IBingoSessionService, BingoSessionService>();

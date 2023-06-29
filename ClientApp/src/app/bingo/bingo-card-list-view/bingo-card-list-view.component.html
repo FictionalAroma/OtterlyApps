@@ -1,0 +1,8 @@
+
+<ng-container *ngFor="let card of userCards">`
+<app-bingo-card-display [card]="card" (cardSaveEvent)="saveCardDetails($event)" (cardDeleteEvent)="deleteCard($event)"></app-bingo-card-display>
+</ng-container>
+<button mat-fab extended color="accent" (click)="addNewCard()">
+  <mat-icon>add</mat-icon>
+  Create New Card
+</button>
