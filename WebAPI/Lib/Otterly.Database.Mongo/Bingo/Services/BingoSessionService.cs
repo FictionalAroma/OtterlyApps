@@ -5,6 +5,7 @@ using AutoMapper;
 using MongoDB.Driver;
 using Otterly.API.ClientLib;
 using Otterly.API.DataObjects.Bingo;
+using Otterly.API.DataObjects.User;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Configuration;
 using Otterly.Database.ActivityData.Interfaces;
@@ -25,13 +26,13 @@ public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSession
 		try
 		{
 			var newSession = new BingoSession()
-							 {
-								 TwitchUserID = user.TwitchID,
-								 UserID = user.UserID,
-								 Active = true,
-								 FreeSpace = card.FreeSpace,
-								 Size = card.CardSize,
-							 };
+			{
+				TwitchUserID = user.TwitchID,
+				UserID = user.UserID,
+				Active = true,
+				FreeSpace = card.FreeSpace,
+				Size = card.CardSize,
+			};
 
 			await Collection.UpdateManyAsync(session => session.UserID == user.UserID &&
 														 session.TwitchUserID == user.TwitchID &&
@@ -65,7 +66,7 @@ public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSession
 	}
 
 
-	public async Task<BingoSession?> FindActiveSessionForStreamer(Guid streamerTwitchID)
+	public async Task<BingoSession?> FindActiveSessionForStreamer(string streamerTwitchID)
 	{
 		return await Collection.Find(session => session.TwitchUserID == streamerTwitchID && session.Active).FirstOrDefaultAsync();
 	}

@@ -18,7 +18,7 @@ public class PlayerCardDataService : MongoServiceBase<PlayerTicket>, IPlayerCard
 	}
 
 
-	public async Task<PlayerTicket> CreatePlayerTicket(Guid playerTwitchID, string sessionId, IEnumerable<PlayerTicketItem> randomisedSlots)
+	public async Task<PlayerTicket> CreatePlayerTicket(string playerTwitchID, string sessionId, IEnumerable<PlayerTicketItem> randomisedSlots)
 	{
 
 		var newTicket = new PlayerTicket()
@@ -33,7 +33,7 @@ public class PlayerCardDataService : MongoServiceBase<PlayerTicket>, IPlayerCard
 	}
 
 	public Task<PlayerTicket?> GetTicketByID(string cardID) => GetAsync(cardID);
-	public async Task<PlayerTicket?> FindTicket(Guid playerTwitchID, string sessionId)
+	public async Task<PlayerTicket?> FindTicket(string playerTwitchID, string sessionId)
 	{
 		return await Collection.Find(ticket => ticket.TwitchUserID == playerTwitchID && ticket.SessionID == sessionId)
 							   .FirstOrDefaultAsync();

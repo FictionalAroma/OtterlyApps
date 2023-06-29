@@ -25,12 +25,20 @@ namespace Otterly.Database.UserData
 						   .HasForeignKey(slot => slot.CardID).IsRequired();
 				
 			});
+
+			builder.Entity<OtterlyAppsUser>(typeBuilder =>
+			{
+				typeBuilder.HasMany<UserAuth>(user => user.AuthList)
+						   .WithOne()
+						   .HasPrincipalKey(user => user.UserID)
+						   .HasForeignKey(auth => auth.UserID);
+			});
 		}
 
 		public DbSet<OtterlyAppsUser> OtterlyAppsUsers { get; set; }
+		public DbSet<UserAuth> UserAuths { get; set; }
 		public DbSet<BingoCard> BingoCards { get; set; }
         public DbSet<BingoSlot> BingoSlots { get; set; }
-        public DbSet<UserBingoOptions> UserBingoOptions { get; set; }
 
     }
 }

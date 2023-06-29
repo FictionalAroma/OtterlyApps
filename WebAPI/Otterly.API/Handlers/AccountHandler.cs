@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Otterly.API.DataObjects.Bingo;
+using Otterly.API.DataObjects.User;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
 using Otterly.Database.UserData;
@@ -39,7 +39,6 @@ public class AccountHandler : IAccountHandler
         var user = new OtterlyAppsUser
         {
             UserID = userID,
-            Test = Random.Shared.Next(1, 10),
         };
 
         await _context.OtterlyAppsUsers.AddAsync(user);
@@ -47,5 +46,11 @@ public class AccountHandler : IAccountHandler
 
         return user;
     }
+
+	public async Task<UserAuth?> GetUserAuth(Guid userID, UserAuth.AuthenticationType type)
+	{
+		var user = await _context.OtterlyAppsUsers.FindAsync(userID);
+		return user?.AuthList.FirstOrDefault(auth => auth.AuthType == type);
+	}
 }
 

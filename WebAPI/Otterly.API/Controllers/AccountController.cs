@@ -17,21 +17,11 @@ public class AccountController : ControllerBase
 
 	
 	[HttpGet]
-	public async Task<IActionResult> GetUserAccount()
+	public async Task<IActionResult> GetUserAccount(Guid userID)
 	{
-		var claims = (ClaimsIdentity)this.User.Identity;
-		if (claims == null) return Unauthorized();
-		var uuidClaim =
-			claims.FindFirst(claim => claim.Type.Contains(UUID_NAME, StringComparison.InvariantCultureIgnoreCase));
-		if(uuidClaim == null) return Unauthorized();
-		if (Guid.TryParse(uuidClaim.Value,
-			out var userGuid))
-		{
 			var user = await _actionHandler.GetUserProfile(userGuid);
-			return new JsonResult(user);
-		}
 
-		return Unauthorized();
+		return user != null ? Ok(user) : Unauthorized();
 	}
 
 }

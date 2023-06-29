@@ -4,6 +4,6 @@ namespace Otterly.API.ClientLib.Bingo;
 
 public class StreamerTicketRequest
 {
-	public Guid StreamerTwitchID { get; set; }
-	public Guid PlayerTwitchID { get; set; }
+	public string StreamerTwitchID { get; set; }  = string.Empty;
+	public string PlayerTwitchID { get; set; }  = string.Empty;
 }

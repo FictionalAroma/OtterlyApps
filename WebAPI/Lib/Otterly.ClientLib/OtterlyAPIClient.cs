@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;
+using Otterly.API.DataObjects.User;
 
 namespace Otterly.API.ClientLib;
 

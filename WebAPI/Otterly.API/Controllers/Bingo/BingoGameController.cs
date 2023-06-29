@@ -40,7 +40,7 @@ public class BingoGameController : ControllerBase
 	[Route("createTicket")]
 	public async Task<IActionResult> CreatePlayerTicket(StreamerTicketRequest request)
 	{
-		if (request.PlayerTwitchID == Guid.Empty || request.StreamerTwitchID == Guid.Empty)
+		if (string.IsNullOrWhiteSpace(request.PlayerTwitchID) || string.IsNullOrWhiteSpace(request.StreamerTwitchID))
 		{
 			return BadRequest();
 		}
@@ -62,7 +62,7 @@ public class BingoGameController : ControllerBase
 	}
     [HttpGet]
 	[Route("getSession")]
-	public async Task<IActionResult> GetCurrentSession(Guid streamerTwitchID)
+	public async Task<IActionResult> GetCurrentSession(string streamerTwitchID)
 	{
 		var session = await _handler.GetCurrentSessionForStreamer(streamerTwitchID);
 		return session == null ? ValidationProblem("Streamer Bingo Not Active") : Ok(GameMapper.Map(session));

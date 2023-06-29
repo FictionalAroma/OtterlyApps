@@ -23,6 +23,7 @@ using Otterly.Database.ActivityData.Configuration;
 using Otterly.Database.ActivityData.Interfaces;
 using Otterly.Database.UserData;
 using Otterly.Database.UserData.DataObjects;
+using Otterly.API.DataObjects.User;
 
 namespace Otterly.API;
 
@@ -93,8 +94,6 @@ public static class HostingExtensions
 
 										   mapper.CreateMap<BingoCard, BingoCardDTO>();
 										   mapper.CreateMap<BingoCardDTO, BingoCard>();
-
-										   mapper.CreateMap<UserBingoOptions, UserBingoOptionsDTO>().ReverseMap();
 
 										   mapper.CreateMap<PlayerTicket, PlayerTicketDTO>().ReverseMap();
 										   mapper.CreateMap<BingoSession, BingoSessionDTO>().ReverseMap();
