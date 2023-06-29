@@ -10,6 +10,8 @@ namespace Otterly.API.Handlers.Interfaces;
 public interface ICardHandler
 {
     Task<List<BingoCardDTO>> GetCardsForUser(Guid userID);
-    Task<GetCardDetailsResponse?> GetCardDetail(int cardID, Guid requestUserID);
-	Task<BaseResponse> UpdateCardDetails(UpdateCardDetailsRequest request);
+    Task<BingoCardDTO?> GetCardDetail(int cardID, Guid requestUserID);
+	Task<BingoCardDTO?> UpdateCardDetails(Guid requestUserID, BingoCardDTO card);
+	Task<BingoCardDTO?> AddNewCard(Guid requestUserID, BingoCardDTO card);
+	Task<bool> DeleteCard(Guid requestUserID, BingoCardDTO requestCardDetails);
 }

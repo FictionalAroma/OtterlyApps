@@ -8,8 +8,7 @@ export interface BaseResponse {
 
 
 export interface BingoCardDTO {
-  cardID: number;
-  userID: string;
+  cardID: number | undefined;
   cardName: string;
   titleText: string;
   cardSize: number;

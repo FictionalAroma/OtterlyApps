@@ -8,6 +8,8 @@
         <button mat-fab extended color="warn" (click)="discardChanges()" ><mat-icon>cancel</mat-icon>Discard</button>
         <button mat-fab extended color="primary" (click)="saveChanges()" ><mat-icon>save</mat-icon>Save</button>
       </ng-container>
+      <button mat-fab extended color="warn" (click)="deleteCard()"><mat-icon>edit</mat-icon>Edit</button>
+
     </mat-card-actions>
     <ng-template #notEditing>
       <button mat-fab extended color="accent" (click)="startEdit()"><mat-icon>edit</mat-icon>Edit</button>

@@ -50,14 +50,29 @@ namespace Otterly.API.ClientLib
 
         public Task<TOut> Post<TRequest, TOut>(string url, TRequest request)
         {
-            var http = new HttpRequestMessage(HttpMethod.Post, url);
-            http.Content = new StringContent(JsonConvert.SerializeObject(request));
-            return Post<TOut>(http);
+            var http = new HttpRequestMessage(HttpMethod.Post, url)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(request))
+            };
+            return ProcessRequest<TOut>(http);
         }
+		public Task<TOut> Put<TRequest, TOut>(string url, TRequest request)
+		{
+            var http = new HttpRequestMessage(HttpMethod.Put, url)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(request))
+            };
+            return ProcessRequest<TOut>(http);
+		}
 
-        public Task<TOut> Post<TOut>(HttpRequestMessage httpPayload)
-        {
-            return ProcessRequest<TOut>(httpPayload);
-        }
+		public Task<TOut> Delete<TRequest, TOut>(string url, TRequest request)
+		{
+			var http = new HttpRequestMessage(HttpMethod.Delete, url)
+					   {
+						   Content = new StringContent(JsonConvert.SerializeObject(request))
+					   };
+			return ProcessRequest<TOut>(http);
+		}
+
 	}
 }

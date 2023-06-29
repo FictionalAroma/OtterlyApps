@@ -22,7 +22,7 @@ namespace Otterly.Database.UserData
 				typeBuilder.HasMany<BingoSlot>(card => card.Slots)
 						   .WithOne()
 						   .HasPrincipalKey(card => card.CardID)
-						   .HasForeignKey(slot => slot.CardID);
+						   .HasForeignKey(slot => slot.CardID).IsRequired();
 				
 			});
 		}

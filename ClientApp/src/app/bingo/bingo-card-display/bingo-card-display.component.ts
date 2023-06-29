@@ -10,7 +10,6 @@ import { Output, EventEmitter } from '@angular/core';
 export class BingoCardDisplayComponent {
   @Input() card : BingoCardDTO = {
     cardID: 0,
-    userID: '',
     cardName: '',
     titleText: '',
     cardSize: 0,
@@ -18,10 +17,9 @@ export class BingoCardDisplayComponent {
     slots: []
   };
   @Output() cardSaveEvent = new EventEmitter<BingoCardDTO>;
-
+  @Output() cardDeleteEvent = new EventEmitter<BingoCardDTO>;
   private cachedCard : BingoCardDTO = {
     cardID: 0,
-    userID: '',
     cardName: '',
     titleText: '',
     cardSize: 0,
@@ -55,6 +53,11 @@ export class BingoCardDisplayComponent {
     this.cardSaveEvent.emit(this.card)
   }
 
+  public deleteCard()
+  {
+    this.cardDeleteEvent.emit(this.card)
+  }
+
   public updateFreeSpace(value : boolean)
   {
     this.card.freeSpace = value;
@@ -75,7 +78,7 @@ export class BingoCardDisplayComponent {
 
     var slot : BingoSlotDTO = {
       slotIndex: newIndex,
-      cardID: this.card.cardID,
+      cardID: this.card.cardID == undefined ? 0 : this.card.cardID,
       displayText: "",
     }
     this.card.slots.push({...slot})

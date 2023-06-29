@@ -5,9 +5,10 @@ namespace Otterly.API.DataObjects.Bingo;
 
 public class BingoCardDTO
 {
-    public int CardID { get; init; }
+    public int? CardID { get; init; }
 
     //public Guid UserID { get; set; }
+
     public string CardName { get; init; }
     public string TitleText { get; init; }
     public int CardSize { get; init; }

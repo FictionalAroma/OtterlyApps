@@ -10,7 +10,7 @@ public static class BingoMapper
     {
         return new BingoCard
         {
-            CardID = dto.CardID,
+            CardID = dto.CardID.GetValueOrDefault(),
             CardName = dto.CardName,
             TitleText = dto.TitleText,
             CardSize = dto.CardSize,

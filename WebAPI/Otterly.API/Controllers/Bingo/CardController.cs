@@ -31,16 +31,35 @@ namespace Otterly.API.Controllers.Bingo
 		public async Task<IActionResult> GetCardDetail(GetCardDeatilsRequest request)
 		{
 			var details = await _cardHandler.GetCardDetail(request.CardID, request.UserID);
-			if (details == null) return NotFound();
-
-			return Ok(details);
+			return details == null ? NotFound() : Ok(details);
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> UpdateCardDetails(UpdateCardDetailsRequest request)
 		{
-			return Ok(await _cardHandler.UpdateCardDetails(request));
+			var details = await _cardHandler.UpdateCardDetails( request.UserID, request.CardDetails);
+			return details == null
+					   ? StatusCode(500, new BaseResponse("Unable to find card to update"))
+					   : Ok(new GetCardDetailsResponse{Card = details});
+		}
+		[HttpPut]
+		public async Task<IActionResult> AddNewCard(UpdateCardDetailsRequest request)
+		{
+			var details = await _cardHandler.AddNewCard( request.UserID, request.CardDetails);
+			return details == null
+					   ? StatusCode(500, new BaseResponse("Unable To Add Card"))
+					   : Ok(new GetCardDetailsResponse{Card = details});
 		}
 
-	}
+		[HttpDelete]
+		public async Task<IActionResult> DeleteCard(UpdateCardDetailsRequest request)
+		{
+			var details = await _cardHandler.DeleteCard( request.UserID, request.CardDetails);
+			return details
+					   ? StatusCode(500, new BaseResponse("Unable To Delete Card"))
+					   : Ok();
+		}
+
+
+    }
 }

@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { BingoCardDTO } from 'api/otterlyapi';
 import { HttpHeaders } from '@angular/common/http';
 const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json',})}
+  headers: new HttpHeaders({'Content-Type':'application/json',}),
+  body: ""
+  }
 
 @Injectable({
   providedIn: 'root'
@@ -22,4 +23,17 @@ export class BingoCardService {
   {
     this.http.post("bff/bingo/UpdateCard", JSON.stringify(cardUpdate), httpOptions).subscribe();
   }
+
+  addCard(newCard: BingoCardDTO) {
+    return this.http.put<BingoCardDTO>("bff/bingo/AddCard",JSON.stringify(newCard), httpOptions )
+  }
+  delete(newCard: BingoCardDTO) {
+
+    let deleteOptions = {...httpOptions};
+    deleteOptions.body = JSON.stringify(newCard);
+    return this.http.delete<boolean>("bff/bingo/DeleteCard",deleteOptions)
+
+
+  }
+
 }

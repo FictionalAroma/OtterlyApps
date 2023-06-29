@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
@@ -33,7 +34,7 @@ public class CardHandler : ICardHandler
         return BingoMapper.Map(card);
     }
 
-    public async Task<GetCardDetailsResponse?> GetCardDetail(int cardID, Guid requestUserID)
+    public async Task<BingoCardDTO?> GetCardDetail(int cardID, Guid requestUserID)
 	{
 		var foundCard = await _context.BingoCards
 									  .AsNoTracking()
@@ -41,38 +42,26 @@ public class CardHandler : ICardHandler
 									  .FirstOrDefaultAsync(card => card.CardID == cardID &&
 																  card.UserID == requestUserID &&
 																  !card.Deleted);
-        if (foundCard == null) return null;
+        return foundCard == null ? null : BingoMapper.Map(foundCard);
+	}
 
-        var response = new GetCardDetailsResponse()
-        {
-            Card = BingoMapper.Map(foundCard),
-        };
-
-        return response;
-    }
-
-    public async Task<BaseResponse> UpdateCardDetails(UpdateCardDetailsRequest request)
+    public async Task<BingoCardDTO?> UpdateCardDetails(Guid requestUserID, BingoCardDTO cardDTO)
     {
-        var response = new BaseResponse();
+        var response = new GetCardDetailsResponse();
 
-        var foundCard = await _context.BingoCards.
-                                             Where(card => card.CardID == request.CardDetails.CardID && 
-														   card.UserID == request.UserID)
-                                             .Include(bingoCard => bingoCard.Slots)
-                                             .FirstOrDefaultAsync();
+
+        var foundCard = await FindCard(requestUserID, cardDTO);
         if (foundCard == null)
-        {
-            response.SetError("Unable to find card !?");
-            return response;
-        }
+		{
+			return null;
+		}
 
-		var bingoCardDTO = request.CardDetails;
-		foundCard.CardName = bingoCardDTO.CardName;
-		foundCard.TitleText = bingoCardDTO.TitleText;
-		foundCard.CardSize = bingoCardDTO.CardSize;
-		foundCard.FreeSpace = bingoCardDTO.FreeSpace;
+		foundCard.CardName = cardDTO.CardName;
+		foundCard.TitleText = cardDTO.TitleText;
+		foundCard.CardSize = cardDTO.CardSize;
+		foundCard.FreeSpace = cardDTO.FreeSpace;
 
-		foreach (var dto in request.CardDetails.Slots)
+		foreach (var dto in cardDTO.Slots)
 		{
 			var slot = foundCard.Slots.FirstOrDefault(slot => dto.SlotIndex == slot.SlotIndex);
 			if (slot != null)
@@ -81,17 +70,58 @@ public class CardHandler : ICardHandler
 			}
 			else
 			{
-				BingoSlot newSlot = BingoMapper.Map(dto);
+				var newSlot = BingoMapper.Map(dto);
 				_context.BingoSlots.Add(newSlot);
                 foundCard.Slots.Add(newSlot);
 			}
 		}
 
-		
+		await _context.SaveChangesAsync();
+		await _context.Entry(foundCard).ReloadAsync();
+
+		var endResultCard = BingoMapper.Map(foundCard);
         await _context.SaveChangesAsync();
 
 
-        return response;
+        return endResultCard;
     }
 
+	private async Task<BingoCard?> FindCard(Guid requestUserID, BingoCardDTO cardDTO)
+	{
+		return await _context.BingoCards.
+							  Where(card => card.CardID == cardDTO.CardID && 
+											card.UserID == requestUserID)
+							  .Include(bingoCard => bingoCard.Slots)
+							  .FirstOrDefaultAsync();
+	}
+
+	public async Task<BingoCardDTO?> AddNewCard(Guid requestUserID, BingoCardDTO card)
+	{
+		if (card.CardID != null)
+		{
+			return null;
+		}
+
+		var cardToInsert = BingoMapper.Map(card);
+		cardToInsert.UserID = requestUserID;
+		_context.BingoCards.Add(cardToInsert);
+		await _context.SaveChangesAsync();
+		await _context.Entry(cardToInsert).ReloadAsync();
+
+		return BingoMapper.Map(cardToInsert);
+
+	}
+
+	public async Task<bool> DeleteCard(Guid requestUserID, BingoCardDTO cardDTO)
+	{
+		var foundCard = await FindCard(requestUserID, cardDTO);
+		if (foundCard == null)
+		{
+			return false;
+		}
+
+		_context.BingoCards.Remove(foundCard);
+		await _context.SaveChangesAsync();
+		return true;
+	}
 }
