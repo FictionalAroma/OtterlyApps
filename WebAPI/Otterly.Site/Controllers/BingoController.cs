@@ -10,7 +10,7 @@ namespace Otterly.Site.Controllers
 {
 	[ApiController]
 	[Route("bff/bingo")]
-    public class BingoController : BFFBaseController
+    public class BingoController : APILinkController
     {
 
 		public BingoController(ITypedHttpClientFactory<OtterlyAPIClient> httpClientFactory, HttpClient baseClient) : base(httpClientFactory, baseClient)

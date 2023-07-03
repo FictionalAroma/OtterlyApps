@@ -9,13 +9,13 @@ using Otterly.API.ClientLib;
 
 namespace Otterly.Site.Controllers;
 [ApiController]
-public class BFFBaseController : ControllerBase
+public class APILinkController : ControllerBase
 {
 	private readonly ITypedHttpClientFactory<OtterlyAPIClient> _httpClientFactory;
 	private readonly HttpClient _baseClient;
 
 
-	public BFFBaseController(ITypedHttpClientFactory<OtterlyAPIClient> httpClientFactory, HttpClient baseClient)
+	public APILinkController(ITypedHttpClientFactory<OtterlyAPIClient> httpClientFactory, HttpClient baseClient)
 	{
 		_httpClientFactory = httpClientFactory;
 		this._baseClient = baseClient;

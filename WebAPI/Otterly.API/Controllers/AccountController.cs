@@ -19,7 +19,7 @@ public class AccountController : ControllerBase
 	[HttpGet]
 	public async Task<IActionResult> GetUserAccount(Guid userID)
 	{
-			var user = await _actionHandler.GetUserProfile(userGuid);
+			var user = await _actionHandler.GetUserProfile(userID);
 
 		return user != null ? Ok(user) : Unauthorized();
 	}
