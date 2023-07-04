@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Otterly.API.ClientLib.Account;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.API.DataObjects.User;
@@ -20,7 +21,7 @@ public class OtterlyAPIClient : APIClientBase
 
 	public async Task<OtterlyAppsUserDTO> GetUserProfile()
 	{
-		return new OtterlyAppsUserDTO();
+		return await Get<OtterlyAppsUserDTO>($"{_config.BaseURL}/account");
 	}
 
 	public async Task<List<BingoCardDTO>> GetCards(Guid userID)
@@ -58,4 +59,8 @@ public class OtterlyAPIClient : APIClientBase
 																		   });
 	}
 
+	public async Task<OtterlyAppsUserDTO> CreateUser(CreateUserRequest newUser)
+	{
+		return await Post<CreateUserRequest, OtterlyAppsUserDTO>($"{_config.BaseURL}/account/create", newUser);
+	}
 }

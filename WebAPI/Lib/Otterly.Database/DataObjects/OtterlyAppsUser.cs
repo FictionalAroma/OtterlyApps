@@ -6,10 +6,11 @@ namespace Otterly.Database.UserData.DataObjects
 	{
 		[Key]
 		public Guid UserID { get; set; } = Guid.NewGuid();
-
+		public string ExternalAuthID { get; set; }
 		public string TwitchID { get; set; }
 
 		public string Username { get; set; }
+		public string EmailAddress { get; set; }
 
 		public string ProfileImagePath { get; set; }
 

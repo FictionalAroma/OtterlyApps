@@ -1,15 +1,28 @@
 ﻿using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Auth0.ManagementApi.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Http;
+using Otterly.API.ClientLib;
+using Otterly.API.ClientLib.Account;
+using Otterly.Site.ManualMappers;
 
 namespace Otterly.Site.Controllers;
 
-public class AuthController : ControllerBase
+[Route("bff/[controller]/[action]")]
+public class AuthController : APILinkController
 {
+	public AuthController(ITypedHttpClientFactory<OtterlyAPIClient> httpClientFactory, HttpClient baseClient) : base(httpClientFactory, baseClient)
+	{
+
+	}
+
+	[HttpGet]
 	// GET
-	public ActionResult Login(string returnUrl = "/")
+	public ActionResult Login([FromQuery]string? returnUrl = "/")
 	{
 		var result = new ChallengeResult("Auth0", new AuthenticationProperties() { RedirectUri = returnUrl});
 		return result;
@@ -58,6 +71,20 @@ public class AuthController : ControllerBase
 	public ActionResult LogoutCallback()
 	{
 		return RedirectToAction("Index", "Home");
+	}
+
+	[HttpPost]
+	[Route("NewUser")]
+	public async Task<IActionResult> AddNewUser(User newUser)
+	{
+		var apiClient = await GenerateClientAsync();
+		var createdUser = await apiClient.CreateUser(new CreateUserRequest
+													 {
+														 Auth0ID = newUser.UserId,
+														 UserToCreate = Auth0Mapper.Map(newUser)
+													 });
+
+		return Ok();
 	}
 
 }

@@ -13,6 +13,19 @@ public class UserMapper
 			TwitchID = user.TwitchID,
 			UserID = user.UserID,
 			UserName = user.Username,
+			EmailAddress = user.EmailAddress,
 		};
 	}
+
+	public static OtterlyAppsUser Map(OtterlyAppsUserDTO newUser)
+    {
+        return new OtterlyAppsUser
+        {
+            UserID = newUser.UserID,
+            TwitchID = newUser.TwitchID,
+            Username = newUser.UserName,
+            EmailAddress = newUser.EmailAddress,
+            ProfileImagePath = newUser.ProfileImagePath
+        };
+    }
 }

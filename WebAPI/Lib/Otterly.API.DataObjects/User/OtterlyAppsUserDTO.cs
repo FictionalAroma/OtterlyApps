@@ -10,5 +10,6 @@ namespace Otterly.API.DataObjects.User
         public string UserName { get; set; }
 
         public string ProfileImagePath { get; set; }
-    }
+		public string EmailAddress { get; set; }
+	}
 }
