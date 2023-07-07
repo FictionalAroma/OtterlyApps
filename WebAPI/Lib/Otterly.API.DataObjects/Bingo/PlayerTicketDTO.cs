@@ -5,9 +5,9 @@ namespace Otterly.API.DataObjects.Bingo;
 
 public class PlayerTicketDTO
 {
-    public Guid TwitchUserID { get; set; }
+    public string TwitchUserID { get; set; }  = string.Empty;
 
-    public string SessionID { get; set; }
+    public string SessionID { get; set; }  = string.Empty;
 
 	public IEnumerable<PlayerTicketItemDTO> Slots { get; set; } = new List<PlayerTicketItemDTO>();
 }

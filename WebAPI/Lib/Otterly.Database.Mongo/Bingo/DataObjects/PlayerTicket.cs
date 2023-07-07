@@ -7,9 +7,9 @@ namespace Otterly.Database.ActivityData.Bingo.DataObjects;
 
 public class PlayerTicket : MongoDataEntry
 {
-	public Guid TwitchUserID { get; set; }
+	public string TwitchUserID { get; set; } = string.Empty;
 
 	[BsonRepresentation(BsonType.ObjectId)]
-	public string SessionID { get; set; }
+	public string SessionID { get; set; } = string.Empty;
 	public IEnumerable<PlayerTicketItem> Slots { get; set; } = new List<PlayerTicketItem>();
 }

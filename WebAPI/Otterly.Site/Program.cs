@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Otterly.API.ClientLib;
 using Otterly.Site.StartupExtensions;
 
 namespace Otterly.Site
@@ -15,7 +14,7 @@ namespace Otterly.Site
 
             // Add services to the container.
 
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 			builder.AddOtterlyAPIClient();
 			builder.Services.AddHttpClient();
 			builder.AddAuthentication();

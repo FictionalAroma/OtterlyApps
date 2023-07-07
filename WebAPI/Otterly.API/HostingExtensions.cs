@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
+using Auth0.ManagementApi;
+using Auth0Net.DependencyInjection;
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
 using AutoMapper.EntityFrameworkCore;
@@ -8,6 +10,7 @@ using AutoMapper.Collection.Configuration;
 using AutoMapper.Extensions.ExpressionMapping;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +26,9 @@ using Otterly.Database.ActivityData.Configuration;
 using Otterly.Database.ActivityData.Interfaces;
 using Otterly.Database.UserData;
 using Otterly.Database.UserData.DataObjects;
+using Otterly.API.DataObjects.User;
+using Otterly.API.ExternalAPI;
+using Otterly.API.ExternalAPI.Interfaces;
 
 namespace Otterly.API;
 
@@ -37,10 +43,19 @@ public static class HostingExtensions
 		// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 		services.AddEndpointsApiExplorer();
 		services.AddSwaggerGen();
+		services.AddAuth0AuthenticationClient(configuration =>
+		{
+			configuration.Domain = builder.Configuration["Auth0:Domain"];
+			configuration.ClientId = builder.Configuration["Auth0:ClientId"];
+			configuration.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
 
+		});
+		services.AddAuth0ManagementClient().AddManagementAccessToken();
 		services.AddScoped<ICardHandler, CardHandler>();
 		services.AddScoped<IAccountHandler, AccountHandler>();
 		services.AddScoped<IBingoGameHandler, BingoGameHandler>();
+		services.AddScoped<IAuthManagementConnector, Auth0ManagementConnector>();
+
 
 
 		return builder;
@@ -93,8 +108,6 @@ public static class HostingExtensions
 
 										   mapper.CreateMap<BingoCard, BingoCardDTO>();
 										   mapper.CreateMap<BingoCardDTO, BingoCard>();
-
-										   mapper.CreateMap<UserBingoOptions, UserBingoOptionsDTO>().ReverseMap();
 
 										   mapper.CreateMap<PlayerTicket, PlayerTicketDTO>().ReverseMap();
 										   mapper.CreateMap<BingoSession, BingoSessionDTO>().ReverseMap();

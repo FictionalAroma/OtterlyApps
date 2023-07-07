@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson.Serialization.Serializers;
 using Otterly.API.ClientLib;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
@@ -47,7 +48,7 @@ public class BingoGameHandler : IBingoGameHandler
 		return await _sessionService.CreateNewSession(BingoMapper.Map(card), UserMapper.Map(user));;
 	}
 
-	public async Task<PlayerTicket?> CreatePlayerTicket(Guid playerTwitchID, BingoSession session)
+	public async Task<PlayerTicket?> CreatePlayerTicket(string playerTwitchID, BingoSession session)
 	{
 		int totalNumberSpots = (int)Math.Pow(session.Size, 2);
 		if (session.FreeSpace)
@@ -157,9 +158,9 @@ public class BingoGameHandler : IBingoGameHandler
 
 	public Task<PlayerTicket?> GetLatestCardData(string cardID) => _ticketService.GetTicketByID(cardID);
 
-	public Task<BingoSession?> GetCurrentSessionForStreamer(Guid streamerTwitchID) => _sessionService.FindActiveSessionForStreamer(streamerTwitchID);
+	public Task<BingoSession?> GetCurrentSessionForStreamer(string streamerTwitchID) => _sessionService.FindActiveSessionForStreamer(streamerTwitchID);
 
-	public Task<PlayerTicket?> GetTicketForPlayer(Guid playerTwitchID, string sessionID) => _ticketService.FindTicket(playerTwitchID, sessionID);
+	public Task<PlayerTicket?> GetTicketForPlayer(string playerTwitchID, string sessionID) => _ticketService.FindTicket(playerTwitchID, sessionID);
 	public Task<BingoSession?> GetSessionData(string requestSessionID) => _sessionService.GetAsync(requestSessionID);
 
 	#endregion

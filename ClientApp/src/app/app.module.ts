@@ -23,6 +23,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatInputModule} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { NavbarTopComponent } from './navbar/navbar-top/navbar-top.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
         LoginNavMenuComponent,
         BingoCardListViewComponent,
         BingoCardDisplayComponent,
-        BingoCardSlotComponent
+        BingoCardSlotComponent,
+        NavbarTopComponent
     ],
     providers: [ LoginManagerService,BingoCardService],
     bootstrap: [AppComponent],

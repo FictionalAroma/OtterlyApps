@@ -1,37 +1,35 @@
 ﻿using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Otterly.API.ClientLib.Account;
 using Otterly.API.Handlers.Interfaces;
 
 namespace Otterly.API.Controllers;
 
-[Authorize]
+[ApiController]
+[Route("api/[controller]")]
 public class AccountController : ControllerBase
 {
 	private readonly IAccountHandler _actionHandler;
-	private const string UUID_NAME = "uuid";
 
 	public AccountController(IAccountHandler actionHandler) { _actionHandler = actionHandler; }
 
-	
 	[HttpGet]
-	public async Task<IActionResult> GetUserAccount()
+	public async Task<IActionResult> GetUserAccount(Guid userID)
 	{
-		var claims = (ClaimsIdentity)this.User.Identity;
-		if (claims == null) return Unauthorized();
-		var uuidClaim =
-			claims.FindFirst(claim => claim.Type.Contains(UUID_NAME, StringComparison.InvariantCultureIgnoreCase));
-		if(uuidClaim == null) return Unauthorized();
-		if (Guid.TryParse(uuidClaim.Value,
-			out var userGuid))
-		{
-			var user = await _actionHandler.GetUserProfile(userGuid);
-			return new JsonResult(user);
-		}
-
-		return Unauthorized();
+		var user = await _actionHandler.GetUserDTO(userID);
+		return user != null ? Ok(user) : Unauthorized();
 	}
+	
+	[AllowAnonymous]
+	[HttpPost]
+	[Route("create")]
+	public async Task<IActionResult> CreateUserAccount([FromBody]CreateUserRequest newUser)
+	{
+		var createdUser = await _actionHandler.CreateUser(newUser.Auth0ID, newUser.UserToCreate);
+		return createdUser != null ? Ok(createdUser) : Unauthorized();
+	}
+
 
 }
