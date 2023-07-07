@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using MongoDB.Driver;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Configuration;

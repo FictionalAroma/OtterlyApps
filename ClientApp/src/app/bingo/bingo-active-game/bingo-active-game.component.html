@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <ng-container *ngIf="this.gameSession !== undefined; else newSession">
+      <p>{{this.gameSession.cardTitle}}</p>
+
+      <button mat-flat-button color="warn" (click)="this.endSession(this.gameSession.sessionID)">End Session</button>
+
+  </ng-container>
+
+
+
+  <ng-template #newSession>
+    <mat-form-field>
+      <mat-label>Select card to Create</mat-label>
+      <mat-select [(value)]="selectedCardID" >
+        <mat-option *ngFor="let card of this.userCards" [value]="card.cardID">
+          {{card.titleText}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+      <button mat-flat-button color="primary" (click)="this.createSession(this.selectedCardID)">Create</button>
+  </ng-template>

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Otterly.API.ClientLib.Bingo;
-using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
+using Otterly.Database.ActivityData.Bingo.DataObjects;
 
 namespace Otterly.API.Controllers.Bingo;
 [Authorize]
@@ -34,7 +33,8 @@ public class BingoGameController : ControllerBase
 			return BadRequest();
 		}
 		var result = await _handler.CreateSession(request.UserID, request.CardID);
-		return result.Success ? StatusCode(500, result) : Ok(result);
+		return result.Success ? Ok(result) : StatusCode(500, result);
+		
 	}
 	[HttpPost]
 	[Route("createTicket")]
@@ -64,9 +64,16 @@ public class BingoGameController : ControllerBase
 	[Route("getSession")]
 	public async Task<IActionResult> GetCurrentSession(string streamerTwitchID)
 	{
-		var session = await _handler.GetCurrentSessionForStreamer(streamerTwitchID);
-		return session == null ? ValidationProblem("Streamer Bingo Not Active") : Ok(GameMapper.Map(session));
+		return Ok(await _handler.GetCurrentSessionForStreamer(streamerTwitchID));
 	}
+
+	[HttpGet]
+	[Route("getSessionForUser")]
+	public async Task<IActionResult> GetCurrentSession(Guid userID)
+	{
+		return Ok(await _handler.GetCurrentSessionForUser(userID));
+	}
+
 
 	[HttpGet]
 	[Route("getTicket")]
@@ -103,7 +110,7 @@ public class BingoGameController : ControllerBase
 		var ticket = await _handler.GetTicketForPlayer(request.PlayerTwitchID, request.SessionID);
 		if (ticket == null)
 		{
-			return StatusCode(500, "Ticket No Longer Valid");
+			return ValidationProblem("Ticket No Longer Valid");
 		}
 
 		var result = await _handler.MarkTicketItem(ticket, request.ItemIndex);
@@ -124,7 +131,7 @@ public class BingoGameController : ControllerBase
 		return Ok(result);
 
 	}
-	[HttpPost]
+	[HttpGet]
 	[Route("endSession")]
 	public async Task<IActionResult> EndSession(string sessionID)
 	{

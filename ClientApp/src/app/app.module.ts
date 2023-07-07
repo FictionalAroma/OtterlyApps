@@ -1,3 +1,4 @@
+import { MatTabsModule } from '@angular/material/tabs';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,6 +25,9 @@ import {MatInputModule} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { NavbarTopComponent } from './navbar/navbar-top/navbar-top.component';
+import { BingoGamePageComponent } from './bingo/bingo-game-page/bingo-game-page.component';
+import { BingoActiveGameComponent } from './bingo/bingo-active-game/bingo-active-game.component';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
     declarations: [
@@ -33,7 +37,9 @@ import { NavbarTopComponent } from './navbar/navbar-top/navbar-top.component';
         BingoCardListViewComponent,
         BingoCardDisplayComponent,
         BingoCardSlotComponent,
-        NavbarTopComponent
+        NavbarTopComponent,
+        BingoGamePageComponent,
+        BingoActiveGameComponent
     ],
     providers: [ LoginManagerService,BingoCardService],
     bootstrap: [AppComponent],
@@ -53,7 +59,9 @@ import { NavbarTopComponent } from './navbar/navbar-top/navbar-top.component';
         MatSliderModule,
         MatInputModule,
         FormsModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatTabsModule,
+        MatSelectModule
     ]
 })
 export class AppModule { }

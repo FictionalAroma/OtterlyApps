@@ -30,6 +30,7 @@ public class GameMapper
         {
             Size = session.Size,
             FreeSpace = session.FreeSpace,
+            CardTitle = session.CardTitle,
             SessionItems = session.SessionItems.ConvertAll(sessionSessionItem => new BingoSessionItemDTO
             {
                 ItemIndex = sessionSessionItem.ItemIndex,
@@ -37,8 +38,9 @@ public class GameMapper
                 DisplayText = sessionSessionItem.DisplayText,
                 Verified = sessionSessionItem.Verified
             }),
-            Active = session.Active
-        };
+			Active = session.Active,
+            SessionID = session.Id ?? string.Empty
+		};
     }
 
 	public static IEnumerable<PlayerTicketItem> Map(IEnumerable<BingoSessionItem> randomisedSlots)
