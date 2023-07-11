@@ -34,19 +34,6 @@ export class BingoCardService {
     return this.http.delete<boolean>("bff/bingo/DeleteCard",deleteOptions)
   }
 
-  getCurrentSessionObservable()
-  {
-    return this.http.get<BingoSessionDTO>("bff/bingo/GetCurrentGame")
-  }
-
-
-  createSessionObservable(cardID: number) {
-    return this.http.post<BingoSessionDTO>("bff/bingo/createSession", cardID)
-  }
-
-  endSessionObservable(sessionID: string) {
-    return this.http.get<BaseResponse>("bff/bingo/endSession?sessionID=" + sessionID)
-  }
 
 
 

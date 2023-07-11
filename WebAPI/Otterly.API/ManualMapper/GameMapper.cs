@@ -43,7 +43,16 @@ public class GameMapper
 		};
     }
 
-	public static IEnumerable<PlayerTicketItem> Map(IEnumerable<BingoSessionItem> randomisedSlots)
+	public static BingoSessionMetaDTO Map(BingoSessionMetaDTO meta)
+    {
+        return new BingoSessionMetaDTO
+        {
+            NumberTickets = meta.NumberTickets,
+            NumberWinners = meta.NumberWinners
+        };
+    }
+
+    public static IEnumerable<PlayerTicketItem> Map(IEnumerable<BingoSessionItem> randomisedSlots)
     {
         return randomisedSlots.Select(randomisedSlot => new PlayerTicketItem
         {

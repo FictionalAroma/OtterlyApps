@@ -80,4 +80,15 @@ public class OtterlyAPIClient : APIClientBase
 	{
 		return await Get<BaseResponse?>(($"{_config.BaseURL}/bingo/game/endSession?sessionID={sessionID}"));
 	}
+
+	public async Task<BaseResponse?> VerifyItem(VerifyItemRequest request)
+	{
+		return await Post<VerifyItemRequest, BaseResponse>($"{_config.BaseURL}/bingo/game/verifyItem", request);
+	}
+
+	public async Task<BingoSessionMetaDTO?> GetSessionMeta(Guid userid)
+	{
+		return await Get<BingoSessionMetaDTO>($"{_config.BaseURL}/bingo/game/getSessionMeta?userid={userid}");
+
+	}
 }

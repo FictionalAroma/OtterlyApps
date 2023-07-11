@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
-using Otterly.Database.ActivityData.Bingo.DataObjects;
 
 namespace Otterly.API.Controllers.Bingo;
 [Authorize]
@@ -68,6 +67,14 @@ public class BingoGameController : ControllerBase
 	}
 
 	[HttpGet]
+	[Route("getSessionMeta")]
+	public async Task<IActionResult> GetCurrentSessionMetaData(Guid userID)
+	{
+		return Ok(await _handler.GetCurrentSessionMeta(userID));
+	}
+
+
+	[HttpGet]
 	[Route("getSessionForUser")]
 	public async Task<IActionResult> GetCurrentSession(Guid userID)
 	{
@@ -127,7 +134,7 @@ public class BingoGameController : ControllerBase
 			return StatusCode(500, "Session No Longer Valid");
 		}
 
-		var result = await _handler.VerifySessionItem(session, request.ItemIndex);
+		var result = await _handler.VerifySessionItem(session, request.ItemIndex, request.State);
 		return Ok(result);
 
 	}

@@ -1,8 +1,23 @@
 <div class="container-fluid">
   <ng-container *ngIf="this.gameSession !== undefined; else newSession">
-      <p>{{this.gameSession.cardTitle}}</p>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{this.gameSession.cardTitle}}</mat-card-title>
+            <mat-card-subtitle>Subtitle</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            Slots To Verify
+            <app-bingo-session-slot [gameService]="this.bingoGame" [session]="this.gameSession"></app-bingo-session-slot>
+              Session Stats
+              <app-bingo-active-game-stats [meta]="this.sessionMeta"></app-bingo-active-game-stats>
 
-      <button mat-flat-button color="warn" (click)="this.endSession(this.gameSession.sessionID)">End Session</button>
+        </mat-card-content>
+        <mat-card-actions align="start">
+            <button mat-flat-button color="warn" (click)="this.endSession(this.gameSession.sessionID)">End Session</button>
+          </mat-card-actions>
+    </mat-card>
+
+
 
   </ng-container>
 

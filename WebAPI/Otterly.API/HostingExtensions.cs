@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Security.Claims;
-using Auth0.ManagementApi;
+using Auth0.AspNetCore.Authentication;
 using Auth0Net.DependencyInjection;
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
-using AutoMapper.EntityFrameworkCore;
-using AutoMapper.Collection;
-using AutoMapper.Collection.Configuration;
-using AutoMapper.Extensions.ExpressionMapping;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
@@ -79,8 +74,8 @@ public static class HostingExtensions
 	public static WebApplicationBuilder ConfigureAuthentication(this WebApplicationBuilder builder)
 	{
 		var domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
-		builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-			   .AddJwtBearer(options =>
+		builder.Services.AddAuthentication(Auth0Constants.AuthenticationScheme)
+			   .AddJwtBearer(Auth0Constants.AuthenticationScheme, options =>
 			   {
 				   options.Authority = domain;
 				   options.Audience = builder.Configuration["Auth0:Audience"];
