@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Otterly.API.ClientLib;
+using Otterly.API.ClientLib.Bingo;
+using Otterly.API.DataObjects.Bingo;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 
 namespace Otterly.API.Handlers.Interfaces;
 
 public interface IBingoGameHandler
 {
-    Task<BaseResponse> CreateSession(Guid userID, int cardID);
+    Task<CreateSessionResponse> CreateSession(Guid userID, int cardID);
     Task<PlayerTicket?> CreatePlayerTicket(string playerTwitchID, BingoSession sessionID);
     Task<PlayerTicket?> GetLatestCardData(string cardID);
 	Task<BingoSession?> GetCurrentSessionForStreamer(string streamerTwitchID);
+	Task<BingoSessionDTO?> GetCurrentSessionForUser(Guid userID);
 	Task<PlayerTicket?> GetTicketForPlayer(string playerTwitchID, string sessionID);
 	Task<BaseResponse> MarkTicketItem(PlayerTicket ticket, int requestItemIndex);
 	Task<BingoSession?> GetSessionData(string requestSessionID);

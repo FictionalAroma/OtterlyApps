@@ -5,6 +5,14 @@ export interface BaseResponse {
   success: boolean;
   error: string;
 }
+export interface GetCardDetailsResponse extends BaseResponse {
+  card: BingoCardDTO;
+  cardFields: BingoSlotDTO[];
+}
+export interface UpdateCardDetailsRequest extends BaseRequest {
+  cardDetails: BingoCardDTO;
+}
+
 
 
 export interface BingoCardDTO {
@@ -22,16 +30,25 @@ export interface BingoSlotDTO {
   displayText: string;
 }
 
-export interface GetCardDetailsResponse extends BaseResponse {
-  card: BingoCardDTO;
-  cardFields: BingoSlotDTO[];
-}
-export interface UpdateCardDetailsRequest extends BaseRequest {
-  cardDetails: BingoCardDTO;
-}
 export interface OtterlyAppsUserDTO {
   userID: string;
   test: number;
   deleted: boolean;
   twitchID: string;
+}
+
+export interface BingoSessionDTO {
+  size: number;
+  freeSpace: boolean;
+  sessionItems: BingoSessionItemDTO[];
+  active: boolean;
+  cardTitle: string;
+  sessionID: string;
+}
+
+export interface BingoSessionItemDTO {
+  itemIndex: number;
+  sessionID: string;
+  displayText: string;
+  verified: boolean;
 }

@@ -25,7 +25,7 @@ public class APILinkController : ControllerBase
 	{
 		get
 		{
-			var claim = HttpContext.User.FindFirst("/uuid");
+			var claim = HttpContext.User.FindFirst("oa/uuid");
 			if (claim != null && Guid.TryParse(claim.Value, out var result))
 			{
 				return result;
@@ -37,7 +37,7 @@ public class APILinkController : ControllerBase
 
 	protected async Task<OtterlyAPIClient> GenerateClientAsync()
 	{
-		var client = _httpClientFactory.CreateClient(_baseClient);
+		var client = _httpClientFactory.CreateClient(new HttpClient());
 		client.Authentication =
 			new AuthenticationHeaderValue("Bearer", await HttpContext.GetTokenAsync("Auth0", "access_token"));
 		return client;

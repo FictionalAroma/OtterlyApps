@@ -18,6 +18,7 @@ namespace Otterly.API.Controllers.Bingo
 
 		public CardController(ICardHandler cardHandler) { _cardHandler = cardHandler; }
 
+
 		[HttpGet]
 		public async Task<IActionResult> GetCards(BaseRequest request)
 		{
@@ -59,7 +60,5 @@ namespace Otterly.API.Controllers.Bingo
 					   ? StatusCode(500, new BaseResponse("Unable To Delete Card"))
 					   : Ok();
 		}
-
-
-    }
+	}
 }

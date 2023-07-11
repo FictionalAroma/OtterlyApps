@@ -5,11 +5,13 @@ namespace Otterly.Database.ActivityData.Bingo.DataObjects;
 
 public class BingoSession : MongoDataEntry
 {
-	public Guid UserID { get; set; }
-	public string TwitchUserID { get; set; }  = string.Empty;
+	public Guid UserID { get; init; }
+	public string TwitchUserID { get; init; }  = string.Empty;
 
-	public int Size { get; set; }
-	public bool FreeSpace { get; set; }
+	public string CardTitle { get; set; } = string.Empty;
+
+	public int Size { get; init; }
+	public bool FreeSpace { get; init; }
 	public List<BingoSessionItem> SessionItems { get; set; } = new List<BingoSessionItem>();
 
 	public bool Active { get; set; } = true;

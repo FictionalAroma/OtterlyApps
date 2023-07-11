@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson.Serialization.Serializers;
 using Otterly.API.ClientLib;
+using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
@@ -26,12 +27,14 @@ public class BingoGameHandler : IBingoGameHandler
 		_ticketService = ticketService;
 	}
 
-	public async Task<BaseResponse> CreateSession(Guid userID, int cardID )
+	public async Task<CreateSessionResponse> CreateSession(Guid userID, int cardID )
 	{
+		var response = new CreateSessionResponse();
 		var user = await _context.OtterlyAppsUsers.FirstOrDefaultAsync(appsUser => appsUser.UserID == userID);
 		if (user == null)
 		{
-			return new BaseResponse("Unable to find user");
+			 response.SetError("Unable to find user");
+			 return response;
 		}
 
 		var card = await _context.BingoCards
@@ -42,10 +45,20 @@ public class BingoGameHandler : IBingoGameHandler
 								!bingoCard.Deleted);
 		if (card == null)
 		{
-			return new BaseResponse("Unable to find appropriate card");
+			response.SetError("Unable to find appropriate card");
+			return response;
 		}
-		
-		return await _sessionService.CreateNewSession(BingoMapper.Map(card), UserMapper.Map(user));;
+		var session = await _sessionService.CreateNewSession(BingoMapper.Map(card), UserMapper.Map(user));
+
+		if (session == null)
+		{
+			response.SetError("unable to create session");
+			return response;
+		}
+		return new CreateSessionResponse()
+		{
+			CreatedSession = GameMapper.Map(session)
+		};
 	}
 
 	public async Task<PlayerTicket?> CreatePlayerTicket(string playerTwitchID, BingoSession session)
@@ -159,6 +172,7 @@ public class BingoGameHandler : IBingoGameHandler
 	public Task<PlayerTicket?> GetLatestCardData(string cardID) => _ticketService.GetTicketByID(cardID);
 
 	public Task<BingoSession?> GetCurrentSessionForStreamer(string streamerTwitchID) => _sessionService.FindActiveSessionForStreamer(streamerTwitchID);
+	public async Task<BingoSessionDTO?> GetCurrentSessionForUser(Guid userID) => GameMapper.Map(await _sessionService.FindActiveSessionForUser(userID));
 
 	public Task<PlayerTicket?> GetTicketForPlayer(string playerTwitchID, string sessionID) => _ticketService.FindTicket(playerTwitchID, sessionID);
 	public Task<BingoSession?> GetSessionData(string requestSessionID) => _sessionService.GetAsync(requestSessionID);

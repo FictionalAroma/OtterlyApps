@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using MongoDB.Driver;
-using Otterly.API.ClientLib;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.API.DataObjects.User;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
@@ -20,9 +18,8 @@ public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSession
 
 	}
 
-	public async Task<BaseResponse> CreateNewSession(BingoCardDTO card, OtterlyAppsUserDTO user)
+	public async Task<BingoSession?> CreateNewSession(BingoCardDTO card, OtterlyAppsUserDTO user)
 	{
-		var response = new BaseResponse();
 		try
 		{
 			var newSession = new BingoSession()
@@ -32,6 +29,7 @@ public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSession
 				Active = true,
 				FreeSpace = card.FreeSpace,
 				Size = card.CardSize,
+				CardTitle = card.TitleText,
 			};
 
 			await Collection.UpdateManyAsync(session => session.UserID == user.UserID &&
@@ -43,8 +41,7 @@ public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSession
 			var createdSession = await FindActiveSessionForStreamer(user.TwitchID);
 			if (createdSession == null || string.IsNullOrEmpty(createdSession.Id))
 			{
-				response.SetError("Somehow could not find new created Bingo Session");
-				return response;
+				return null;
 			}
 
 			createdSession.SessionItems = card.Slots.Select(dto => new BingoSessionItem()
@@ -55,19 +52,25 @@ public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSession
 																	   Verified = false,
 																   }).ToList();
 			await UpdateAsync(createdSession.Id, createdSession);
+
+			return createdSession;
+
 		}
 		catch (Exception e)
 		{
-			response.SetError(e.Message);
+			return null;
 		}
 
-
-		return new BaseResponse();
 	}
-
 
 	public async Task<BingoSession?> FindActiveSessionForStreamer(string streamerTwitchID)
 	{
 		return await Collection.Find(session => session.TwitchUserID == streamerTwitchID && session.Active).FirstOrDefaultAsync();
+	}
+
+	public async Task<BingoSession?> FindActiveSessionForUser(Guid userID)
+	{
+		return await Collection.Find(session => session.UserID == userID && session.Active).FirstOrDefaultAsync();
+
 	}
 }

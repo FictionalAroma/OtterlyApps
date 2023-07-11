@@ -9,7 +9,7 @@ using Otterly.API.DataObjects.Bingo;
 namespace Otterly.Site.Controllers
 {
 	[ApiController]
-	[Route("bff/bingo")]
+	[Route("bff/[controller]/[action]")]
     public class BingoController : APILinkController
     {
 
@@ -18,7 +18,6 @@ namespace Otterly.Site.Controllers
 		}
 
 		[HttpGet]
-		[Route("GetCards")]
 		public async Task<IActionResult> GetCards()
 		{			
 			var client = await GenerateClientAsync();
@@ -28,7 +27,6 @@ namespace Otterly.Site.Controllers
 		}
 
 		[HttpPost]
-		[Route("UpdateCard")]
 		public async Task<IActionResult> UpdateCard(BingoCardDTO cardToUpdate)
 		{
 			try
@@ -47,7 +45,6 @@ namespace Otterly.Site.Controllers
 		}
 
 		[HttpPut]
-		[Route("AddCard")]
 		public async Task<IActionResult> AddCard(BingoCardDTO cardToUpdate)
 		{
 			try
@@ -66,7 +63,6 @@ namespace Otterly.Site.Controllers
 		}
 
 		[HttpDelete]
-		[Route("DeleteCard")]
 		public async Task<IActionResult> DeleteCard(BingoCardDTO cardToUpdate)
 		{
 			try
@@ -84,6 +80,59 @@ namespace Otterly.Site.Controllers
 			}
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> GetCurrentGame()
+		{
+			try
+			{
+				var client = await GenerateClientAsync();
 
-    }
+				var result = await client.GetCurrentGameSession(UserID);
+				return Ok(result);
+			}
+
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				return StatusCode(500, e.Message);
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> CreateSession([FromBody]int cardID)
+		{
+			try
+			{
+				var client = await GenerateClientAsync();
+				var userID = UserID;
+				var result = await client.CreateGameSession(UserID, cardID);
+				return Ok(result);
+			}
+
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				return StatusCode(500, e.Message);
+			}
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> EndSession(string sessionID)
+		{
+			try
+			{
+				var client = await GenerateClientAsync();
+
+				var result = await client.EndSession(sessionID);
+				return Ok(result);
+			}
+
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				return StatusCode(500, e.Message);
+			}
+		}
+
+	}
 }

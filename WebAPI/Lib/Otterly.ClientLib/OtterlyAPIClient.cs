@@ -63,4 +63,21 @@ public class OtterlyAPIClient : APIClientBase
 	{
 		return await Post<CreateUserRequest, OtterlyAppsUserDTO>($"{_config.BaseURL}/account/create", newUser);
 	}
+
+	public async Task<BingoSessionDTO?> GetCurrentGameSession(Guid userID)
+	{
+		return await Get<BingoSessionDTO?>(($"{_config.BaseURL}/bingo/game/getSessionForUser?userid={userID}"));
+	}
+	public async Task<BingoSessionDTO?> CreateGameSession(Guid userID, int cardID)
+	{
+		return await Post<CreateSessionRequest, BingoSessionDTO?>(($"{_config.BaseURL}/bingo/game/startnew"), new CreateSessionRequest()
+																	  {
+																		  UserID = userID,
+																		  CardID = cardID
+																	  });
+	}
+	public async Task<BaseResponse?> EndSession(string sessionID)
+	{
+		return await Get<BaseResponse?>(($"{_config.BaseURL}/bingo/game/endSession?sessionID={sessionID}"));
+	}
 }
