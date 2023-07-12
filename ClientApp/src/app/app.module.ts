@@ -28,6 +28,11 @@ import { NavbarTopComponent } from './navbar/navbar-top/navbar-top.component';
 import { BingoGamePageComponent } from './bingo/bingo-game-page/bingo-game-page.component';
 import { BingoActiveGameComponent } from './bingo/bingo-active-game/bingo-active-game.component';
 import {MatSelectModule} from '@angular/material/select';
+import { BingoSessionStatsComponent } from './bingo/bingo-session-stats/bingo-session-stats.component';
+import { BingoSessionSlotComponent } from './bingo/bingo-session-slot/bingo-session-slot.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatGridListModule} from '@angular/material/grid-list';
+import { BingoActiveGameStatsComponent } from './bingo/bingo-active-game-stats/bingo-active-game-stats.component';
 
 @NgModule({
     declarations: [
@@ -39,7 +44,10 @@ import {MatSelectModule} from '@angular/material/select';
         BingoCardSlotComponent,
         NavbarTopComponent,
         BingoGamePageComponent,
-        BingoActiveGameComponent
+        BingoActiveGameComponent,
+        BingoSessionStatsComponent,
+        BingoSessionSlotComponent,
+        BingoActiveGameStatsComponent
     ],
     providers: [ LoginManagerService,BingoCardService],
     bootstrap: [AppComponent],
@@ -61,7 +69,9 @@ import {MatSelectModule} from '@angular/material/select';
         FormsModule,
         MatFormFieldModule,
         MatTabsModule,
-        MatSelectModule
+        MatSelectModule,
+        MatCheckboxModule,
+        MatGridListModule
     ]
 })
 export class AppModule { }

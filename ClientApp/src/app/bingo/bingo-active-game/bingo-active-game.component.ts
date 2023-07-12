@@ -1,7 +1,8 @@
-import { BaseResponse } from './../../../../api/otterlyapi.d';
-import { Component } from '@angular/core';
-import { BingoSessionDTO, BingoCardDTO } from 'api/otterlyapi';
 import { BingoCardService } from 'src/services/bingo-card.service';
+import { Component } from '@angular/core';
+import { BingoSessionDTO, BingoCardDTO, BaseResponse, BingoSessionMetaDTO } from 'api/otterlyapi';
+import { BingoGameService } from 'src/services/bingo-game.service';
+
 
 @Component({
   selector: 'app-bingo-active-game',
@@ -10,26 +11,33 @@ import { BingoCardService } from 'src/services/bingo-card.service';
 })
 export class BingoActiveGameComponent {
   public gameSession: BingoSessionDTO | undefined
+  public sessionMeta: BingoSessionMetaDTO | undefined
   public userCards : BingoCardDTO[] | undefined;
-  public selectedCardID : number = 0
-  constructor(private bingoService : BingoCardService){
-
+  public selectedCardID : number = 0;
+  constructor(public bingoGame : BingoGameService, private cardService : BingoCardService){
   }
 
   ngOnInit()
   {
-    this.bingoService.getCurrentSessionObservable().subscribe((session : BingoSessionDTO) => this.gameSession = session);
-    this.bingoService.getCardsObservable().subscribe((cards : Array<BingoCardDTO>) => this.userCards = Array.from(cards))
+    this.bingoGame.getCurrentSessionObservable().subscribe((session : BingoSessionDTO) => this.updateSessionData(session))
+    this.cardService.getCardsObservable().subscribe((cards : Array<BingoCardDTO>) => this.userCards = Array.from(cards))
+
+  }
+
+  updateSessionData(session : BingoSessionDTO)
+  {
+    this.gameSession = session;
+    this.bingoGame.sessionMetaObservable(session.sessionID).subscribe((meta : BingoSessionMetaDTO) => this.sessionMeta = meta);
 
   }
 
   createSession(cardId: number)
   {
-    this.bingoService.createSessionObservable(cardId).subscribe((session : BingoSessionDTO) => this.gameSession = session)
+    this.bingoGame.createSessionObservable(cardId).subscribe((session : BingoSessionDTO) => this.gameSession = session)
   }
 endSession(sessionID : string)
 {
-    this.bingoService.endSessionObservable(sessionID).subscribe((resp:BaseResponse) => this.gameSession = resp.success ? undefined : this.gameSession);
+    this.bingoGame.endSessionObservable(sessionID).subscribe((resp:BaseResponse) => this.gameSession = resp.success ? undefined : this.gameSession);
     this.gameSession = undefined;
 }
 }

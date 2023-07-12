@@ -46,6 +46,11 @@ export interface BingoSessionDTO {
   sessionID: string;
 }
 
+export interface BingoSessionMetaDTO {
+  numberTickets: number;
+  numberWinners: number;
+}
+
 export interface BingoSessionItemDTO {
   itemIndex: number;
   sessionID: string;

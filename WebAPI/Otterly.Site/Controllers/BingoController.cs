@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Http;
 using Otterly.API.ClientLib;
+using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;
 
 namespace Otterly.Site.Controllers
@@ -124,6 +125,42 @@ namespace Otterly.Site.Controllers
 				var client = await GenerateClientAsync();
 
 				var result = await client.EndSession(sessionID);
+				return Ok(result);
+			}
+
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				return StatusCode(500, e.Message);
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> VerifyItem(VerifyItemRequest request)
+		{
+			try
+			{
+				var client = await GenerateClientAsync();
+
+				var result = await client.VerifyItem(request);
+				return Ok(result);
+			}
+
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				return StatusCode(500, e.Message);
+			}
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> GetSessionMeta(string sessionID)
+		{
+			try
+			{
+				var client = await GenerateClientAsync();
+
+				var result = await client.GetSessionMeta(UserID);
 				return Ok(result);
 			}
 

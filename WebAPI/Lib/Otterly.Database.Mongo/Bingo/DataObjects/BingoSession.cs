@@ -15,4 +15,6 @@ public class BingoSession : MongoDataEntry
 	public List<BingoSessionItem> SessionItems { get; set; } = new List<BingoSessionItem>();
 
 	public bool Active { get; set; } = true;
+
+	public BingoSessionMeta Meta { get; set; } = new BingoSessionMeta();
 }

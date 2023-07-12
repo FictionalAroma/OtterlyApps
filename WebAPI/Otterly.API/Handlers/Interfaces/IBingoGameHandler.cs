@@ -17,6 +17,7 @@ public interface IBingoGameHandler
 	Task<PlayerTicket?> GetTicketForPlayer(string playerTwitchID, string sessionID);
 	Task<BaseResponse> MarkTicketItem(PlayerTicket ticket, int requestItemIndex);
 	Task<BingoSession?> GetSessionData(string requestSessionID);
-	Task<BaseResponse> VerifySessionItem(BingoSession session, int requestItemIndex);
+	Task<BaseResponse> VerifySessionItem(BingoSession session, int requestItemIndex, bool requestState);
 	Task<BaseResponse> EndSession(BingoSession session);
+	Task<BingoSessionMeta?> GetCurrentSessionMeta(Guid userID);
 }
