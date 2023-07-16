@@ -1,10 +1,11 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using Auth0.AspNetCore.Authentication;
 using Auth0Net.DependencyInjection;
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -82,6 +83,19 @@ public static class HostingExtensions
 				   options.TokenValidationParameters = new TokenValidationParameters
 													   {
 														   NameClaimType = ClaimTypes.NameIdentifier
+													   };
+			   })
+			   .AddJwtBearer("twitch.ebs", options =>
+			   {
+				   options.TokenValidationParameters = new TokenValidationParameters()
+													   {
+														   ValidateLifetime = true,
+														   ValidateAudience = false,
+														   ValidateIssuer = false,
+														   IssuerSigningKey =
+															   new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Twitch.Bingo.Secret"])),
+														   ValidateIssuerSigningKey = true,
+														   
 													   };
 			   });
 		return builder;
