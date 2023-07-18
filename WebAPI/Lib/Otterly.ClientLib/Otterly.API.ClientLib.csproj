@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Account\" />
     <Folder Include="Account\" />
+    <Folder Include="Twitch\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,30 +1,25 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
+using System.Buffers.Text;
 using System.Security.Claims;
 using System.Text;
 using Auth0.AspNetCore.Authentication;
 using Auth0Net.DependencyInjection;
-using AutoMapper;
-using AutoMapper.EquivalencyExpression;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
-using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.Database.ActivityData.Bingo.Services;
 using Otterly.API.Handlers.Bingo;
-using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Configuration;
 using Otterly.Database.ActivityData.Interfaces;
 using Otterly.Database.UserData;
-using Otterly.Database.UserData.DataObjects;
-using Otterly.API.DataObjects.User;
 using Otterly.API.ExternalAPI;
 using Otterly.API.ExternalAPI.Interfaces;
+using Otterly.API.Configuration;
 
 namespace Otterly.API;
 
@@ -52,7 +47,16 @@ public static class HostingExtensions
 		services.AddScoped<IBingoGameHandler, BingoGameHandler>();
 		services.AddScoped<IAuthManagementConnector, Auth0ManagementConnector>();
 
+		services.AddCors(options =>
+		{
+			options.AddDefaultPolicy(policyBuilder =>
+			{
+				policyBuilder.AllowAnyOrigin();
+				policyBuilder.AllowAnyHeader();
+				policyBuilder.AllowAnyMethod();
 
+			});
+		});
 
 		return builder;
 	}
@@ -85,47 +89,19 @@ public static class HostingExtensions
 														   NameClaimType = ClaimTypes.NameIdentifier
 													   };
 			   })
-			   .AddJwtBearer("twitch.ebs", options =>
+			   .AddJwtBearer(Constants.TwitchAuthPolicyName, options =>
 			   {
 				   options.TokenValidationParameters = new TokenValidationParameters()
 													   {
+
 														   ValidateLifetime = true,
 														   ValidateAudience = false,
 														   ValidateIssuer = false,
 														   IssuerSigningKey =
-															   new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Twitch.Bingo.Secret"])),
-														   ValidateIssuerSigningKey = true,
-														   
+															   new SymmetricSecurityKey(Convert.FromBase64String(builder.Configuration["Twitch:Bingo:Secret"])),
+														   ValidateIssuerSigningKey = true
 													   };
 			   });
-		return builder;
-	}
-
-	public static WebApplicationBuilder ConfigureAutomapper(this WebApplicationBuilder builder)
-	{
-		builder.Services.AddAutoMapper((provider, mapper) =>
-									   {
-										   
-										   mapper.AddCollectionMappers();
-										   mapper.UseEntityFrameworkCoreModel<OtterlyAppsContext>(provider);
-
-										   mapper.CreateMap<OtterlyAppsUser, OtterlyAppsUserDTO>().ReverseMap();
-										   mapper.CreateMap<BingoSlot, BingoSlotDTO>();
-
-										   mapper.CreateMap<BingoSlotDTO,BingoSlot>()
-												 .EqualityComparison((dto, slot) => dto.CardID == slot.CardID && dto.SlotIndex == slot.SlotIndex);
-
-										   mapper.CreateMap<BingoCard, BingoCardDTO>();
-										   mapper.CreateMap<BingoCardDTO, BingoCard>();
-
-										   mapper.CreateMap<PlayerTicket, PlayerTicketDTO>().ReverseMap();
-										   mapper.CreateMap<BingoSession, BingoSessionDTO>().ReverseMap();
-										   mapper.CreateMap<BingoSessionItem, BingoSessionItemDTO>().ReverseMap();
-										   mapper.CreateMap<PlayerTicketItem, PlayerTicketItemDTO>().ReverseMap();
-
-									   },
-									   typeof(AutomapperConfig).Assembly, 
-									   typeof(Otterly.API.Configuration.AutomapperConfig).Assembly, typeof(OtterlyAppsContext).Assembly);
 		return builder;
 	}
 	public static WebApplicationBuilder ConfigureMongoAccessServices(this WebApplicationBuilder builder)
