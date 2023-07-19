@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Otterly.API.ClientLib.Bingo;
+using Otterly.API.Configuration;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
 
@@ -10,7 +11,7 @@ namespace Otterly.API.Controllers.Bingo
 {
     [Route("api/bingo/player")]
     [ApiController]
-	[AllowAnonymous]
+	[Authorize(AuthenticationSchemes = Constants.TwitchAuthPolicyName)]
     public class BingoPlayerController : ControllerBase
     {
 		private readonly IBingoGameHandler _handler;
@@ -59,7 +60,7 @@ namespace Otterly.API.Controllers.Bingo
 			return session == null ? ValidationProblem("Streamer Bingo Not Active") : Ok(GameMapper.Map(session));
 		}
 
-		[HttpGet]
+		[HttpPost]
 		[Route("GetSessionAndTicket")]
 		public async Task<IActionResult> GetSessionAndTicketData(StreamerTicketRequest request)
 		{

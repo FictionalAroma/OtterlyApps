@@ -11,6 +11,7 @@
     <Folder Include="ExternalAPI\Interfaces\" />
     <Folder Include="Migrations\" />
     <Folder Include="ManualMapper\" />
+    <Folder Include="ExtensionMethods\" />
   </ItemGroup>
 
   <ItemGroup>
