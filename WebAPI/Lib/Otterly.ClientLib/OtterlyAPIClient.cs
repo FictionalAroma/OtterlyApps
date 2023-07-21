@@ -9,7 +9,7 @@ using Otterly.API.DataObjects.User;
 
 namespace Otterly.API.ClientLib;
 
-public class OtterlyAPIClient : APIClientBase
+public class OtterlyAPIClient : FactoryAPIClientBase
 {
 	private readonly APIClientConfig _config;
 

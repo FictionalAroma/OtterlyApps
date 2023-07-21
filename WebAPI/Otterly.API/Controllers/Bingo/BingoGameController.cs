@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Http;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.Configuration;
+using Otterly.API.ExternalAPI;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
 
@@ -18,10 +20,13 @@ public class BingoGameController : ControllerBase
 	// GET
 	// ReSharper disable once InconsistentNaming
 	private static readonly Guid TEST_USER = new Guid("e3aeefa0-b2df-4af7-9033-914ef6936bf0");
+	private readonly ITypedHttpClientFactory<TwitchExtensionAPIConnector> _twitchClientFactory;
 
-	public BingoGameController(IBingoGameHandler handler)
+	public BingoGameController(IBingoGameHandler handler, 
+							   ITypedHttpClientFactory<TwitchExtensionAPIConnector> twitchClientFactory)
 	{
 		_handler = handler;
+		_twitchClientFactory = twitchClientFactory;
 	}
 
 	[HttpPost]
@@ -65,6 +70,10 @@ public class BingoGameController : ControllerBase
 		}
 
 		var result = await _handler.VerifySessionItem(session, request.ItemIndex, request.State);
+
+		var twtichClient = _twitchClientFactory.GetClient();
+		await twtichClient.SendExtensionMessage(request, session.TwitchUserID);
+
 		return Ok(result);
 
 	}

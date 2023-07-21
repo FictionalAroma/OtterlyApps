@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Folder Include="ExternalAPI\Interfaces\" />
+    <Folder Include="ExternalAPI\Objects\" />
     <Folder Include="Migrations\" />
     <Folder Include="ManualMapper\" />
     <Folder Include="ExtensionMethods\" />
@@ -25,6 +26,7 @@
     </PackageReference>
     <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="TwitchLib.Api" Version="3.9.0" />
   </ItemGroup>
 
   <ItemGroup>

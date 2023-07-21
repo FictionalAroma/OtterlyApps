@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Bson.Serialization.Serializers;
+using Microsoft.Extensions.Http;
 using Otterly.API.ClientLib;
 using Otterly.API.ClientLib.Bingo;
-using Otterly.API.Configuration;
 using Otterly.API.DataObjects.Bingo;
+using Otterly.API.ExternalAPI;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
@@ -22,7 +20,10 @@ public class BingoGameHandler : IBingoGameHandler
 	private readonly OtterlyAppsContext _context;
 	private readonly IBingoSessionService _sessionService;
 	private readonly IPlayerCardDataService _ticketService;
-	public BingoGameHandler(OtterlyAppsContext context, IBingoSessionService sessionService, IPlayerCardDataService ticketService)
+
+	public BingoGameHandler(OtterlyAppsContext context, 
+							IBingoSessionService sessionService, 
+							IPlayerCardDataService ticketService)
 	{
 		_context = context;
 		_sessionService = sessionService;
@@ -131,6 +132,7 @@ public class BingoGameHandler : IBingoGameHandler
 		await _sessionService.UpdateAsync(session.Id, session);
 
 		response = await MarkAllSessionTicketItemsVerified(slot);
+
 		return response;
 	}
 
@@ -197,7 +199,6 @@ public class BingoGameHandler : IBingoGameHandler
 
 		return session?.Meta;
 	}
-
 
 	#endregion
 }

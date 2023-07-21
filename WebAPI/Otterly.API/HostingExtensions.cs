@@ -47,6 +47,8 @@ public static class HostingExtensions
 		services.AddScoped<IBingoGameHandler, BingoGameHandler>();
 		services.AddScoped<IAuthManagementConnector, Auth0ManagementConnector>();
 
+		services.AddHttpClient<TwitchExtensionAPIConnector>();
+
 		services.AddCors(options =>
 		{
 			options.AddDefaultPolicy(policyBuilder =>
@@ -78,10 +80,11 @@ public static class HostingExtensions
 
 	public static WebApplicationBuilder ConfigureAuthentication(this WebApplicationBuilder builder)
 	{
-		var domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
 		builder.Services.AddAuthentication(Auth0Constants.AuthenticationScheme)
 			   .AddJwtBearer(Auth0Constants.AuthenticationScheme, options =>
 			   {
+				   var domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
+
 				   options.Authority = domain;
 				   options.Audience = builder.Configuration["Auth0:Audience"];
 				   options.TokenValidationParameters = new TokenValidationParameters
