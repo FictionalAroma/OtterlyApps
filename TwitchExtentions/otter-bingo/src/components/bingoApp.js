@@ -1,6 +1,7 @@
 import { Tabs, Tab } from "react-bootstrap"
 import PlayerTab from "./playerTab"
 import { useState } from "react"
+import SessionControl from "./streameradmin/sessionControl";
 
 
 export default function BingoApp({api})
@@ -28,8 +29,8 @@ export default function BingoApp({api})
         return <h1>Loading....</h1>
     }
 
-    let playerTab = <PlayerTab api={api} ticket={ticket} session={session}></PlayerTab>;
-    let user = api.user();
+    const playerTab = <PlayerTab api={api} ticket={ticket} session={session} ticketCreateCallback={setTicket}></PlayerTab>;
+    const user = api.user();
     if(user.userRole === 2 || user.userRole === 3)
     {
         return (    
@@ -40,6 +41,9 @@ export default function BingoApp({api})
             justify>
                 <Tab eventKey="card" title="Card">    
                     {playerTab}
+                </Tab>
+                <Tab eventKey="streamer" title="Game Admin">
+                    <SessionControl api={api} session={session}></SessionControl>
                 </Tab>
             </Tabs>
         )
