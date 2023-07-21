@@ -21,14 +21,14 @@ export default function CardGrid({ticket, size, cellSelectedCallback}) {
               <CardSlot passedCell={cell} onSelectCallback={cellSelectedCallback}></CardSlot>
           </Col>
             );
-      return <Row key={index}>{rowContents}</Row>
+      return <Row key={index} className='bingo-row'>{rowContents}</Row>
         }
       )
 
     return (
-      <Container fluid>
+      <>
         {gridContents}
-      </Container>
+      </>
     );
 
   }

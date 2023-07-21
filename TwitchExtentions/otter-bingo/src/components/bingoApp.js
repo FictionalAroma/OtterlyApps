@@ -1,7 +1,8 @@
-import { Tabs, Tab } from "react-bootstrap"
+import { Tabs, Tab, TabContainer } from "react-bootstrap"
 import PlayerTab from "./playerTab"
 import { useState } from "react"
 import SessionControl from "./streameradmin/sessionControl";
+import "../App.scss"
 
 
 export default function BingoApp({api})
@@ -29,7 +30,7 @@ export default function BingoApp({api})
         return <h1>Loading....</h1>
     }
 
-    const playerTab = <PlayerTab api={api} ticket={ticket} session={session} ticketCreateCallback={setTicket}></PlayerTab>;
+    const playerTab = <PlayerTab className="h-100 d-inline-block row" api={api} ticket={ticket} session={session} ticketCreateCallback={setTicket}></PlayerTab>;
     const user = api.user();
     if(user.userRole === 2 || user.userRole === 3)
     {
@@ -38,8 +39,9 @@ export default function BingoApp({api})
             defaultActiveKey="card"
             id="justify-tab-example"
             className="mb-3"
-            justify>
-                <Tab eventKey="card" title="Card">    
+            justify
+            >
+                <Tab className="twitch-extension-tab" eventKey="card" title="Card">   
                     {playerTab}
                 </Tab>
                 <Tab eventKey="streamer" title="Game Admin">

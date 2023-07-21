@@ -4,6 +4,7 @@ import BingoConnector from './api/bingoconnector';
 import { useState } from 'react';
 import BingoApp from './components/bingoApp';
 import config from './config.json'
+import { Container } from 'react-bootstrap';
 
 const apiConnector = new BingoConnector(config.API_BASE_URL)
 
@@ -33,7 +34,8 @@ function App() {
  
   if(extensionLoaded)
   {
-    return <BingoApp api={apiConnector}></BingoApp>;
+
+    return(<Container fluid className="twitch-extension-container"><BingoApp api={apiConnector}></BingoApp></Container>)
   }
   return <h1>Loading....</h1>
 }

@@ -12,10 +12,10 @@ export default function CardSlot({passedCell, onSelectCallback})
 
     const [cell, setCellValues] = useState(passedCell);
     return (
-        <Card>
-        <Card.Body className={`${cell.selected ? "selected" : ""}`}>
+        <Card className={`bingo-slot-parent ${cell.selected ? "selected" : ""}`}>
+        <Card.Body className={`bingo-slot-content`}>
         <Card.Title>{cell.displayText}</Card.Title>
-        <Button variant="primary" onClick={()=>updateSelected()}>Tick Item</Button>
+        <Button variant="primary" className="centre" onClick={()=>updateSelected()}>{`${cell.selected ?  `Unselect` : `Select`}`}</Button>
         </Card.Body>
         </Card>
 

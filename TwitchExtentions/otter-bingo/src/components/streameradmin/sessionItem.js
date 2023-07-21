@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Button } from '@mui/material';
+import { Card, Button } from 'react-bootstrap';
 
 
 export default function SessionItem({sessionItem, onCheckedCallback}) {
@@ -17,7 +17,7 @@ export default function SessionItem({sessionItem, onCheckedCallback}) {
         <Card>
         <Card.Body className={`${item.verified ? "selected" : ""}`}>
         <Card.Title>{item.displayText}</Card.Title>
-        <Button variant="primary" onClick={()=>updateSelected()}>Tick Item</Button>
+        <Button variant="primary" onClick={()=>updateSelected()}>{`${item.verified ? "Verify" : "UnVerify"}`}</Button>
         </Card.Body>
         </Card>
 

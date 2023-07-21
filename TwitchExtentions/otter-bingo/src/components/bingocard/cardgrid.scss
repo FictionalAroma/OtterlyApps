@@ -4,3 +4,27 @@
    background-repeat: no-repeat;
    background-size: cover;
 }
+
+.bingo-row
+{
+   
+   max-height: 33%;
+   padding-bottom: 1.5rem;
+}
+
+.bingo-slot-parent{
+   height: 100%;
+
+}
+.bingo-slot-content
+{
+   display: flex;
+   align-items: center;
+   flex-direction: column;
+   justify-content: center;
+}
+
+.tab-content
+{
+   height: 90%;
+}
