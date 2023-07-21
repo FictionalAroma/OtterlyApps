@@ -1,12 +1,17 @@
 import { Button } from "react-bootstrap";
 import CardGrid from "./bingocard/cardgrid";
 
-export default function PlayerTab({api, ticket, session})
+export default function PlayerTab({api, ticket, session, ticketCreateCallback})
 {
-    if(ticket === undefined)
+    const cellSelected=(cell)=>
     {
-        return <Button onClick={()=>api.CreateTicket()}>Get Bingo Ticket</Button>
+        api.markCellSelected(cell.itemIndex, session.sessionID)
+    } 
+
+    if(ticket == null)
+    {
+        return <Button onClick={()=>api.createTicket(ticketCreateCallback)}>Get Bingo Ticket</Button>
     }
-    return <CardGrid ticket={ticket} size={session.size}></CardGrid>
+    return <CardGrid ticket={ticket} size={session.size} cellSelectedCallback={cellSelected} ></CardGrid>
 
 }

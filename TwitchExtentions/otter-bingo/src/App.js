@@ -1,26 +1,35 @@
-import logo from './logo.svg';
 import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import BingoConnector from './api/bingoconnector';
 import { useState } from 'react';
 import BingoApp from './components/bingoApp';
-import CardGrid from './components/bingocard/cardgrid';
+import config from './config.json'
 
-const apiConnector = new BingoConnector("https://localhost:7178/api")
+const apiConnector = new BingoConnector(config.API_BASE_URL)
 
 function App() {
+
+  const onTokenValidated = (user) => {
+    if (!extensionLoaded) {
+      setLoaded(true);
+    }
+  }
+
 
   const [extensionLoaded, setLoaded] = useState(false);
 
   if(!extensionLoaded)
   {
-    window.Twitch.ext.onAuthorized((auth)=> apiConnector.validateToken(auth.token, 
-      (user) => {
-        if(!extensionLoaded){
-          setLoaded(true);
-        }
-    }));
+    if(!config.LOCAL_TEST)
+    {
+      window.Twitch.ext.onAuthorized((auth)=> apiConnector.validateToken(auth.token, onTokenValidated));
+    }
+    else
+    {
+      apiConnector.validateToken(config.LOCAL_JWT, onTokenValidated)
+    }
   }
+
  
   if(extensionLoaded)
   {

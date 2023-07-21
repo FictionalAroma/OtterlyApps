@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Otterly.API.ClientLib.Bingo;
+using Otterly.API.Configuration;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
 
@@ -53,6 +54,7 @@ public class BingoGameController : ControllerBase
 
 
 	[HttpPost]
+	[Authorize(AuthenticationSchemes = Constants.TwitchAuthPolicyName)]
 	[Route("verifyItem")]
 	public async Task<IActionResult> VerifyItemInSession(VerifyItemRequest request)
 	{

@@ -32,7 +32,9 @@ export default class BingoConnector{
         };
         axios.request(url, config)
         .then((result) => {
-            callback(result.data);
+            if(callback != null) {
+                callback(result.data);
+            }
         }).catch((err) => {
             console.log(err);
         });
@@ -45,6 +47,36 @@ export default class BingoConnector{
             PlayerTwitchID: this.cachedUser.userID,
         }
         this.sendRequest(`${this.apiBaseURL}/bingo/player/GetSessionAndTicket`, data, "post", dataCallback)
+    }
+
+    markCellSelected(cellIndex, sessionId)
+    {
+        const data = {
+            SessionID: sessionId,
+            PlayerTwitchID: this.cachedUser.userID,
+            ItemIndex: cellIndex
+        }
+        this.sendRequest(`${this.apiBaseURL}/bingo/player/markItem`, data, "post")
+    }
+
+    createTicket(dataCallback)
+    {
+        const data = {
+            StreamerTwitchID: this.cachedUser.broadcasterID,
+            PlayerTwitchID: this.cachedUser.userID,
+        }
+        this.sendRequest(`${this.apiBaseURL}/bingo/player/createTicket`, data, "post", dataCallback)
+    }
+
+    verifyItem(itemIndex, sessionId, onOff)
+    {
+        const data = {
+            SessionID: sessionId,
+            ItemIndex: itemIndex,
+            State: onOff,
+        }
+        this.sendRequest(`${this.apiBaseURL}/bingo/game/verifyItem`, data, "post")
+
     }
 
 

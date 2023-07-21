@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson.Serialization.Serializers;
 using Otterly.API.ClientLib;
 using Otterly.API.ClientLib.Bingo;
+using Otterly.API.Configuration;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
@@ -70,11 +72,17 @@ public class BingoGameHandler : IBingoGameHandler
 		}
 
 		var randomiser = new Random();
-		var randomisedSlots = session.SessionItems.OrderBy(_ => randomiser.Next()).Take(totalNumberSpots);
-
+		var randomisedSlots = session.SessionItems.OrderBy(_ => randomiser.Next()).Take(totalNumberSpots).ToList();
 		if (session.Id != null)
 		{
-			var ticket = await _ticketService.CreatePlayerTicket(playerTwitchID, session.Id, GameMapper.Map(randomisedSlots));
+			var playeritems = GameMapper.Map(randomisedSlots).ToList();
+			if (session.FreeSpace)
+			{
+				playeritems.Insert(randomisedSlots.Count / 2, PlayerTicketItem.CreateFreeSpace(session.Id));
+			}
+
+
+			var ticket = await _ticketService.CreatePlayerTicket(playerTwitchID, session.Id, playeritems);
 			session.Meta.NumberTickets++;
 			await _sessionService.UpdateAsync(session.Id, session);
 			return ticket;
@@ -99,11 +107,10 @@ public class BingoGameHandler : IBingoGameHandler
 			return response;
 		}
 
-		slot.Selected = true;
+		slot.Selected = !slot.Selected;
 		await _ticketService.UpdateAsync(ticket.Id, ticket);
 		return response;
 	}
-
 
 	public async Task<BaseResponse> VerifySessionItem(BingoSession session, int requestItemIndex, bool requestState)
 	{

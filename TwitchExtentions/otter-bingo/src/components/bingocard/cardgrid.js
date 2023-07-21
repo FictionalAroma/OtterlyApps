@@ -6,28 +6,27 @@ import './cardgrid.scss'
 
 
 
-export default function CardGrid({ticket, size}) {
+export default function CardGrid({ticket, size, cellSelectedCallback}) {
 
-      let rows = new Array(size);
+      const rows = new Array(size);
       for(let i = 0; i < ticket.slots.length; i+=size)
       {
         rows.push(ticket.slots.slice(i, i+size))
       }
 
-      let gridContents = rows.map((row, index)=> 
+      const gridContents = rows.map((row, index)=> 
       {
-        let rowContents = row.map((cell)=>
-        <Col key={cell.itemIndex}>
-            <CardSlot cell={cell}></CardSlot>
-        </Col>
-            
-            )
+        const rowContents = row.map((cell)=>
+          <Col key={cell.itemIndex}>
+              <CardSlot passedCell={cell} onSelectCallback={cellSelectedCallback}></CardSlot>
+          </Col>
+            );
       return <Row key={index}>{rowContents}</Row>
         }
       )
 
     return (
-        <Container fluid>
+      <Container fluid>
         {gridContents}
       </Container>
     );
