@@ -27,7 +27,8 @@ export default function SessionControl({api, session}) {
     )
     
 
-    return (      <Container fluid>
+    return (      
+      <Container fluid>
         {gridContents}
       </Container>
 

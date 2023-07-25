@@ -39,7 +39,7 @@ namespace Otterly.API.Controllers.Bingo
 			var existingTicket = await _handler.GetTicketForPlayer(request.PlayerTwitchID, session.Id);
 			if (existingTicket != null)
 			{
-				return Conflict(existingTicket);
+				return Ok(existingTicket);
 			}
 
 			var result = await _handler.CreatePlayerTicket(request.PlayerTwitchID, session);

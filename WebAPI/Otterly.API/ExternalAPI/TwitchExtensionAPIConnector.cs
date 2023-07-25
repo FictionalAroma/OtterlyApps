@@ -54,7 +54,7 @@ public class TwitchExtensionAPIConnector : FactoryAPIClientBase
 			var payload = new TwitchExtensionPubSubMessage()
 						  {
 							  BroadcasterId = broadcastTwitchID,
-							  Message = JsonConvert.ToString(message, '\'', StringEscapeHandling.EscapeNonAscii),
+							  Message = JsonConvert.SerializeObject(messageToSend)
 						  };
 			var request = new HttpRequestMessage(HttpMethod.Post, $"{BaseURL}extensions/pubsub")
 						  {

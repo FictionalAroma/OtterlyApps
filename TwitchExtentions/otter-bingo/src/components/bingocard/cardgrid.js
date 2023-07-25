@@ -1,4 +1,3 @@
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import CardSlot from './cardslot';
@@ -21,9 +20,11 @@ export default function CardGrid({ticket, size, cellSelectedCallback}) {
               <CardSlot passedCell={cell} onSelectCallback={cellSelectedCallback}></CardSlot>
           </Col>
             );
-      return <Row key={index} className='bingo-row'>{rowContents}</Row>
+          return <Row key={index} className='bingo-row'>{rowContents}</Row>
         }
       )
+
+  
 
     return (
       <>
