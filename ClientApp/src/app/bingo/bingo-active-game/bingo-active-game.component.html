@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <ng-container *ngIf="this.gameSession !== undefined; else newSession">
+  <ng-container *ngIf="this.gameSession != null; else newSession">
     <mat-card>
         <mat-card-header>
             <mat-card-title>{{this.gameSession.cardTitle}}</mat-card-title>

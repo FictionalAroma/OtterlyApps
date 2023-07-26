@@ -23,7 +23,6 @@ public class CardHandler : ICardHandler
     public async Task<List<BingoCardDTO>> GetCardsForUser(Guid userID)
     {
         var card = await _context.BingoCards.
-                                  AsNoTracking().
                                   Where(card => card.UserID == userID && !card.Deleted)
                                   .Include(bingoCard => bingoCard.Slots)
                                   .ToListAsync();
@@ -34,11 +33,10 @@ public class CardHandler : ICardHandler
     public async Task<BingoCardDTO?> GetCardDetail(int cardID, Guid requestUserID)
 	{
 		var foundCard = await _context.BingoCards
-									  .AsNoTracking()
 									  .Include(card => card.Slots)
 									  .FirstOrDefaultAsync(card => card.CardID == cardID &&
-																  card.UserID == requestUserID &&
-																  !card.Deleted);
+																   card.UserID == requestUserID &&
+																   !card.Deleted);
         return foundCard == null ? null : BingoMapper.Map(foundCard);
 	}
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { BingoCardDTO } from 'api/otterlyapi';
 import { BingoCardService } from 'src/services/bingo-card.service';
 
@@ -10,17 +10,19 @@ import { BingoCardService } from 'src/services/bingo-card.service';
 })
 export class BingoCardListViewComponent {
 
-  constructor(private bingoService : BingoCardService){}
+  @Input()
+  userCards : BingoCardDTO[] | undefined;
 
-  public userCards : BingoCardDTO[] | undefined;
+  @Output() newCardEvent = new EventEmitter<BingoCardDTO>();
+  @Output() deleteCardEvent = new EventEmitter<BingoCardDTO>();
+  @Output() saveCardEvent = new EventEmitter<BingoCardDTO>();
 
   ngOnInit()
   {
-    this.bingoService.getCardsObservable().subscribe((cards : Array<BingoCardDTO>) => this.userCards = Array.from(cards))
   }
 
   saveCardDetails(updatedCard: BingoCardDTO) {
-    this.bingoService.updateCard(updatedCard);
+    this.saveCardEvent.emit(updatedCard);
   }
   addNewCard() {
     let newCard :BingoCardDTO = {
@@ -31,17 +33,12 @@ export class BingoCardListViewComponent {
       titleText: "My Awesome Card!",
       slots:[],
     }
-    this.bingoService.addCard(newCard).subscribe((addedCard : BingoCardDTO) => this.userCards?.push(addedCard));
+    this.newCardEvent.emit(newCard);
   }
 
   deleteCard(updatedCard: BingoCardDTO)
   {
-    this.bingoService.delete(updatedCard).subscribe((success : boolean) => {
-      if(success)
-      {
-        this.userCards?.splice(this.userCards.findIndex((v:BingoCardDTO)=> v.cardID == updatedCard.cardID),1);
-      }
-    })
+    this.deleteCardEvent.emit(updatedCard)
   }
 
 

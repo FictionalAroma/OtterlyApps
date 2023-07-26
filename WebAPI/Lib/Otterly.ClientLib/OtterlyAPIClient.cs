@@ -51,7 +51,7 @@ public class OtterlyAPIClient : FactoryAPIClientBase
 
 	public async Task<bool> DeleteCard(BingoCardDTO cardToUpdate, Guid userID)
 	{
-		return await Delete<UpdateCardDetailsRequest, bool>($"{_config.BaseURL}/bingo/card",
+		return await Delete<UpdateCardDetailsRequest>($"{_config.BaseURL}/bingo/card",
 																		   new UpdateCardDetailsRequest()
 																		   {
 																			   CardDetails = cardToUpdate,

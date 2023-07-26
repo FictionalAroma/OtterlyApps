@@ -33,6 +33,7 @@ import { BingoSessionSlotComponent } from './bingo/bingo-session-slot/bingo-sess
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { BingoActiveGameStatsComponent } from './bingo/bingo-active-game-stats/bingo-active-game-stats.component';
+import { TwitchigotchiPageComponent } from './twitchigotchi/twitchigotchi-page/twitchigotchi-page.component';
 
 @NgModule({
     declarations: [
@@ -47,7 +48,8 @@ import { BingoActiveGameStatsComponent } from './bingo/bingo-active-game-stats/b
         BingoActiveGameComponent,
         BingoSessionStatsComponent,
         BingoSessionSlotComponent,
-        BingoActiveGameStatsComponent
+        BingoActiveGameStatsComponent,
+        TwitchigotchiPageComponent
     ],
     providers: [ LoginManagerService,BingoCardService],
     bootstrap: [AppComponent],

@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -46,7 +47,7 @@ namespace Otterly.API.ClientLib
 			}
 
 			var responceData = await responseObject.Content.ReadAsStringAsync();
-			throw new HttpRequestException(responceData);
+			throw new HttpRequestException(responceData, null, responseObject.StatusCode);
 		}
 
 
@@ -84,13 +85,21 @@ namespace Otterly.API.ClientLib
             return ProcessRequest<TOut>(http);
 		}
 
-		public virtual Task<TOut> Delete<TRequest, TOut>(string url, TRequest request)
+		public async virtual Task<bool> Delete<TRequest>(string url, TRequest request)
 		{
-			var http = new HttpRequestMessage(HttpMethod.Delete, url)
-					   {
-						   Content = new StringContent(JsonConvert.SerializeObject(request))
-					   };
-			return ProcessRequest<TOut>(http);
+			try
+			{
+				var http = new HttpRequestMessage(HttpMethod.Delete, url)
+						   {
+							   Content = new StringContent(JsonConvert.SerializeObject(request))
+						   };
+				await ProcessRequest(http);
+			}
+			catch
+			{
+				return false;
+			}
+			return true;
 		}
 
 	}

@@ -1,6 +1,6 @@
 <mat-tab-group dynamicHeight>
-  <mat-tab label="Active Game"><app-bingo-active-game></app-bingo-active-game></mat-tab>
-  <mat-tab label="Game Setup"> <app-bingo-card-list-view></app-bingo-card-list-view> </mat-tab>
+  <mat-tab label="Active Game"><app-bingo-active-game [userCards]="this.userCards"></app-bingo-active-game></mat-tab>
+  <mat-tab label="Game Setup"> <app-bingo-card-list-view [userCards]="this.userCards" (newCardEvent)="addNewCard($event)" (deleteCardEvent)="deleteCard($event)" (saveCardEvent)="saveCardDetails($event)"></app-bingo-card-list-view> </mat-tab>
   <mat-tab label="Game History">Show History</mat-tab>
 </mat-tab-group>
 
