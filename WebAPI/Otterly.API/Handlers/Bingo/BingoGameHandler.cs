@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Bson.Serialization.Serializers;
+using Microsoft.Extensions.Http;
 using Otterly.API.ClientLib;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;
+using Otterly.API.ExternalAPI;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
@@ -20,7 +20,10 @@ public class BingoGameHandler : IBingoGameHandler
 	private readonly OtterlyAppsContext _context;
 	private readonly IBingoSessionService _sessionService;
 	private readonly IPlayerCardDataService _ticketService;
-	public BingoGameHandler(OtterlyAppsContext context, IBingoSessionService sessionService, IPlayerCardDataService ticketService)
+
+	public BingoGameHandler(OtterlyAppsContext context, 
+							IBingoSessionService sessionService, 
+							IPlayerCardDataService ticketService)
 	{
 		_context = context;
 		_sessionService = sessionService;
@@ -70,11 +73,17 @@ public class BingoGameHandler : IBingoGameHandler
 		}
 
 		var randomiser = new Random();
-		var randomisedSlots = session.SessionItems.OrderBy(_ => randomiser.Next()).Take(totalNumberSpots);
-
+		var randomisedSlots = session.SessionItems.OrderBy(_ => randomiser.Next()).Take(totalNumberSpots).ToList();
 		if (session.Id != null)
 		{
-			var ticket = await _ticketService.CreatePlayerTicket(playerTwitchID, session.Id, GameMapper.Map(randomisedSlots));
+			var playeritems = GameMapper.Map(randomisedSlots).ToList();
+			if (session.FreeSpace)
+			{
+				playeritems.Insert(randomisedSlots.Count / 2, PlayerTicketItem.CreateFreeSpace(session.Id));
+			}
+
+
+			var ticket = await _ticketService.CreatePlayerTicket(playerTwitchID, session.Id, playeritems);
 			session.Meta.NumberTickets++;
 			await _sessionService.UpdateAsync(session.Id, session);
 			return ticket;
@@ -99,11 +108,10 @@ public class BingoGameHandler : IBingoGameHandler
 			return response;
 		}
 
-		slot.Selected = true;
+		slot.Selected = !slot.Selected;
 		await _ticketService.UpdateAsync(ticket.Id, ticket);
 		return response;
 	}
-
 
 	public async Task<BaseResponse> VerifySessionItem(BingoSession session, int requestItemIndex, bool requestState)
 	{
@@ -124,6 +132,7 @@ public class BingoGameHandler : IBingoGameHandler
 		await _sessionService.UpdateAsync(session.Id, session);
 
 		response = await MarkAllSessionTicketItemsVerified(slot);
+
 		return response;
 	}
 
@@ -190,7 +199,6 @@ public class BingoGameHandler : IBingoGameHandler
 
 		return session?.Meta;
 	}
-
 
 	#endregion
 }

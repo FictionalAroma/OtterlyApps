@@ -9,16 +9,15 @@
 
   <ItemGroup>
     <Folder Include="ExternalAPI\Interfaces\" />
+    <Folder Include="ExternalAPI\Objects\" />
     <Folder Include="Migrations\" />
     <Folder Include="ManualMapper\" />
+    <Folder Include="ExtensionMethods\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.2.0" />
     <PackageReference Include="Auth0Net.DependencyInjection" Version="3.0.0" />
-    <PackageReference Include="AutoMapper.Collection" Version="9.0.0" />
-    <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="9.0.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.19" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.18">
@@ -27,6 +26,7 @@
     </PackageReference>
     <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="TwitchLib.Api" Version="3.9.0" />
   </ItemGroup>
 
   <ItemGroup>
