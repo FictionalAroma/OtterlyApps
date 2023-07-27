@@ -22,8 +22,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatInputModule} from '@angular/material/input';
-import {FormsModule} from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import { NavbarTopComponent } from './navbar/navbar-top/navbar-top.component';
 import { BingoGamePageComponent } from './bingo/bingo-game-page/bingo-game-page.component';
 import { BingoActiveGameComponent } from './bingo/bingo-active-game/bingo-active-game.component';
@@ -34,6 +34,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { BingoActiveGameStatsComponent } from './bingo/bingo-active-game-stats/bingo-active-game-stats.component';
 import { TwitchigotchiPageComponent } from './twitchigotchi/twitchigotchi-page/twitchigotchi-page.component';
+import { BingoGameService } from 'src/services/bingo-game.service';
 
 @NgModule({
     declarations: [
@@ -51,7 +52,8 @@ import { TwitchigotchiPageComponent } from './twitchigotchi/twitchigotchi-page/t
         BingoActiveGameStatsComponent,
         TwitchigotchiPageComponent
     ],
-    providers: [ LoginManagerService,BingoCardService],
+    providers: [ LoginManagerService,BingoCardService, BingoGameService,
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { subscriptSizing: 'dynamic' } }],
     bootstrap: [AppComponent],
     imports: [
         BrowserModule,
@@ -73,7 +75,8 @@ import { TwitchigotchiPageComponent } from './twitchigotchi/twitchigotchi-page/t
         MatTabsModule,
         MatSelectModule,
         MatCheckboxModule,
-        MatGridListModule
+        MatGridListModule,
+        ReactiveFormsModule
     ]
 })
 export class AppModule { }

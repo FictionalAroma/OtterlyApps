@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { BingoCardDTOImp } from 'api/bingoApiImp';
 import { BingoCardDTO } from 'api/otterlyapi';
-import { BingoCardService } from 'src/services/bingo-card.service';
 
 
 @Component({
@@ -11,32 +11,25 @@ import { BingoCardService } from 'src/services/bingo-card.service';
 export class BingoCardListViewComponent {
 
   @Input()
-  userCards : BingoCardDTO[] | undefined;
+  userCards : BingoCardDTOImp[] | undefined;
 
-  @Output() newCardEvent = new EventEmitter<BingoCardDTO>();
-  @Output() deleteCardEvent = new EventEmitter<BingoCardDTO>();
-  @Output() saveCardEvent = new EventEmitter<BingoCardDTO>();
+  @Output() newCardEvent = new EventEmitter<BingoCardDTOImp>();
+  @Output() deleteCardEvent = new EventEmitter<BingoCardDTOImp>();
+  @Output() saveCardEvent = new EventEmitter<BingoCardDTOImp>();
 
   ngOnInit()
   {
   }
 
-  saveCardDetails(updatedCard: BingoCardDTO) {
+  saveCardDetails(updatedCard: BingoCardDTOImp) {
     this.saveCardEvent.emit(updatedCard);
   }
   addNewCard() {
-    let newCard :BingoCardDTO = {
-      cardID: undefined,
-      cardName: "Card for Streaming",
-      cardSize: 5,
-      freeSpace: true,
-      titleText: "My Awesome Card!",
-      slots:[],
-    }
+    let newCard :BingoCardDTOImp = new BingoCardDTOImp();
     this.newCardEvent.emit(newCard);
   }
 
-  deleteCard(updatedCard: BingoCardDTO)
+  deleteCard(updatedCard: BingoCardDTOImp)
   {
     this.deleteCardEvent.emit(updatedCard)
   }

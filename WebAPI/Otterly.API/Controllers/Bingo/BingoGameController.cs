@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Http;
@@ -59,7 +60,7 @@ public class BingoGameController : ControllerBase
 
 
 	[HttpPost]
-	[Authorize(AuthenticationSchemes = Constants.TwitchAuthPolicyName)]
+	[Authorize(AuthenticationSchemes = $"{Constants.TwitchAuthPolicyName}, {Constants.Auth0PolicyName}")]
 	[Route("verifyItem")]
 	public async Task<IActionResult> VerifyItemInSession(VerifyItemRequest request)
 	{

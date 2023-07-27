@@ -68,9 +68,9 @@ public class OtterlyAPIClient : FactoryAPIClientBase
 	{
 		return await Get<BingoSessionDTO?>(($"{_config.BaseURL}/bingo/game/getSessionForUser?userid={userID}"));
 	}
-	public async Task<BingoSessionDTO?> CreateGameSession(Guid userID, int cardID)
+	public async Task<CreateSessionResponse> CreateGameSession(Guid userID, int cardID)
 	{
-		return await Post<CreateSessionRequest, BingoSessionDTO?>(($"{_config.BaseURL}/bingo/game/startnew"), new CreateSessionRequest()
+		return await Post<CreateSessionRequest, CreateSessionResponse>(($"{_config.BaseURL}/bingo/game/startnew"), new CreateSessionRequest()
 																	  {
 																		  UserID = userID,
 																		  CardID = cardID

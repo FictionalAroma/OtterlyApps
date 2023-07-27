@@ -1,23 +1,17 @@
 import { BingoCardDTO, BingoSlotDTO } from 'api/otterlyapi';
 import { Component, Input } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
+import { BingoCardDTOImp } from 'api/bingoApiImp';
 
 @Component({
   selector: 'app-bingo-card-display',
   templateUrl: './bingo-card-display.component.html',
-  styleUrls: ['./bingo-card-display.component.scss']
+  styleUrls: ['./bingo-card-display.component.scss', '../bingo-display.scss']
 })
 export class BingoCardDisplayComponent {
-  @Input() card : BingoCardDTO = {
-    cardID: 0,
-    cardName: '',
-    titleText: '',
-    cardSize: 0,
-    freeSpace: false,
-    slots: []
-  };
-  @Output() cardSaveEvent = new EventEmitter<BingoCardDTO>;
-  @Output() cardDeleteEvent = new EventEmitter<BingoCardDTO>;
+  @Input() card : BingoCardDTOImp = new BingoCardDTOImp();
+  @Output() cardSaveEvent = new EventEmitter<BingoCardDTOImp>;
+  @Output() cardDeleteEvent = new EventEmitter<BingoCardDTOImp>;
   private cachedCard : BingoCardDTO = {
     cardID: 0,
     cardName: '',
@@ -38,13 +32,13 @@ export class BingoCardDisplayComponent {
   public startEdit()
   {
     this.isEditing = true;
-    this.cachedCard = {...this.card};
+    this.cachedCard = JSON.parse(JSON.stringify(this.card));
   }
 
   public discardChanges()
   {
     this.isEditing = false;
-    this.card = {...this.cachedCard};
+    this.card = new BingoCardDTOImp(JSON.parse(JSON.stringify(this.cachedCard)));
   }
 
   public saveChanges()
@@ -80,6 +74,7 @@ export class BingoCardDisplayComponent {
       slotIndex: newIndex,
       cardID: this.card.cardID == undefined ? 0 : this.card.cardID,
       displayText: "",
+      deleted: false,
     }
     this.card.slots.push({...slot})
   }

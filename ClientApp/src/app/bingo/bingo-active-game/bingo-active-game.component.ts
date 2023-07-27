@@ -2,7 +2,8 @@ import { BingoCardService } from 'src/services/bingo-card.service';
 import { Component, Input } from '@angular/core';
 import { BingoSessionDTO, BingoCardDTO, BaseResponse, BingoSessionMetaDTO } from 'api/otterlyapi';
 import { BingoGameService } from 'src/services/bingo-game.service';
-
+import {FormControl, Validators, FormGroup} from '@angular/forms';
+import { BingoCardDTOImp } from 'api/bingoApiImp';
 
 @Component({
   selector: 'app-bingo-active-game',
@@ -14,10 +15,13 @@ export class BingoActiveGameComponent {
   public sessionMeta: BingoSessionMetaDTO | undefined
 
   @Input()
-  public userCards : BingoCardDTO[] | undefined;
+  public userCards : BingoCardDTOImp[] | undefined;
   public selectedCardID : number = 0;
-  constructor(public bingoGame : BingoGameService, private cardService : BingoCardService){
-  }
+
+  public createGameGroup = new FormGroup({
+    cardSelect: new FormControl(undefined, [Validators.required])
+  });
+  constructor(public bingoGame : BingoGameService, private cardService : BingoCardService){  }
 
   ngOnInit()
   {
@@ -37,7 +41,7 @@ export class BingoActiveGameComponent {
 
   createSession(cardId: number)
   {
-    this.bingoGame.createSessionObservable(cardId).subscribe((session : BingoSessionDTO) => this.gameSession = session)
+    this.bingoGame.createSessionObservable(cardId).subscribe((session : BingoSessionDTO) => this.gameSession = {...session})
   }
 endSession(sessionID : string)
 {

@@ -3,18 +3,19 @@
     <mat-card>
         <mat-card-header>
             <mat-card-title>{{this.gameSession.cardTitle}}</mat-card-title>
-            <mat-card-subtitle>Subtitle</mat-card-subtitle>
         </mat-card-header>
+        <mat-card-actions align="start">
+          <button mat-flat-button color="warn" (click)="this.endSession(this.gameSession.sessionID)">End Session</button>
+        </mat-card-actions>
+
         <mat-card-content>
-            Slots To Verify
-            <app-bingo-session-slot [gameService]="this.bingoGame" [session]="this.gameSession"></app-bingo-session-slot>
+          <mat-card-subtitle>Slots To Verify</mat-card-subtitle>
+
+            <app-bingo-session-slot [gameService]="this.bingoGame" [session]="this.gameSession" class="verify-list"></app-bingo-session-slot>
               Session Stats
               <app-bingo-active-game-stats [meta]="this.sessionMeta"></app-bingo-active-game-stats>
 
         </mat-card-content>
-        <mat-card-actions align="start">
-            <button mat-flat-button color="warn" (click)="this.endSession(this.gameSession.sessionID)">End Session</button>
-          </mat-card-actions>
     </mat-card>
 
 
@@ -24,13 +25,18 @@
 
 
   <ng-template #newSession>
-    <mat-form-field>
+    <div [formGroup] = "createGameGroup">
+    <mat-form-field >
       <mat-label>Select card to Create</mat-label>
-      <mat-select [(value)]="selectedCardID" >
-        <mat-option *ngFor="let card of this.userCards" [value]="card.cardID">
-          {{card.titleText}}
-        </mat-option>
+      <mat-select [(value)]="selectedCardID" formControlName="cardSelect" required>
+        <ng-container *ngFor="let card of this.userCards">
+          <mat-option *ngIf="card.isCardValid()" [value]="card.cardID" >
+            {{card.titleText}}
+          </mat-option>
+          </ng-container>
       </mat-select>
+      <mat-error *ngIf="createGameGroup.controls.cardSelect.invalid"></mat-error>
     </mat-form-field>
-      <button mat-flat-button color="primary" (click)="this.createSession(this.selectedCardID)">Create</button>
+      <button mat-flat-button color="primary" [disabled]="createGameGroup.controls.cardSelect.invalid" (click)="this.createSession(this.selectedCardID)">Create</button>
+      </div>
   </ng-template>

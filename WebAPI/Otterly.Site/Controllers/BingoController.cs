@@ -107,7 +107,7 @@ namespace Otterly.Site.Controllers
 				var client = await GenerateClientAsync();
 				var userID = UserID;
 				var result = await client.CreateGameSession(UserID, cardID);
-				return Ok(result);
+				return result.Success ? Ok(result.CreatedSession) : StatusCode(500, result);
 			}
 
 			catch (Exception e)
