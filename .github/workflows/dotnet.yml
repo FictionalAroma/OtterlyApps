@@ -8,7 +8,9 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
+defaults:
+  run:
+    working-directory: webapi
 jobs:
   build:
 
@@ -21,8 +23,8 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore webapi
+      run: dotnet restore
     - name: Build
-      run: dotnet build WebApi/OtterTwitchApps.sln --no-restore
+      run: dotnet build --no-restore
     - name: Test
-      run: dotnet test WebApi/OtterTwitchApps.sln --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal
