@@ -21,7 +21,7 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore WebApi/OtterTwitchApps.sln
+      run: dotnet restore webapi/ottertwitchapps.sln
     - name: Build
       run: dotnet build WebApi/OtterTwitchApps.sln --no-restore
     - name: Test
