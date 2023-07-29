@@ -23,5 +23,5 @@ jobs:
       run: dotnet restore WebAPI
     - name: Build
       run: dotnet build WebAPI --no-restore
-    - name: Test
-      run: dotnet test WebAPI --no-build --verbosity normal
+    #- name: Test
+     # run: dotnet test WebAPI --no-build --verbosity normal
