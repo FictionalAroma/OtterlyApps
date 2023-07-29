@@ -23,10 +23,9 @@ public class CardHandler : ICardHandler
     public async Task<List<BingoCardDTO>> GetCardsForUser(Guid userID)
     {
         var card = await _context.BingoCards.
-                                  AsNoTracking().
                                   Where(card => card.UserID == userID && !card.Deleted)
-                                  .Include(bingoCard => bingoCard.Slots)
-                                  .ToListAsync();
+                                  .Include(bingoCard => bingoCard.Slots.Where(slot => !slot.Deleted))
+								  .ToListAsync();
 
         return BingoMapper.Map(card);
     }
@@ -34,11 +33,10 @@ public class CardHandler : ICardHandler
     public async Task<BingoCardDTO?> GetCardDetail(int cardID, Guid requestUserID)
 	{
 		var foundCard = await _context.BingoCards
-									  .AsNoTracking()
-									  .Include(card => card.Slots)
+									  .Include(card => card.Slots.Where(slot => !slot.Deleted))
 									  .FirstOrDefaultAsync(card => card.CardID == cardID &&
-																  card.UserID == requestUserID &&
-																  !card.Deleted);
+																   card.UserID == requestUserID &&
+																   !card.Deleted);
         return foundCard == null ? null : BingoMapper.Map(foundCard);
 	}
 
@@ -63,7 +61,7 @@ public class CardHandler : ICardHandler
 			var slot = foundCard.Slots.FirstOrDefault(slot => dto.SlotIndex == slot.SlotIndex);
 			if (slot != null)
 			{
-				slot = BingoMapper.Map(dto);
+				slot.Map(dto);
 			}
 			else
 			{
@@ -76,11 +74,7 @@ public class CardHandler : ICardHandler
 		await _context.SaveChangesAsync();
 		await _context.Entry(foundCard).ReloadAsync();
 
-		var endResultCard = BingoMapper.Map(foundCard);
-        await _context.SaveChangesAsync();
-
-
-        return endResultCard;
+        return BingoMapper.Map(foundCard);;
     }
 
 	private async Task<BingoCard?> FindCard(Guid requestUserID, BingoCardDTO cardDTO)

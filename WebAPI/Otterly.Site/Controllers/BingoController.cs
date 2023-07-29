@@ -71,7 +71,7 @@ namespace Otterly.Site.Controllers
 				var client = await GenerateClientAsync();
 
 				var result = await client.DeleteCard(cardToUpdate, UserID);
-				return result ? Ok() : StatusCode(500);
+				return result ? Ok(true) : StatusCode(500);
 			}
 
 			catch (Exception e)
@@ -107,7 +107,7 @@ namespace Otterly.Site.Controllers
 				var client = await GenerateClientAsync();
 				var userID = UserID;
 				var result = await client.CreateGameSession(UserID, cardID);
-				return Ok(result);
+				return result.Success ? Ok(result.CreatedSession) : StatusCode(500, result);
 			}
 
 			catch (Exception e)

@@ -1,8 +1,9 @@
 import { BingoCardService } from 'src/services/bingo-card.service';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BingoSessionDTO, BingoCardDTO, BaseResponse, BingoSessionMetaDTO } from 'api/otterlyapi';
 import { BingoGameService } from 'src/services/bingo-game.service';
-
+import {FormControl, Validators, FormGroup} from '@angular/forms';
+import { BingoCardDTOImp } from 'api/bingoApiImp';
 
 @Component({
   selector: 'app-bingo-active-game',
@@ -12,28 +13,35 @@ import { BingoGameService } from 'src/services/bingo-game.service';
 export class BingoActiveGameComponent {
   public gameSession: BingoSessionDTO | undefined
   public sessionMeta: BingoSessionMetaDTO | undefined
-  public userCards : BingoCardDTO[] | undefined;
+
+  @Input()
+  public userCards : BingoCardDTOImp[] | undefined;
   public selectedCardID : number = 0;
-  constructor(public bingoGame : BingoGameService, private cardService : BingoCardService){
-  }
+
+  public createGameGroup = new FormGroup({
+    cardSelect: new FormControl(undefined, [Validators.required])
+  });
+  constructor(public bingoGame : BingoGameService, private cardService : BingoCardService){  }
 
   ngOnInit()
   {
     this.bingoGame.getCurrentSessionObservable().subscribe((session : BingoSessionDTO) => this.updateSessionData(session))
-    this.cardService.getCardsObservable().subscribe((cards : Array<BingoCardDTO>) => this.userCards = Array.from(cards))
 
   }
 
   updateSessionData(session : BingoSessionDTO)
   {
     this.gameSession = session;
-    this.bingoGame.sessionMetaObservable(session.sessionID).subscribe((meta : BingoSessionMetaDTO) => this.sessionMeta = meta);
+    if(this.gameSession != null)
+    {
+      this.bingoGame.sessionMetaObservable(session.sessionID).subscribe((meta : BingoSessionMetaDTO) => this.sessionMeta = meta);
+    }
 
   }
 
   createSession(cardId: number)
   {
-    this.bingoGame.createSessionObservable(cardId).subscribe((session : BingoSessionDTO) => this.gameSession = session)
+    this.bingoGame.createSessionObservable(cardId).subscribe((session : BingoSessionDTO) => this.gameSession = {...session})
   }
 endSession(sessionID : string)
 {

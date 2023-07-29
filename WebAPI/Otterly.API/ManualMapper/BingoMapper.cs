@@ -7,7 +7,7 @@ namespace Otterly.API.ManualMapper;
 public static class BingoMapper
 {
 	public static BingoCard Map(BingoCardDTO dto)
-    {
+	{
         return new BingoCard
         {
             CardID = dto.CardID.GetValueOrDefault(),
@@ -17,7 +17,7 @@ public static class BingoMapper
             FreeSpace = dto.FreeSpace,
             Slots = dto.Slots.ConvertAll(Map)
         };
-    }
+	}
 
 	public static BingoCardDTO Map(BingoCard entity)
     {
@@ -32,8 +32,9 @@ public static class BingoMapper
             {
                 SlotIndex = entitySlot.SlotIndex,
                 CardID = entitySlot.CardID,
-                DisplayText = entitySlot.DisplayText
-            })
+                DisplayText = entitySlot.DisplayText,
+                Deleted = entitySlot.Deleted,
+			})
         };
     }
 
@@ -43,12 +44,22 @@ public static class BingoMapper
     }
 
 	public static BingoSlot Map(BingoSlotDTO bingoSlotDTO)
-    {
-        return new BingoSlot
-        {
-            SlotIndex = bingoSlotDTO.SlotIndex,
-            CardID = bingoSlotDTO.CardID,
-            DisplayText = bingoSlotDTO.DisplayText
-        };
+	{
+		return new BingoSlot
+			   {
+				   SlotIndex = bingoSlotDTO.SlotIndex,
+				   CardID = bingoSlotDTO.CardID,
+				   DisplayText = bingoSlotDTO.DisplayText
+			   };
     }
+
+	public static BingoSlot Map(this BingoSlot slotToUpdate, BingoSlotDTO bingoSlotDTO)
+	{
+		slotToUpdate.SlotIndex = bingoSlotDTO.SlotIndex;
+		slotToUpdate.CardID = bingoSlotDTO.CardID;
+		slotToUpdate.DisplayText = bingoSlotDTO.DisplayText;
+		slotToUpdate.Deleted = bingoSlotDTO.Deleted;
+		return slotToUpdate;
+	}
+
 }

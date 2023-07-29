@@ -51,7 +51,7 @@ public class OtterlyAPIClient : FactoryAPIClientBase
 
 	public async Task<bool> DeleteCard(BingoCardDTO cardToUpdate, Guid userID)
 	{
-		return await Delete<UpdateCardDetailsRequest, bool>($"{_config.BaseURL}/bingo/card",
+		return await Delete<UpdateCardDetailsRequest>($"{_config.BaseURL}/bingo/card",
 																		   new UpdateCardDetailsRequest()
 																		   {
 																			   CardDetails = cardToUpdate,
@@ -68,9 +68,9 @@ public class OtterlyAPIClient : FactoryAPIClientBase
 	{
 		return await Get<BingoSessionDTO?>(($"{_config.BaseURL}/bingo/game/getSessionForUser?userid={userID}"));
 	}
-	public async Task<BingoSessionDTO?> CreateGameSession(Guid userID, int cardID)
+	public async Task<CreateSessionResponse> CreateGameSession(Guid userID, int cardID)
 	{
-		return await Post<CreateSessionRequest, BingoSessionDTO?>(($"{_config.BaseURL}/bingo/game/startnew"), new CreateSessionRequest()
+		return await Post<CreateSessionRequest, CreateSessionResponse>(($"{_config.BaseURL}/bingo/game/startnew"), new CreateSessionRequest()
 																	  {
 																		  UserID = userID,
 																		  CardID = cardID

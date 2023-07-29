@@ -80,8 +80,8 @@ public static class HostingExtensions
 
 	public static WebApplicationBuilder ConfigureAuthentication(this WebApplicationBuilder builder)
 	{
-		builder.Services.AddAuthentication(Auth0Constants.AuthenticationScheme)
-			   .AddJwtBearer(Auth0Constants.AuthenticationScheme, options =>
+		builder.Services.AddAuthentication(Constants.Auth0PolicyName)
+			   .AddJwtBearer(Constants.Auth0PolicyName, options =>
 			   {
 				   var domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
 

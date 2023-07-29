@@ -55,10 +55,10 @@ namespace Otterly.API.Controllers.Bingo
 		[HttpDelete]
 		public async Task<IActionResult> DeleteCard(UpdateCardDetailsRequest request)
 		{
-			var details = await _cardHandler.DeleteCard( request.UserID, request.CardDetails);
-			return details
-					   ? StatusCode(500, new BaseResponse("Unable To Delete Card"))
-					   : Ok();
+			var success = await _cardHandler.DeleteCard( request.UserID, request.CardDetails);
+			return success
+					   ? Ok()
+					   : StatusCode(500, new BaseResponse("Unable To Delete Card"));
 		}
 	}
 }

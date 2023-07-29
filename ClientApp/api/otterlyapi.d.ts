@@ -22,12 +22,14 @@ export interface BingoCardDTO {
   cardSize: number;
   freeSpace: boolean;
   slots: BingoSlotDTO[];
+
 }
 
 export interface BingoSlotDTO {
   slotIndex: number;
   cardID: number;
   displayText: string;
+  deleted: boolean;
 }
 
 export interface OtterlyAppsUserDTO {

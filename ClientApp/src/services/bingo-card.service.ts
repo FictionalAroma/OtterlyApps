@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BaseResponse, BingoCardDTO, BingoSessionDTO } from 'api/otterlyapi';
 import { HttpHeaders } from '@angular/common/http';
+import { BingoCardDTOImp } from 'api/bingoApiImp';
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type':'application/json',}),
   body: ""
@@ -24,8 +25,8 @@ export class BingoCardService {
     this.http.post("bff/bingo/UpdateCard", JSON.stringify(cardUpdate), httpOptions).subscribe();
   }
 
-  addCard(newCard: BingoCardDTO) {
-    return this.http.put<BingoCardDTO>("bff/bingo/AddCard",JSON.stringify(newCard), httpOptions )
+  addCard(newCard: BingoCardDTOImp) {
+    return this.http.put<BingoCardDTOImp>("bff/bingo/AddCard",JSON.stringify(newCard), httpOptions )
   }
   delete(newCard: BingoCardDTO) {
 
