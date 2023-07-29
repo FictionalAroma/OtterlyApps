@@ -20,8 +20,8 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ${{ github.workspace }}/webapi
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build ${{ github.workspace }}/webapi --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ${{ github.workspace }}/webapi --no-build --verbosity normal
