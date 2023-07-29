@@ -17,5 +17,5 @@ jobs:
           ls ${{ github.workspace }}
       - name: List subfiles in the repository
         run: |
-          ls ${{ github.workspace }}/webapi
+          ls ${{ github.workspace }}/WebAPI
       - run: echo "🍏 This job's status is ${{ job.status }}."
