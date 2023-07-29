@@ -13,7 +13,7 @@ export default function SessionItem({sessionItem, onCheckedCallback}) {
         <Card>
         <Card.Body className={`${sessionItem.verified ? "selected" : ""}`}>
         <Card.Title>{sessionItem.displayText}</Card.Title>
-        <Button variant="primary" onClick={()=>updateSelected()}>{`${sessionItem.verified ? "Verify" : "UnVerify"}`}</Button>
+        <Button variant="primary" onClick={()=>updateSelected()}>{`${sessionItem.verified ? "UnVerify" : "Verify"}`}</Button>
         </Card.Body>
         </Card>
 

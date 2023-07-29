@@ -13,6 +13,8 @@ export default function CardGrid({ticket, size, cellSelectedCallback}) {
         rows.push(ticket.slots.slice(i, i+size))
       }
 
+      let className = `row bingo-row size-${size}`
+      let md = `{${size}}`
       const gridContents = rows.map((row, index)=> 
       {
         const rowContents = row.map((cell)=>
@@ -20,16 +22,16 @@ export default function CardGrid({ticket, size, cellSelectedCallback}) {
               <CardSlot passedCell={cell} onSelectCallback={cellSelectedCallback}></CardSlot>
           </Col>
             );
-          return <Row key={index} className='bingo-row'>{rowContents}</Row>
+          return <Row key={index} className={className} md={md}>{rowContents}</Row>
         }
       )
 
   
 
     return (
-      <>
+      <div className='bingo-grid'>
         {gridContents}
-      </>
+      </div>
     );
 
   }

@@ -1,6 +1,6 @@
-import { Tabs, Tab, TabContainer } from "react-bootstrap"
+import { Tabs, Tab } from "react-bootstrap"
 import PlayerTab from "./playerTab"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import SessionControl from "./streameradmin/sessionControl";
 import "../App.scss"
 
@@ -97,14 +97,25 @@ export default function BingoApp({api})
   
      
 
-    if(ticket == null || session == null)
+    if(ticket == null && session == null)
     {
         return <h1>Loading....</h1>
     }
 
 
     
-    const playerTab = <PlayerTab className="h-100 d-inline-block row" api={api} ticket={ticket} session={session} ticketCreateCallback={(ticket) => ticketRef.current = ticket} cellSelectedCallback={cellSelected}></PlayerTab>;
+    const playerTab = 
+        <PlayerTab 
+            className="tab-content h-100 d-inline-block row" 
+            api={api} 
+            ticket={ticket} 
+            session={session} 
+            ticketCreateCallback={(ticket) => {
+                                                ticketRef.current = ticket;
+                                                updateStateFromRef()
+                                            } }
+            cellSelectedCallback={cellSelected}>
+        </PlayerTab>;
     const user = api.user();
     if(session != null && (user.userRole === 2 || user.userRole === 3))
     {
