@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using LDSoft.APIClient;
 using Otterly.API.ClientLib.Account;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;

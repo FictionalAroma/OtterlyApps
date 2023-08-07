@@ -1,4 +1,4 @@
-﻿namespace Otterly.API.ClientLib;
+﻿namespace LDSoft.APIClient;
 
 public class BaseResponse
 {
@@ -10,7 +10,7 @@ public class BaseResponse
 		SetError(error);
 	}
 	public bool Success { get; set; } = true;
-	public string Error { get; set; }
+	public string Error { get; set; } = string.Empty;
 
 	public void SetError(string newError)
 	{

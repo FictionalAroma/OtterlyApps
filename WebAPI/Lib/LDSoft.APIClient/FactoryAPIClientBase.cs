@@ -1,26 +1,23 @@
-﻿using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Headers;
 using Newtonsoft.Json;
 
-namespace Otterly.API.ClientLib
+namespace LDSoft.APIClient
 {
     public abstract class FactoryAPIClientBase
 	{
 		private readonly HttpClient _client;
-		public AuthenticationHeaderValue Authentication { get; set; }
+		public AuthenticationHeaderValue? Authentication { get; set; }
 
-		public FactoryAPIClientBase(HttpClient client)
+		protected FactoryAPIClientBase(HttpClient client)
 		{
 			_client = client;
 		}
 
-		public virtual Task<TOut> Get<TOut>(string url)
+		public virtual Task<TOut?> Get<TOut>(string url)
 		{
 			return ProcessRequest<TOut>(new HttpRequestMessage(HttpMethod.Get, url));
 		}
-		public virtual Task<TOut> Get<TRequest, TOut> (TRequest request, string url)
+		public virtual Task<TOut?> Get<TRequest, TOut> (TRequest request, string url)
 		{
 			var http = new HttpRequestMessage(HttpMethod.Get, url);
 			http.Content = new StringContent(JsonConvert.SerializeObject(request));
@@ -51,11 +48,10 @@ namespace Otterly.API.ClientLib
 		}
 
 
-        public virtual async Task<TOut> ProcessRequest<TOut>(HttpRequestMessage httpPayload)
+        public virtual async Task<TOut?> ProcessRequest<TOut>(HttpRequestMessage httpPayload)
 		{
 			var payload = await ProcessRequest(httpPayload);
-			return !string.IsNullOrEmpty(payload) ? JsonConvert.DeserializeObject<TOut>(payload) : default;
-
+			return string.IsNullOrEmpty(payload) ? JsonConvert.DeserializeObject<TOut>(payload) : default;
 		}
 
 		public virtual Task Post<TRequest>(string url, TRequest request)
@@ -68,7 +64,7 @@ namespace Otterly.API.ClientLib
 		}
 
 
-        public virtual Task<TOut> Post<TRequest, TOut>(string url, TRequest request)
+        public virtual Task<TOut?> Post<TRequest, TOut>(string url, TRequest request)
         {
             var http = new HttpRequestMessage(HttpMethod.Post, url)
             {
@@ -76,7 +72,7 @@ namespace Otterly.API.ClientLib
             };
             return ProcessRequest<TOut>(http);
         }
-		public virtual Task<TOut> Put<TRequest, TOut>(string url, TRequest request)
+		public virtual Task<TOut?> Put<TRequest, TOut>(string url, TRequest request)
 		{
             var http = new HttpRequestMessage(HttpMethod.Put, url)
             {

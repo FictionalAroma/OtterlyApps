@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Otterly.API.ClientLib;
+﻿namespace LDSoft.APIClient;
 
 public class BaseRequest
 {

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LDSoft.APIClient\LDSoft.APIClient.csproj" />
     <ProjectReference Include="..\Otterly.API.DataObjects\Otterly.API.DataObjects.csproj" />
   </ItemGroup>
 

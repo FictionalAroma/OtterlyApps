@@ -1,4 +1,5 @@
 using System.Net;
+using LDSoft.APIClient;
 using Microsoft.AspNetCore.Mvc;
 using Otterly.API.ClientLib;
 using Otterly.API.ClientLib.Bingo;
