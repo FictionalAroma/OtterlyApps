@@ -32,7 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Lib\Otterly.AWS\LDSoft.AWS.csproj" />
     <ProjectReference Include="..\Lib\Otterly.ClientLib\Otterly.API.ClientLib.csproj" />
+    <ProjectReference Include="..\Otterly.API\Otterly.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

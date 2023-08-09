@@ -29,7 +29,8 @@ if (app.Environment.IsDevelopment())
 
 if (builder.Environment.EnvironmentName == "AWS")
 {
-
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseCors();

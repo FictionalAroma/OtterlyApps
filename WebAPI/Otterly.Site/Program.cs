@@ -15,6 +15,10 @@ namespace Otterly.Site
             // Add services to the container.
 
             builder.Services.AddControllersWithViews().AddNewtonsoftJson();
+			if (builder.Environment.EnvironmentName == "AWS")
+			{
+				builder.ConfigureAWS();
+			}
 			builder.AddOtterlyAPIClient();
 			builder.Services.AddHttpClient();
 			builder.AddAuthentication();

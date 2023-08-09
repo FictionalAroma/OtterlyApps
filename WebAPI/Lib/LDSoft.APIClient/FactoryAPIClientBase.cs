@@ -51,7 +51,7 @@ namespace LDSoft.APIClient
         public virtual async Task<TOut?> ProcessRequest<TOut>(HttpRequestMessage httpPayload)
 		{
 			var payload = await ProcessRequest(httpPayload);
-			return string.IsNullOrEmpty(payload) ? JsonConvert.DeserializeObject<TOut>(payload) : default;
+			return !string.IsNullOrEmpty(payload) ? JsonConvert.DeserializeObject<TOut>(payload) : default;
 		}
 
 		public virtual Task Post<TRequest>(string url, TRequest request)

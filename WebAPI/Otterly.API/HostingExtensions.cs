@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Buffers.Text;
 using System.Security.Claims;
-using System.Text;
-using Auth0.AspNetCore.Authentication;
+using Amazon.Extensions.NETCore.Setup;
 using Auth0Net.DependencyInjection;
+using LDSoft.AWS;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +24,21 @@ namespace Otterly.API;
 
 public static class HostingExtensions
 {
+	public static WebApplicationBuilder ConfigureAWS(this WebApplicationBuilder builder)
+	{
+		var options = builder.Configuration.GenerateAWSOptionsWithCreds();
+		builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+		builder.Services.AddScoped(_ => options);
+
+		builder.Host.ConfigureAppConfiguration(((_, configurationBuilder) =>
+												   {
+													   configurationBuilder.AddAmazonSecretsManager(options, "eu-west-1", "Otterly/API/Config");
+												   }));
+
+		return builder;
+	}
+
+
 	public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
 	{
 		var config = builder.Configuration;
