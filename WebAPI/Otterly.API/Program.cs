@@ -1,11 +1,10 @@
 using System;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Otterly.API;
 
 var builder = WebApplication.CreateBuilder(args);
-if (builder.Environment.EnvironmentName == "AWS")
+if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AWS")))
 {
 	builder.ConfigureAWS();
 }
@@ -21,17 +20,8 @@ builder.ConfigureAuthentication();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-if (builder.Environment.EnvironmentName == "AWS")
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors();
 app.UseHttpsRedirection();

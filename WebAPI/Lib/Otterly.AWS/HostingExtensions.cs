@@ -2,6 +2,7 @@
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
+using LDSoft.AWS.RDSUtils;
 using Microsoft.Extensions.Configuration;
 
 namespace LDSoft.AWS
@@ -32,6 +33,16 @@ namespace LDSoft.AWS
 		{
 		
 			var configurationSource = new AmazonSecretsManagerConfigurationSource(awsOptions, region, secretName);
+
+			configurationBuilder.Add(configurationSource);
+		}
+		public static void AddAmazonSecretsManagerConnectString(this IConfigurationBuilder configurationBuilder,
+												   AWSOptions awsOptions,
+												   string region,
+												   string secretName)
+		{
+		
+			var configurationSource = new AmazonSecretsManagerConnectionStringConfigurationSource(awsOptions, region, secretName);
 
 			configurationBuilder.Add(configurationSource);
 		}

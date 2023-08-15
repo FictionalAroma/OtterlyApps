@@ -1,4 +1,5 @@
 
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,7 +16,7 @@ namespace Otterly.Site
             // Add services to the container.
 
             builder.Services.AddControllersWithViews().AddNewtonsoftJson();
-			if (builder.Environment.EnvironmentName == "AWS")
+			if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AWS")))
 			{
 				builder.ConfigureAWS();
 			}

@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Otterly.Database.UserData.DataObjects
 {
+	[Table("otterlyappsusers")]
 	public class OtterlyAppsUser
 	{
 		[Key]

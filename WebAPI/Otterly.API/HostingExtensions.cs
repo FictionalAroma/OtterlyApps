@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Security.Claims;
-using Amazon.Extensions.NETCore.Setup;
 using Auth0Net.DependencyInjection;
 using LDSoft.AWS;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
+using MySql.Data.MySqlClient;
 using Otterly.API.Handlers;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.Database.ActivityData.Bingo.Services;
@@ -32,7 +33,20 @@ public static class HostingExtensions
 
 		builder.Host.ConfigureAppConfiguration(((_, configurationBuilder) =>
 												   {
-													   configurationBuilder.AddAmazonSecretsManager(options, "eu-west-1", "Otterly/API/Config");
+													   var secrets = builder.Configuration.GetSection("AWSConfig:SecretNames")
+																			.Get<string[]>();
+													   foreach (var s in secrets)
+													   {
+														   configurationBuilder.AddAmazonSecretsManager(options, options.Region.SystemName, s);
+													   }
+													   var connectionStrings = builder.Configuration.GetSection("AWSConfig:ConnectStringSecret")
+																			.Get<string[]>();
+													   foreach (var s in connectionStrings)
+													   {
+														   configurationBuilder.AddAmazonSecretsManagerConnectString(options, options.Region.SystemName, s);
+													   }
+
+
 												   }));
 
 		return builder;
@@ -79,12 +93,19 @@ public static class HostingExtensions
 
 	public static WebApplicationBuilder ConfigureDatabase(this WebApplicationBuilder builder)
 	{
-		var connectionString = builder.Configuration.GetConnectionString("LocalTest") ??
-							   throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+		var dbString = builder.Configuration["DatabaseToUse"];
+		var connectionString = builder.Configuration.GetConnectionString(dbString) ??
+							   throw new InvalidOperationException($"Connection string {dbString} not found.");
+
+		var connectionStringBuilder = new MySqlConnectionStringBuilder(connectionString);
 		builder.Services.AddDbContext<OtterlyAppsContext>(options =>
 		{
-			options.UseMySQL(connectionString,
-							 optionsBuilder => optionsBuilder.MigrationsAssembly("Otterly.API"));
+			options.UseMySQL(connectionString, optionsBuilder =>
+			{
+				optionsBuilder.MigrationsAssembly("Otterly.API");
+				
+			});
+
 		});
 
 		return builder;
@@ -125,8 +146,18 @@ public static class HostingExtensions
 	{
 
 		var mongoConfig = builder.Configuration.GetSection("MongoDBConfig").Get<MongoDBConfig>();
+
+		
+		var settings = MongoClientSettings.FromConnectionString(mongoConfig.ConnectionString);
+		// Set the ServerApi field of the settings object to Stable API version 1
+		settings.ServerApi = new ServerApi(ServerApiVersion.V1);
+		settings.RetryWrites = true;
+
+		settings.Credential = MongoCredential.CreateCredential("admin", mongoConfig.Username, mongoConfig.Password);
+		settings.UseTls = true;
+
 		builder.Services.AddSingleton(_ => mongoConfig);
-		builder.Services.AddSingleton(_ => new MongoClient(mongoConfig.ConnectionString));
+		builder.Services.AddSingleton(_ => new MongoClient(settings));
 
 		builder.Services.AddSingleton<IBingoSessionService, BingoSessionService>();
 		builder.Services.AddSingleton<IPlayerCardDataService, PlayerCardDataService>();

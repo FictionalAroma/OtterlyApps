@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>annotations</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +17,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LDSoft.APIClient\LDSoft.APIClient.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientWrappers\" />
   </ItemGroup>
 
 </Project>
