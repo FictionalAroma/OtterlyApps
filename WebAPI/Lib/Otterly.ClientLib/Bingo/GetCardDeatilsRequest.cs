@@ -1,4 +1,6 @@
-﻿namespace Otterly.API.ClientLib.Bingo;
+﻿using LDSoft.APIClient;
+
+namespace Otterly.API.ClientLib.Bingo;
 
 public class GetCardDeatilsRequest : BaseRequest
 {

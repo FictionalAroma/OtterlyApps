@@ -13,6 +13,7 @@ public class MongoServiceBase<T> : IMongoServiceBase<T> where T : MongoDataEntry
 
 	public MongoServiceBase(MongoDBConfig config, MongoClient client, string collectionName)
 	{
+
 		var dbConn = client.GetDatabase(config.DatabaseName);
 		Collection = dbConn.GetCollection<T>(collectionName);
 	}

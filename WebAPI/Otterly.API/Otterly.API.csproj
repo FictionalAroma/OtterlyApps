@@ -6,12 +6,14 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <UserSecretsId>cb38e3c1-997b-4a13-933d-f57ec8aaac83</UserSecretsId>
     <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <AssemblyVersion>0.1.1</AssemblyVersion>
+    <FileVersion>0.1.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="ExternalAPI\Interfaces\" />
     <Folder Include="ExternalAPI\Objects\" />
-    <Folder Include="Migrations\" />
     <Folder Include="ManualMapper\" />
     <Folder Include="ExtensionMethods\" />
   </ItemGroup>
@@ -25,12 +27,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="TwitchLib.Api" Version="3.9.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Lib\Otterly.AWS\LDSoft.AWS.csproj" />
     <ProjectReference Include="..\Lib\Otterly.ClientLib\Otterly.API.ClientLib.csproj" />
     <ProjectReference Include="..\Lib\Otterly.Database.Mongo\Otterly.Database.ActivityData.csproj" />
     <ProjectReference Include="..\Lib\Otterly.Database\Otterly.Database.UserData.csproj" />

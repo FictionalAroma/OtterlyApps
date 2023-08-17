@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Otterly.Database.UserData.DataObjects;
 
+[Table("bingocards")]
 public class BingoCard
 {
 	[Key]

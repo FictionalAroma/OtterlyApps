@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace Otterly.Database.UserData.DataObjects;
+
+[Table("bingoslots")]
 
 [PrimaryKey("SlotIndex","CardID" )]
 public class BingoSlot

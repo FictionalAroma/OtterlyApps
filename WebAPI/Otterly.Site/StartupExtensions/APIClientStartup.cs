@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using LDSoft.APIClient;
+using LDSoft.AWS;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Otterly.API.ClientLib;
 
@@ -23,4 +26,19 @@ public static class APIClientStartup
 
 		return builder;
 	}
+
+	public static WebApplicationBuilder ConfigureAWS(this WebApplicationBuilder builder)
+	{
+		var options = builder.Configuration.GenerateAWSOptionsWithCreds();
+		builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+		builder.Services.AddScoped(_ => options);
+
+		builder.Host.ConfigureAppConfiguration(((_, configurationBuilder) =>
+												   {
+													   configurationBuilder.AddAmazonSecretsManager(options, "eu-west-1", "Otterly/API/Config");
+												   }));
+
+		return builder;
+	}
+
 }

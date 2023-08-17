@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Numerics;
+using Microsoft.EntityFrameworkCore;
 using Otterly.Database.UserData.DataObjects;
 
 namespace Otterly.Database.UserData
@@ -16,14 +17,14 @@ namespace Otterly.Database.UserData
 		{
 			base.OnModelCreating(builder);
 			
-
+			
 			builder.Entity<BingoCard>(typeBuilder =>
 			{
 				typeBuilder.HasMany<BingoSlot>(card => card.Slots)
 						   .WithOne()
 						   .HasPrincipalKey(card => card.CardID)
 						   .HasForeignKey(slot => slot.CardID).IsRequired();
-				
+
 			});
 
 			builder.Entity<OtterlyAppsUser>(typeBuilder =>
