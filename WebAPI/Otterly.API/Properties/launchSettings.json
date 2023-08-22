@@ -23,7 +23,7 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "AWS_DEV",
+        "ASPNETCORE_ENVIRONMENT": "AWS_local",
         "AWS": "TRUE"
       },
       "dotnetRunMessages": true,
