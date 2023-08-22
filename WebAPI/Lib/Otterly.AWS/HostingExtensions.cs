@@ -11,7 +11,7 @@ namespace LDSoft.AWS
     {
 		public static AWSOptions GenerateAWSOptionsWithCreds(this IConfiguration builder)
 		{
-			var options =builder.GetAWSOptions();
+			var options = builder.GetAWSOptions();
 			options.Logging = new AWSOptions.LoggingSetting()
 							  {
 								  LogResponses = ResponseLoggingOption.OnError,

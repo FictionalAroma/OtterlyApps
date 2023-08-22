@@ -51,7 +51,7 @@ public class AuthController : APILinkController
 		}
 
         return new JsonResult(new { isAuthenticated = false });
-
+ 
 	}
 
 	public ActionResult LoginCallback()

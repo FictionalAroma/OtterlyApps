@@ -66,12 +66,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ClientApp:build:production"
+              "browserTarget": "ClientApp:build:production",
+              "proxyConfig": "proxy.prod.conf.mjs"
+
             },
             "development": {
               "browserTarget": "ClientApp:build:development",
-              "proxyConfig": "proxy.conf.mjs"
-
+              "proxyConfig": "proxy.dev.conf.mjs"
             }
           },
           "defaultConfiguration": "development"
