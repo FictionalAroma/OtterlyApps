@@ -7,6 +7,7 @@ export default [
     secure: false,
     headers: {
       Connection: 'Keep-Alive'
-    }
+    },
+    "changeOrigin": true,
   }
 ];
