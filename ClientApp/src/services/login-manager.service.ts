@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 export interface UserAuthState {
   isAuthenticated: boolean;
   claims: string[] | undefined;
@@ -25,14 +26,14 @@ export class LoginManagerService {
         this.user.next({ isAuthenticated: false, claims: [] }),
     };
     this.http
-      .get<UserAuthState>('bff/auth/GetUserSignedIn')
+      .get<UserAuthState>(`${environment.apiUrl}bff/auth/GetUserSignedIn`)
       .subscribe(myObserver);
   }
 
   login() {
-    this.http.get('bff/auth/login').subscribe();
+    this.http.get(`${environment.apiUrl}bff/auth/login`).subscribe();
   }
   logout() {
-    this.http.get('bff/auth/login').subscribe();
+    this.http.get(`${environment.apiUrl}bff/auth/login`).subscribe();
   }
 }
