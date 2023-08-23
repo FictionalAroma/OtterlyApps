@@ -30,6 +30,7 @@ public static class APIClientStartup
 	public static WebApplicationBuilder ConfigureAWS(this WebApplicationBuilder builder)
 	{
 		var options = builder.Configuration.GenerateAWSOptionsWithCreds();
+		if (options == null) return builder;
 		builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 		builder.Services.AddScoped(_ => options);
 

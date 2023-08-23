@@ -9,9 +9,10 @@ namespace LDSoft.AWS
 {
     public static class HostingExtensions
     {
-		public static AWSOptions GenerateAWSOptionsWithCreds(this IConfiguration builder)
+		public static AWSOptions? GenerateAWSOptionsWithCreds(this IConfiguration builder)
 		{
 			var options = builder.GetAWSOptions();
+			
 			options.Logging = new AWSOptions.LoggingSetting()
 							  {
 								  LogResponses = ResponseLoggingOption.OnError,
@@ -23,6 +24,7 @@ namespace LDSoft.AWS
 
 			options.Credentials = credentials as SSOAWSCredentials;
 			
+
 			return options;
 		}
 
