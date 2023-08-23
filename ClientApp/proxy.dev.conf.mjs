@@ -4,7 +4,7 @@ export default [
         '/bff'
         ],
     target: 'https://localhost:7161',
-    secure: false,
+    secure: true,
     headers: {
       Connection: 'Keep-Alive'
     }

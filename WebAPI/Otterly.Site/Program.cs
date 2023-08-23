@@ -1,6 +1,7 @@
 
 using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Otterly.Site.StartupExtensions;
@@ -16,23 +17,29 @@ namespace Otterly.Site
             // Add services to the container.
 
             builder.Services.AddControllersWithViews().AddNewtonsoftJson();
-			if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AWS")))
-			{
-				builder.ConfigureAWS();
-			}
+			builder.ConfigureAWS();
 			builder.AddOtterlyAPIClient();
 			builder.Services.AddHttpClient();
 			builder.AddAuthentication();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+            if (app.Environment.IsProduction())
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-			app.UseCors("CorsPolicy");
-			app.UseHttpsRedirection();
+				app.UseForwardedHeaders(new ForwardedHeadersOptions
+										{
+											ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+										});
+				app.UseHsts();
+
+			}
+			else
+			{
+				app.UseHttpsRedirection();
+			}
+			app.UseCors();
+
 
             app.UseStaticFiles();
             app.UseRouting();
