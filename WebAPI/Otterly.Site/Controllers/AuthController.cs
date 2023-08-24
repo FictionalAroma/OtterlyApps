@@ -2,12 +2,14 @@
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Amazon.Runtime;
 using Auth0.ManagementApi.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Http;
 using Otterly.API.ClientLib;
 using Otterly.API.ClientLib.Account;
+using Otterly.Site.Configuration;
 using Otterly.Site.ManualMappers;
 
 namespace Otterly.Site.Controllers;
@@ -15,16 +17,20 @@ namespace Otterly.Site.Controllers;
 [Route("bff/[controller]/[action]")]
 public class AuthController : APILinkController
 {
-	public AuthController(ITypedHttpClientFactory<OtterlyAPIClient> httpClientFactory, HttpClient baseClient) : base(httpClientFactory, baseClient)
-	{
+	private readonly ClientAppConfig _clientConfig;
 
+	public AuthController(ITypedHttpClientFactory<OtterlyAPIClient> httpClientFactory, 
+						  HttpClient baseClient,
+						  ClientAppConfig clientConfig) : base(httpClientFactory, baseClient)
+	{
+		_clientConfig = clientConfig;
 	}
 
 	[HttpGet]
 	// GET
 	public ActionResult Login([FromQuery]string? returnUrl = "/")
 	{
-		var result = new ChallengeResult("Auth0", new AuthenticationProperties() { RedirectUri = returnUrl});
+		var result = new ChallengeResult("Auth0", new AuthenticationProperties() { RedirectUri = _clientConfig.BaseURL});
 		return result;
 	}
 
@@ -55,22 +61,14 @@ public class AuthController : APILinkController
 	}
 
 	public ActionResult LoginCallback()
-	{
-		if (User.Identity == null || !User.Identity.IsAuthenticated)
-		{
+    {
+		return Redirect(_clientConfig.BaseURL);
 
-			// if we arent authenticated, go away!
-			return RedirectToAction("Index", "Home");
-		}
-		
-
-		return RedirectToAction("Index", "Home");
-		
 	}
 
 	public ActionResult LogoutCallback()
 	{
-		return RedirectToAction("Index", "Home");
+		return Redirect(_clientConfig.BaseURL);
 	}
 
 	[HttpPost]

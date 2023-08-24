@@ -58,7 +58,7 @@ namespace LDSoft.APIClient
 		{
 			var http = new HttpRequestMessage(HttpMethod.Post, url)
 					   {
-						   Content = new StringContent(JsonConvert.SerializeObject(request))
+						   Content = new StringContent(JsonConvert.SerializeObject(request)),
 					   };
 			return ProcessRequest(http);
 		}

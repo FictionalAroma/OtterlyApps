@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Otterly.API.ClientLib;
+using Otterly.Site.Configuration;
 
 namespace Otterly.Site.StartupExtensions;
 
@@ -27,6 +28,13 @@ public static class APIClientStartup
 		return builder;
 	}
 
+	public static WebApplicationBuilder AddClientAppConfig(this WebApplicationBuilder builder)
+	{
+		builder.Services.AddSingleton<ClientAppConfig>(provider => builder.Configuration.GetSection("ClientAppConfig").Get<ClientAppConfig>());
+
+		return builder;
+	}
+
 	public static WebApplicationBuilder ConfigureAWS(this WebApplicationBuilder builder)
 	{
 		var options = builder.Configuration.GenerateAWSOptionsWithCreds();
@@ -34,10 +42,18 @@ public static class APIClientStartup
 		builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 		builder.Services.AddScoped(_ => options);
 
-		builder.Host.ConfigureAppConfiguration(((_, configurationBuilder) =>
+
+		builder.Host.ConfigureAppConfiguration((_, configurationBuilder) =>
 												   {
-													   configurationBuilder.AddAmazonSecretsManager(options, "eu-west-1", "Otterly/API/Config");
-												   }));
+													   var secrets = builder
+																	 .Configuration.GetSection("AWSConfig:SecretNames")
+																	 .Get<string[]>();
+													   foreach (var s in secrets)
+													   {
+														   configurationBuilder.AddAmazonSecretsManager(options,
+															options.Region.SystemName, s);
+													   }
+												   });
 
 		return builder;
 	}

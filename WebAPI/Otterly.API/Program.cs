@@ -2,6 +2,8 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Otterly.API;
 
@@ -18,6 +20,18 @@ builder.ConfigureServices()
 	   .ConfigureMongoAccessServices();
 
 builder.ConfigureAuthentication();
+
+builder.Services.AddCors(options =>
+{
+	options.AddDefaultPolicy(policyBuilder =>
+	{
+		var hosts = builder.Configuration.GetSection("CORSHosts").Get<string[]>();
+		policyBuilder.WithOrigins(hosts).SetIsOriginAllowedToAllowWildcardSubdomains();
+		policyBuilder.AllowAnyMethod();
+		policyBuilder.AllowAnyHeader();
+	});
+});
+
 
 var app = builder.Build();
 
