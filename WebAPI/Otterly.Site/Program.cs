@@ -2,6 +2,7 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Otterly.Site.StartupExtensions;
@@ -17,7 +18,18 @@ namespace Otterly.Site
             // Add services to the container.
 
             builder.Services.AddControllersWithViews().AddNewtonsoftJson();
+			builder.Services.AddCors(options =>
+			{
+                options.AddDefaultPolicy(policyBuilder =>
+				{
+					var hosts = builder.Configuration.GetSection("CORSHosts").Get<string[]>();
+					policyBuilder.WithOrigins(hosts).SetIsOriginAllowedToAllowWildcardSubdomains();
+					policyBuilder.AllowAnyMethod();
+					policyBuilder.AllowAnyHeader();
+				});
+			});
 			builder.ConfigureAWS();
+			builder.AddClientAppConfig();
 			builder.AddOtterlyAPIClient();
 			builder.Services.AddHttpClient();
 			builder.AddAuthentication();
@@ -38,6 +50,7 @@ namespace Otterly.Site
 			{
 				app.UseHttpsRedirection();
 			}
+
 			app.UseCors();
 
 

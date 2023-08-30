@@ -27,7 +27,7 @@ public static class AuthenticationStartup
 				.AddCookie(o =>
 				{
 					o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-					o.Cookie.SameSite = SameSiteMode.Strict;
+					o.Cookie.SameSite = SameSiteMode.Lax;
 					o.Cookie.HttpOnly = true;
 					o.LoginPath = "/bff/auth/login";
 					o.LogoutPath = "/bff/auth/logout";
@@ -54,7 +54,6 @@ public static class AuthenticationStartup
 
 		// Set response type to code
 		options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
-
 		options.ResponseMode = OpenIdConnectResponseMode.FormPost;
 
 		// Configure the scope
@@ -67,12 +66,12 @@ public static class AuthenticationStartup
 
 		// Set the callback path, so Auth0 will call back to http://localhost:3000/callback
 		// Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
-		options.CallbackPath = new PathString("/bff/auth/logincallback");
+		options.CallbackPath = new PathString($"/bff/auth/logincallback");
 
 		// Configure the Claims Issuer to be Auth0
 		options.ClaimsIssuer = "Auth0";
 
-
+		
 		options.SaveTokens = true;
 
 
@@ -106,10 +105,9 @@ public static class AuthenticationStartup
 							 OnRedirectToIdentityProvider = context =>
 							 {
 								 context.ProtocolMessage.SetParameter("audience", config["Auth0:ApiAudience"]);
-								 context.Response.Redirect("/bff/auth/login");
 
 								 return Task.CompletedTask;
-							 }
+							 },
 						 };
 	}
 }

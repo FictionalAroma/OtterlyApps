@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.otterlystudios.net/'
+
+  apiUrl: 'https://streamer.otterlystudios.net/'
+
 };
