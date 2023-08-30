@@ -1,0 +1,4 @@
+{
+    "LOCAL_TEST" : false,
+    "API_BASE_URL": "https://api.otterlystudios.net/api"
+}
