@@ -1,14 +1,14 @@
   <div class="row card-row" >
-    <div class = "col-md-1">
+    <div class = "col-md-1 col-sm-3 col-xs-3">
       <strong>{{this.index}}</strong>
       </div>
     <ng-container *ngIf="isEditing && this.slot != null;else notediting">
-    <div class="col-md-10">
+    <div class="col-md-10 col-sm-6 col-xs-6">
       <mat-form-field class="card-data-input">
         <input matInput placeholder="Bingo Value" #slotInput (keyup)="this.slot.displayText = slotInput.value" value="{{slot.displayText}}">
       </mat-form-field>
     </div>
-    <div class = "col-md-1">
+    <div class = "col-md-1 col-sm-3 col-xs-3">
       <button mat-icon-button color="warn" (click)="this.slot.deleted = true"><mat-icon>close</mat-icon></button>
     </div>
   </ng-container>
@@ -17,7 +17,7 @@
   </div>
 
   <ng-template #notediting>
-    <div class="col-md-10">
+    <div class="col-md-10 col-sm-9 col-xs-9">
 
     <span class="mat-mdc-form-field form-field-no-edit">{{this.slot?.displayText}}</span>
     </div>

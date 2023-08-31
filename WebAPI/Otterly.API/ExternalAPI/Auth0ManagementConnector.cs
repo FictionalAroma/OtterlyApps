@@ -29,4 +29,9 @@ public class Auth0ManagementConnector : IAuthManagementConnector
 										});
 		return true;
 	}
+
+	public async Task<User?> GetFullUserData(OtterlyAppsUser userToGet)
+	{
+		return await _client.Users.GetAsync(userToGet.ExternalAuthID);
+	}
 }

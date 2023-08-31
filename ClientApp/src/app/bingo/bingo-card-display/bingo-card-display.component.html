@@ -5,14 +5,14 @@
   <mat-card>
     <mat-card-actions>
       <ng-container *ngIf="isEditing;else notEditing">
-        <button mat-fab extended color="primary" (click)="discardChanges()"><mat-icon>cancel</mat-icon>Discard</button>
-        <button mat-fab extended color="accent" (click)="saveChanges()"><mat-icon>save</mat-icon>Save</button>
+        <button mat-raised-button color="primary" (click)="discardChanges()"><mat-icon>cancel</mat-icon>Discard</button>
+        <button mat-raised-button extended color="accent" (click)="saveChanges()"><mat-icon>save</mat-icon>Save</button>
       </ng-container>
-      <button mat-fab extended color="warn" (click)="deleteCard()"><mat-icon>delete</mat-icon>Delete</button>
+      <button mat-raised-button color="warn" (click)="deleteCard()"><mat-icon>delete</mat-icon>Delete</button>
 
     </mat-card-actions>
     <ng-template #notEditing>
-      <button mat-fab extended color="accent" (click)="startEdit()"><mat-icon>edit</mat-icon>Edit</button>
+      <button mat-raised-button extended color="accent" (click)="startEdit()"><mat-icon>edit</mat-icon>Edit</button>
     </ng-template>
 
     <div class="row card-row">
