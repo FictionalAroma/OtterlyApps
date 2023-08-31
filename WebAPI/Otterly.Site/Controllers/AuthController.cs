@@ -60,16 +60,16 @@ public class AuthController : APILinkController
  
 	}
 
-	public ActionResult LoginCallback()
-    {
-		return Redirect(_clientConfig.BaseURL);
+	//public ActionResult LoginCallback()
+ //   {
+	//	return Redirect(_clientConfig.BaseURL);
 
-	}
+	//}
 
-	public ActionResult LogoutCallback()
-	{
-		return Redirect(_clientConfig.BaseURL);
-	}
+	//public ActionResult LogoutCallback()
+	//{
+	//	return Redirect(_clientConfig.BaseURL);
+	//}
 
 	[HttpPost]
 	[Route("NewUser")]

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Http;
 using Otterly.API.ClientLib;
@@ -9,6 +10,7 @@ using Otterly.API.DataObjects.Bingo;
 
 namespace Otterly.Site.Controllers
 {
+	[Authorize]
 	[ApiController]
 	[Route("bff/[controller]/[action]")]
     public class BingoController : APILinkController
