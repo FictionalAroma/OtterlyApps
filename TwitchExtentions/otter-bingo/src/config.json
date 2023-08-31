@@ -1,4 +1,5 @@
 {
-    "LOCAL_TEST" : false,
+    "LOCAL_TEST" : true,
+    "LOCAL_JWT": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTM0MDY4MTYsIm9wYXF1ZV91c2VyX2lkIjoiVTc0NTI3OTM2IiwidXNlcl9pZCI6Ijc0NTI3OTM2IiwiY2hhbm5lbF9pZCI6Ijc0NTI3OTM2Iiwicm9sZSI6ImJyb2FkY2FzdGVyIiwiaXNfdW5saW5rZWQiOmZhbHNlLCJwdWJzdWJfcGVybXMiOnsibGlzdGVuIjpbImJyb2FkY2FzdCIsIndoaXNwZXItVTc0NTI3OTM2IiwiZ2xvYmFsIl0sInNlbmQiOlsiYnJvYWRjYXN0Iiwid2hpc3Blci0qIl19fQ.oOQ4gTbYtHf9-d79v3_akIJJTyJEimGl5iaWrxGBEt8",
     "API_BASE_URL": "https://api.otterlystudios.net/api"
 }
