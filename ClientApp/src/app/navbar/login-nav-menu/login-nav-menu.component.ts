@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { LoginManagerService } from 'src/services/login-manager.service';
+import { OtterlyAppsUserDTO } from 'api/otterlyapi';
 
 @Component({
   selector: 'app-login-nav-menu',
@@ -10,6 +11,7 @@ import { LoginManagerService } from 'src/services/login-manager.service';
 export class LoginNavMenuComponent {
   public loggedIn :boolean;
   private loginService : LoginManagerService;
+  public profile: OtterlyAppsUserDTO | undefined;
   constructor(loginService : LoginManagerService)
   {
     this.loggedIn = false;
@@ -17,7 +19,12 @@ export class LoginNavMenuComponent {
   }
 
   ngOnInit() {
-    this.loginService.userCache.subscribe(u => this.loggedIn = u.isAuthenticated);
+    this.loginService.userCache.subscribe(u => {
+      this.loggedIn = u.isAuthenticated;
+      if(u.isAuthenticated) {
+        this.loginService.getUserProfile();
+    }});
+    this.loginService.userProfileCache.subscribe(up => this.profile = up)
     this.loginService.getUser();
   }
 

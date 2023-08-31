@@ -34,9 +34,10 @@ export interface BingoSlotDTO {
 
 export interface OtterlyAppsUserDTO {
   userID: string;
-  test: number;
-  deleted: boolean;
   twitchID: string;
+  userName: string;
+  profileImagePath: string;
+  emailAddress: string;
 }
 
 export interface BingoSessionDTO {

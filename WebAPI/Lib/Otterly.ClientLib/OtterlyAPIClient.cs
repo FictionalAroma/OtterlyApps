@@ -20,9 +20,9 @@ public class OtterlyAPIClient : FactoryAPIClientBase
 	}
 
 
-	public async Task<OtterlyAppsUserDTO> GetUserProfile()
+	public async Task<OtterlyAppsUserDTO?> GetUserProfile(Guid userID)
 	{
-		return await Get<OtterlyAppsUserDTO>($"{_config.BaseURL}/account");
+		return await Post<Guid,OtterlyAppsUserDTO?>($"{_config.BaseURL}/account", userID);
 	}
 
 	public async Task<List<BingoCardDTO>> GetCards(Guid userID)
