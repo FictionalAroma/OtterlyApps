@@ -1,4 +1,4 @@
-import { BingoCardDTO, BingoSlotDTO } from './otterlyapi';
+import { BingoCardDTO, BingoSessionMetaDTO, BingoSlotDTO } from './otterlyapi';
 export class BingoCardDTOImp implements BingoCardDTO
 {
   cardID: number | undefined;
@@ -40,3 +40,22 @@ export class BingoCardDTOImp implements BingoCardDTO
   }
 
 }
+
+export class BingoSessionMetaDTOImp implements BingoSessionMetaDTO
+{
+  numberTickets: number = 0;
+  numberWinners: number = 0;
+  startDate: Date = new Date();
+
+  public constructor(private seedData:BingoSessionMetaDTO )
+  {
+    this.numberTickets = seedData.numberTickets;
+    this.numberWinners = seedData.numberWinners;
+    this.startDate = seedData.startDate;
+  }
+  public getRuntime() : Date
+  {
+    return new Date(Date.now() - this.startDate.valueOf())
+  }
+}
+

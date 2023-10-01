@@ -5,12 +5,25 @@
    background-size: cover;
 }
 
+.word-break
+{
+   word-break: break-word;
+   word-wrap: break-word;
+}
+
 .bingo-grid
 {
-   :first
+
+   display: flex;
+   flex-wrap: wrap;
+   flex-direction: column;
+   align-content: stretch;
+   height: 100%;
+   .bingo-row:first
    {
       padding-top:1.5rem;
    }
+
 }
 
 .bingo-row
@@ -45,6 +58,7 @@
 
 .bingo-slot-parent{
    height: 100%;
+   aspect-ratio : 1 / 1;
 
 }
 .bingo-slot-content
@@ -59,3 +73,5 @@
 {
    height: 90%;
 }
+
+

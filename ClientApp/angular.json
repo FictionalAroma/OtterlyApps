@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ClientApp": {
+    "OtterlyStreamerApps": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -79,10 +79,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ClientApp:build:production"
+              "browserTarget": "OtterlyStreamerApps:build:production"
             },
             "development": {
-              "browserTarget": "ClientApp:build:development",
+              "browserTarget": "OtterlyStreamerApps:build:development",
               "proxyConfig": "proxy.dev.conf.mjs"
             }
           },
@@ -91,7 +91,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ClientApp:build"
+            "browserTarget": "OtterlyStreamerApps:build"
           }
         },
         "test": {

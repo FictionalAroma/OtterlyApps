@@ -40,7 +40,7 @@ public class AuthController : APILinkController
 
 		return new SignOutResult("Auth0", new AuthenticationProperties
 										  {
-											  RedirectUri = "/"
+											  RedirectUri = _clientConfig.BaseURL
 										  });
 	}
 	public ActionResult GetUserSignedIn()

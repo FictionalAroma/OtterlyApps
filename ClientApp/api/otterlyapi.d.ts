@@ -52,6 +52,7 @@ export interface BingoSessionDTO {
 export interface BingoSessionMetaDTO {
   numberTickets: number;
   numberWinners: number;
+  startDate: Date;
 }
 
 export interface BingoSessionItemDTO {

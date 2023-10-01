@@ -40,9 +40,32 @@
 .twitch-extension-container
 {
   height: 100vh;
+  background-color: lightgray;
 }
 
 .twitch-extension-tab
 {
   height:100%;
 }
+
+
+.loading
+{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  h1{
+    font-weight: bold;
+  }
+
+
+}
+$theme-colors: (
+  'primary': red,
+);
+
+@import '~bootstrap/scss/bootstrap';

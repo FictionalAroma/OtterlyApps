@@ -97,11 +97,15 @@ export default function BingoApp({api})
   
      
 
-    if(ticket == null && session == null)
+    if(!initialLoad)
     {
-        return <h1>Loading....</h1>
+        return <div className='loading'><h1>Loading....</h1></div>
     }
 
+    if(session == null)
+    {
+        return <div className='loading'><h1>No Bingo Game Running</h1></div>
+    }
 
     
     const playerTab = 

@@ -43,12 +43,14 @@ public class GameMapper
 		};
     }
 
-	public static BingoSessionMetaDTO Map(BingoSessionMetaDTO meta)
+	public static BingoSessionMetaDTO Map(BingoSessionMeta meta)
     {
         return new BingoSessionMetaDTO
         {
             NumberTickets = meta.NumberTickets,
-            NumberWinners = meta.NumberWinners
+            NumberWinners = meta.NumberWinners,
+            StartDate = meta.StartDate,
+            
         };
     }
 

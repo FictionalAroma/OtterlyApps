@@ -3,7 +3,8 @@ import { Component, Input } from '@angular/core';
 import { BingoSessionDTO, BingoCardDTO, BaseResponse, BingoSessionMetaDTO } from 'api/otterlyapi';
 import { BingoGameService } from 'src/services/bingo-game.service';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
-import { BingoCardDTOImp } from 'api/bingoApiImp';
+import { BingoCardDTOImp, BingoSessionMetaDTOImp } from 'api/bingoApiImp';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-bingo-active-game',
@@ -12,7 +13,7 @@ import { BingoCardDTOImp } from 'api/bingoApiImp';
 })
 export class BingoActiveGameComponent {
   public gameSession: BingoSessionDTO | undefined
-  public sessionMeta: BingoSessionMetaDTO | undefined
+  public sessionMeta: BingoSessionMetaDTOImp | undefined
 
   @Input()
   public userCards : BingoCardDTOImp[] | undefined;
@@ -21,7 +22,7 @@ export class BingoActiveGameComponent {
   public createGameGroup = new FormGroup({
     cardSelect: new FormControl(undefined, [Validators.required])
   });
-  constructor(public bingoGame : BingoGameService, private cardService : BingoCardService){  }
+  constructor(public bingoGame : BingoGameService, private cardService : BingoCardService, private dateFormatter : DatePipe){  }
 
   ngOnInit()
   {
@@ -34,8 +35,28 @@ export class BingoActiveGameComponent {
     this.gameSession = session;
     if(this.gameSession != null)
     {
-      this.bingoGame.sessionMetaObservable(session.sessionID).subscribe((meta : BingoSessionMetaDTO) => this.sessionMeta = meta);
+      this.bingoGame.sessionMetaObservable(session.sessionID).subscribe((meta : BingoSessionMetaDTO) => this.sessionMeta = new BingoSessionMetaDTOImp(meta));
     }
+
+  }
+
+  getSessionStartDateString() : string | null
+  {
+    if(this.sessionMeta == null)
+    {
+      return "";
+    }
+    return this.dateFormatter.transform(this.sessionMeta.startDate, "dd-MM-yyyy hh:mm");
+  }
+
+  getSessionRuntime() :string | null
+  {
+    if(this.sessionMeta == null)
+    {
+      return "";
+    }
+    var elapsed = Date.now() - this.sessionMeta.startDate.valueOf();
+    return elapsed.toLocaleString();
 
   }
 
