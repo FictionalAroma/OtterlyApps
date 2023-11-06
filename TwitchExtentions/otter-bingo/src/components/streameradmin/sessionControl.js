@@ -9,7 +9,7 @@ export default function SessionControl({api, session}) {
         api.verifyItem(sessionItem.itemIndex, session.sessionID, sessionItem.verified)
     }
     const size = 4;
-    const rows = new Array((session.sessionItems.length/4) +1);
+    const rows = new Array((Math.floor(session.sessionItems.length/4)) + 1);
     for(let i = 0; i < session.sessionItems.length; i+=size)
     {
       rows.push(session.sessionItems.slice(i, i+size))

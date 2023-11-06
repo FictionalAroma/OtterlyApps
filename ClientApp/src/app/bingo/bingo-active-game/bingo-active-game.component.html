@@ -1,42 +1,57 @@
-<div class="container-fluid">
+<div class="container-fluid tab-space-fix">
   <ng-container *ngIf="this.gameSession != null; else newSession">
     <mat-card>
-        <mat-card-header>
-            <mat-card-title>{{this.gameSession.cardTitle}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-actions align="start">
-          <button mat-flat-button color="warn" (click)="this.endSession(this.gameSession.sessionID)">End Session</button>
-        </mat-card-actions>
+      <mat-card-header>
+        <mat-card-title>{{ this.gameSession.cardTitle }}</mat-card-title>
+      </mat-card-header>
 
-        <mat-card-content>
-          <mat-card-subtitle>Slots To Verify</mat-card-subtitle>
+      <mat-card-content>
+        <mat-card-subtitle>Slots To Verify</mat-card-subtitle>
+        <div>
+          <app-bingo-session-slot [gameService]="this.bingoGame" [session]="this.gameSession"
+            class="verify-list"></app-bingo-session-slot>
+        </div>
+      </mat-card-content>
+      <mat-card-content class="top-spacer" *ngIf="this.sessionMeta != null">
+        <mat-card-subtitle>Game Statistics</mat-card-subtitle>
+        <!--<div class="row card-row top-spacer">
+          <span class="col-md-3 col-5">Start Time - {{getSessionStartDateString() }}</span>
+          <span class="col-md-3 col-5">Runtime - {{getSessionRuntime()  }}</span>
+        </div>
+      -->
+        <div class="row card-row top-spacer">
+          <span class="col-md-3 col-5">Number of Tickets - {{ this.sessionMeta.numberWinners }}</span>
 
-            <app-bingo-session-slot [gameService]="this.bingoGame" [session]="this.gameSession" class="verify-list"></app-bingo-session-slot>
-              Session Stats
-              <app-bingo-active-game-stats [meta]="this.sessionMeta"></app-bingo-active-game-stats>
+          <span class="col-md-3 col-5">Number of Winners - {{ this.sessionMeta.numberWinners }}</span>
+        </div>
+      </mat-card-content>
 
-        </mat-card-content>
+      <mat-card-actions align="start">
+        <button mat-raised-button color="warn" (click)="this.endSession(this.gameSession.sessionID)">
+          <mat-icon>check_cirle</mat-icon>
+          End Session
+        </button>
+      </mat-card-actions>
     </mat-card>
-
-
-
   </ng-container>
 
-
-
   <ng-template #newSession>
-    <div [formGroup] = "createGameGroup">
-    <mat-form-field >
-      <mat-label>Select card to Create</mat-label>
-      <mat-select [(value)]="selectedCardID" formControlName="cardSelect" required>
-        <ng-container *ngFor="let card of this.userCards">
-          <mat-option *ngIf="card.isCardValid()" [value]="card.cardID" >
-            {{card.titleText}}
-          </mat-option>
+    <div [formGroup]="createGameGroup">
+      <mat-form-field>
+        <mat-label>Select card to Create</mat-label>
+        <mat-select [(value)]="selectedCardID" formControlName="cardSelect" required>
+          <ng-container *ngFor="let card of this.userCards">
+            <mat-option *ngIf="card.isCardValid()" [value]="card.cardID">
+              {{ card.titleText }}
+            </mat-option>
           </ng-container>
-      </mat-select>
-      <mat-error *ngIf="createGameGroup.controls.cardSelect.invalid"></mat-error>
-    </mat-form-field>
-      <button mat-flat-button color="primary" [disabled]="createGameGroup.controls.cardSelect.invalid" (click)="this.createSession(this.selectedCardID)">Create</button>
-      </div>
+        </mat-select>
+        <mat-error *ngIf="createGameGroup.controls.cardSelect.invalid"></mat-error>
+      </mat-form-field>
+      <button mat-flat-button color="primary" [disabled]="createGameGroup.controls.cardSelect.invalid"
+        (click)="this.createSession(this.selectedCardID)">
+        Create
+      </button>
+    </div>
   </ng-template>
+</div>

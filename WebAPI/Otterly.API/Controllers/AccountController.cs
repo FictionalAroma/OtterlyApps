@@ -15,8 +15,8 @@ public class AccountController : ControllerBase
 
 	public AccountController(IAccountHandler actionHandler) { _actionHandler = actionHandler; }
 
-	[HttpGet]
-	public async Task<IActionResult> GetUserAccount(Guid userID)
+	[HttpPost]
+	public async Task<IActionResult> GetUserAccount([FromBody]Guid userID)
 	{
 		var user = await _actionHandler.GetUserDTO(userID);
 		return user != null ? Ok(user) : Unauthorized();

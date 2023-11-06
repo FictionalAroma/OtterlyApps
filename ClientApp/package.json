@@ -1,6 +1,6 @@
 {
-  "name": "client-app",
-  "version": "0.0.0",
+  "name": "otterly-streamer-apps",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --ssl --ssl-cert=../certs/cert.crt --ssl-key=../certs/cert.key --open",

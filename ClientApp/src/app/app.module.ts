@@ -32,9 +32,9 @@ import { BingoSessionStatsComponent } from './bingo/bingo-session-stats/bingo-se
 import { BingoSessionSlotComponent } from './bingo/bingo-session-slot/bingo-session-slot.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatGridListModule} from '@angular/material/grid-list';
-import { BingoActiveGameStatsComponent } from './bingo/bingo-active-game-stats/bingo-active-game-stats.component';
 import { TwitchigotchiPageComponent } from './twitchigotchi/twitchigotchi-page/twitchigotchi-page.component';
 import { BingoGameService } from 'src/services/bingo-game.service';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -49,10 +49,9 @@ import { BingoGameService } from 'src/services/bingo-game.service';
         BingoActiveGameComponent,
         BingoSessionStatsComponent,
         BingoSessionSlotComponent,
-        BingoActiveGameStatsComponent,
         TwitchigotchiPageComponent
     ],
-    providers: [ LoginManagerService,BingoCardService, BingoGameService,
+    providers: [ LoginManagerService,BingoCardService, BingoGameService, DatePipe,
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { subscriptSizing: 'dynamic' } }],
     bootstrap: [AppComponent],
     imports: [
@@ -76,7 +75,8 @@ import { BingoGameService } from 'src/services/bingo-game.service';
         MatSelectModule,
         MatCheckboxModule,
         MatGridListModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+
     ]
 })
 export class AppModule { }

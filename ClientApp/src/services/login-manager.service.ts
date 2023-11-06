@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, Observer } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { OtterlyAppsUserDTO } from 'api/otterlyapi';
 export interface UserAuthState {
   isAuthenticated: boolean;
   claims: string[] | undefined;
@@ -16,8 +17,17 @@ export class LoginManagerService {
     claims: [],
   });
 
-  userCache = this.user.asObservable();
+  private userProfile = new BehaviorSubject<OtterlyAppsUserDTO>({
+    emailAddress: "",
+    profileImagePath: "",
+    twitchID: "",
+    userID: "",
+    userName: ""
+  });
 
+
+  userCache = this.user.asObservable();
+  userProfileCache = this.userProfile.asObservable();
 
   getUser() {
     const myObserver = {
@@ -35,5 +45,22 @@ export class LoginManagerService {
   }
   logout() {
     this.http.get(`${environment.apiUrl}bff/auth/login`).subscribe();
+  }
+
+  getUserProfile()
+  {
+    const myObserver = {
+      next: (data: OtterlyAppsUserDTO) => this.userProfile.next(data),
+      error: (err: Error) =>
+        this.userProfile.next({
+          emailAddress: "",
+          profileImagePath: "",
+          twitchID: "",
+          userID: "",
+          userName: ""
+        }),
+    };
+
+    this.http.get<OtterlyAppsUserDTO>(`${environment.apiUrl}bff/user/profile`).subscribe(myObserver);
   }
 }

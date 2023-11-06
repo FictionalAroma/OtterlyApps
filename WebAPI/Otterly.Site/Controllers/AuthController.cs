@@ -40,7 +40,7 @@ public class AuthController : APILinkController
 
 		return new SignOutResult("Auth0", new AuthenticationProperties
 										  {
-											  RedirectUri = "/"
+											  RedirectUri = _clientConfig.BaseURL
 										  });
 	}
 	public ActionResult GetUserSignedIn()
@@ -60,16 +60,16 @@ public class AuthController : APILinkController
  
 	}
 
-	public ActionResult LoginCallback()
-    {
-		return Redirect(_clientConfig.BaseURL);
+	//public ActionResult LoginCallback()
+ //   {
+	//	return Redirect(_clientConfig.BaseURL);
 
-	}
+	//}
 
-	public ActionResult LogoutCallback()
-	{
-		return Redirect(_clientConfig.BaseURL);
-	}
+	//public ActionResult LogoutCallback()
+	//{
+	//	return Redirect(_clientConfig.BaseURL);
+	//}
 
 	[HttpPost]
 	[Route("NewUser")]

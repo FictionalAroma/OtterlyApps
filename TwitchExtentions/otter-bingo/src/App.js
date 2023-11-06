@@ -40,7 +40,7 @@ function App() {
 
     return(<Container fluid className="twitch-extension-container"><BingoApp api={apiConnector}></BingoApp></Container>)
   }
-  return <h1>Loading....</h1>
+  return <div className='loading'><h1>Loading....</h1></div>
 
 
 }

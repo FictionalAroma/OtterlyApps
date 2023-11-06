@@ -1,10 +1,18 @@
 <div id="loginmenu" class="float-end">
-<a *ngIf="!loggedIn else logout" href="{{getLoginUrl()}}">
-  Login
-</a>
-<ng-template #logout>
-  <a href="{{getLogoutUrl()}}">Logout</a>
-</ng-template>
+  <ng-container *ngIf="loggedIn && profile != null; else displayLogin">
+    <span>{{ this.profile.userName }}
+      <img src="{{ this.profile.profileImagePath }}" alt="User Profile Image" class="user-profile-image" />
+    </span>
 
-<p>Are you logged in {{loggedIn}}</p>
+    <button mat-button extended (click)="logout()">
+      Logout
+      <mat-icon>logout</mat-icon>
+    </button>
+  </ng-container>
+  <ng-template #displayLogin>
+    <button mat-button extended (click)="login()">
+      Login
+      <mat-icon>login</mat-icon>
+    </button>
+  </ng-template>
 </div>
