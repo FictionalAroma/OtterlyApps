@@ -10,10 +10,10 @@ export default function CardSlot({passedCell, onSelectCallback})
     }
 
     return (
-        <Button className={`bingo-slot-parent ${passedCell.selected ? "selected" : ""}`} onClick={()=>updateSelected()}>
-        {passedCell.displayText}
-        </Button>
-
-
-    )
+        <td
+            className={`word-break ${passedCell.selected ? "selected" : ""}`}
+            onClick={() => updateSelected()}>
+            <strong>{passedCell.displayText}</strong>
+        </td>
+    );
 }

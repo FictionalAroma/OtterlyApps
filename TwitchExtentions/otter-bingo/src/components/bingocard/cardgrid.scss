@@ -11,54 +11,95 @@
    word-wrap: break-word;
 }
 
-.bingo-grid
+.bingo-table
 {
 
-   display: flex;
-   flex-wrap: wrap;
-   flex-direction: column;
-   align-content: stretch;
    height: 100%;
    .bingo-row:first
    {
       padding-top:1.5rem;
    }
 
+   tbody
+   {
+    height: 100%;
+        display: flex;
+        flex-direction: column;
+        border-width: 0.25rem;
+        border-style: solid;
+        border-color: black;
+        background-color: white;
+        justify-content: center;
+        td {
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-width: 0.25rem;
+                border-style: solid;
+                border-color: black;
+            }
+        
+            strong {
+                text-align: center;
+            }
+   }
 }
 
 .bingo-row
 {
-   padding: 1.5rem;
-   padding-top:0;
-   height: inherit;
+    padding-top: 0;
+    height: inherit;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .size-3
 {
    max-height: 33%;
+   td{
+    width: 33%;
+   }
+   font-size: 2.5em;
 }
 .size-4
 {
    max-height: 25%;
+    td {
+            width: 25%;
+        }
 }
 .size-5
 {
    max-height: 20%;
+    td {
+            width: 20%;
+        }
 }
 
 .size-6
 {
    max-height: 17%;
+    td {
+            width: 17%;
+        }
 }
 .size-7
 {
    max-height: 14%;
+    td {
+            width: 14%;
+        }
 }
 
 
 .bingo-slot-parent{
    height: 100%;
    aspect-ratio : 1 / 1;
+font-size: 3rem;
 
 }
 .bingo-slot-content
