@@ -57,7 +57,7 @@
 
     <div class="row card-row">
       <div class="col-md-2 col-sm-3 card-form-label ">
-        <strong>Card Size</strong>
+        <strong>Grid Size</strong>
       </div>
       <div class="col-md-6 col-sm-6">
         <span>{{this.card.cardSize}}</span>
@@ -74,7 +74,7 @@
         </div>
 
         </div>
-        <mat-card-title>Slots</mat-card-title>
+        <mat-card-title>Tile Options</mat-card-title>
         <mat-card-subtitle class="danger">{{this.card.slots.length}} of {{this.card.getMinSlotCount()}} minimum required</mat-card-subtitle>
       <mat-card-content>
         <ng-container *ngFor="let slot of this.card.slots; let i = index" >
