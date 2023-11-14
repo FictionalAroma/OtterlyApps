@@ -18,8 +18,6 @@ public class SecretManagerAPI
 		{
 			try
 			{
-
-
 				var response = client.GetSecretValueAsync(request).Result;
 
 				string secretString;

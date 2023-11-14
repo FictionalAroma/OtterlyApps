@@ -10,4 +10,5 @@ public class PlayerTicketDTO
     public string SessionID { get; set; }  = string.Empty;
 
 	public IEnumerable<PlayerTicketItemDTO> Slots { get; set; } = new List<PlayerTicketItemDTO>();
+	public DateTime LastStampedDateTIme { get; set; }
 }

@@ -129,7 +129,7 @@ public class BingoGameHandler : IBingoGameHandler
 			return response;
 		}
 
-		slot.Verified = requestState;
+		//slot.Verified = requestState;
 		await _sessionService.UpdateAsync(session.Id, session);
 
 		response = await MarkAllSessionTicketItemsVerified(slot);
@@ -165,7 +165,7 @@ public class BingoGameHandler : IBingoGameHandler
 					var slot = ticket.Slots.FirstOrDefault(item => item.ItemIndex == markedItem.ItemIndex);
 					if (slot != null)
 					{
-						slot.Verified = markedItem.Verified;
+						//slot.Verified = markedItem.Verified;
 					}
 				});
 

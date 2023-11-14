@@ -49,7 +49,6 @@ public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSession
 																	   ItemIndex = dto.SlotIndex,
 																	   DisplayText = dto.DisplayText,
 																	   SessionID = createdSession.Id,
-																	   Verified = false,
 																   }).ToList();
 			await UpdateAsync(createdSession.Id, createdSession);
 

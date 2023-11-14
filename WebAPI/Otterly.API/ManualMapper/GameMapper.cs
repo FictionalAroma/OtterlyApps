@@ -13,6 +13,7 @@ public class GameMapper
         {
             TwitchUserID = ticket.TwitchUserID,
             SessionID = ticket.SessionID,
+            LastStampedDateTIme = ticket.LastStampeDateTime,
             Slots = ticket.Slots.Select(ticketSlot => new PlayerTicketItemDTO
             {
                 Selected = ticketSlot.Selected,

@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Lib\LDSoft.MongoBase\LDSoft.MongoBase.csproj" />
     <ProjectReference Include="..\Lib\Otterly.AWS\LDSoft.AWS.csproj" />
     <ProjectReference Include="..\Lib\Otterly.ClientLib\Otterly.API.ClientLib.csproj" />
     <ProjectReference Include="..\Lib\Otterly.Database.Mongo\Otterly.Database.ActivityData.csproj" />

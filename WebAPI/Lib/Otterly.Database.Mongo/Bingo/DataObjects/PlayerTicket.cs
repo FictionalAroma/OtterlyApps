@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
@@ -11,4 +12,7 @@ public class PlayerTicket : MongoDataEntry
 	[BsonRepresentation(BsonType.ObjectId)]
 	public string SessionID { get; init; } = string.Empty;
 	public IEnumerable<PlayerTicketItem> Slots { get; init; } = new List<PlayerTicketItem>();
+
+	[BsonRepresentation(BsonType.DateTime)]
+	public DateTime LastStampeDateTime { get; set; }
 }
