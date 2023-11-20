@@ -70,7 +70,7 @@ public class BingoGameController : ControllerBase
 			return StatusCode(500, "Session No Longer Valid");
 		}
 
-		var result = await _handler.VerifySessionItem(session, request.ItemIndex, request.State);
+		var result = await _handler.VerifySessionItem(session, request);
 
 		var twtichClient = _twitchClientFactory.GetClient();
 		await twtichClient.SendExtensionMessage(request, session.TwitchUserID);

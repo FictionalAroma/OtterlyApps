@@ -10,7 +10,7 @@ using Otterly.Database.ActivityData.Interfaces;
 
 namespace Otterly.Database.ActivityData.Bingo.Services;
 
-public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSessionService
+public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSessionRepo
 {
 	public BingoSessionService(MongoDBConfig config, MongoClient client) : 
 		base(config, client, "bingo.streamerdata")
@@ -72,4 +72,7 @@ public class BingoSessionService : MongoServiceBase<BingoSession>, IBingoSession
 		return await Collection.Find(session => session.UserID == userID && session.Active).FirstOrDefaultAsync();
 
 	}
+
+	public Task UpdateAsync(BingoSession session) => base.UpdateAsync(session.Id, session);
+	public Task<BingoSession?> GetByID(string requestSessionID) => GetAsync(requestSessionID);
 }

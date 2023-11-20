@@ -65,7 +65,7 @@ public class CardHandler : ICardHandler
 			}
 			else
 			{
-				var newSlot = BingoMapper.Map(dto);
+				var newSlot = BingoMapper.MapFromDTO(dto);
 				_context.BingoSlots.Add(newSlot);
                 foundCard.Slots.Add(newSlot);
 			}
@@ -93,7 +93,7 @@ public class CardHandler : ICardHandler
 			return null;
 		}
 
-		var cardToInsert = BingoMapper.Map(card);
+		var cardToInsert = BingoMapper.MapFromDTO(card);
 		cardToInsert.UserID = requestUserID;
 		_context.BingoCards.Add(cardToInsert);
 		await _context.SaveChangesAsync();

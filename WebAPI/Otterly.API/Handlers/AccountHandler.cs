@@ -53,7 +53,7 @@ public class AccountHandler : IAccountHandler
 
 		if (existingUser == null)
 		{
-			OtterlyAppsUser user = UserMapper.Map(newUser);
+			OtterlyAppsUser user = UserMapper.MapFromDTO(newUser);
 			user.UserID = Guid.NewGuid();
 			user.ExternalAuthID = newUserAuth0ID;
 

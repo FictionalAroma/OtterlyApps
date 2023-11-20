@@ -19,16 +19,16 @@ namespace Otterly.API.Handlers.Bingo;
 public class BingoGameHandler : IBingoGameHandler
 {
 	private readonly OtterlyAppsContext _context;
-	private readonly IBingoSessionService _sessionService;
-	private readonly IPlayerCardDataService _ticketService;
+	private readonly IBingoSessionRepo _sessionRepo;
+	private readonly IPlayerTicketRepo _ticketRepo;
 
 	public BingoGameHandler(OtterlyAppsContext context, 
-							IBingoSessionService sessionService, 
-							IPlayerCardDataService ticketService)
+							IBingoSessionRepo sessionRepo, 
+							IPlayerTicketRepo ticketRepo)
 	{
 		_context = context;
-		_sessionService = sessionService;
-		_ticketService = ticketService;
+		_sessionRepo = sessionRepo;
+		_ticketRepo = ticketRepo;
 	}
 
 	public async Task<CreateSessionResponse> CreateSession(Guid userID, int cardID )
@@ -52,7 +52,7 @@ public class BingoGameHandler : IBingoGameHandler
 			response.SetError("Unable to find appropriate card");
 			return response;
 		}
-		var session = await _sessionService.CreateNewSession(BingoMapper.Map(card), UserMapper.Map(user));
+		var session = await _sessionRepo.CreateNewSession(BingoMapper.MapToDTO(card), UserMapper.MapToDTO(user));
 
 		if (session == null)
 		{
@@ -84,9 +84,9 @@ public class BingoGameHandler : IBingoGameHandler
 			}
 
 
-			var ticket = await _ticketService.CreatePlayerTicket(playerTwitchID, session.Id, playeritems);
+			var ticket = await _ticketRepo.CreatePlayerTicket(playerTwitchID, session.Id, playeritems);
 			session.Meta.NumberTickets++;
-			await _sessionService.UpdateAsync(session.Id, session);
+			await _sessionRepo.UpdateAsync(session);
 			return ticket;
 		}
 
@@ -110,11 +110,11 @@ public class BingoGameHandler : IBingoGameHandler
 		}
 
 		slot.Selected = !slot.Selected;
-		await _ticketService.UpdateAsync(ticket.Id, ticket);
+		await _ticketRepo.UpdateAsync(ticket);
 		return response;
 	}
 
-	public async Task<BaseResponse> VerifySessionItem(BingoSession session, int requestItemIndex, bool requestState)
+	public async Task<BaseResponse> VerifySessionItem(BingoSession session, VerifyItemRequest request)
 	{
 		var response = new BaseResponse();
 		if (string.IsNullOrEmpty(session.Id))
@@ -122,7 +122,22 @@ public class BingoGameHandler : IBingoGameHandler
 			response.SetError("Invalid Ticket");
 			return response;
 		}
-		var slot = session.SessionItems.FirstOrDefault(item => item.ItemIndex == requestItemIndex);
+		var activeVerification = _context.VerificationQueueItems.OrderBy(item => item.ActivatedDateTime)
+											.FirstOrDefault(item => item.SessionID == session.Id && 
+																	item.VerificationID == request.VerificationID && 
+																	item.ExpiryDateTime < DateTime.Now);
+
+		if (activeVerification == null)
+		{
+			response.SetError("No Item To Set Verification");
+			return response;
+		}
+
+		activeVerification.Result = request.State;
+		activeVerification.VerifiedDateTime = DateTime.Now;
+		activeVerification.ExpiryDateTime = DateTime.Now + TimeSpan.FromMinutes(session.VerificationTimeoutMinutes);
+
+		var slot = session.SessionItems.FirstOrDefault(item => item.ItemIndex == request.SessionItemIndex);
 		if (slot == null)
 		{
 			response.SetError("Unable to find item in ticket");
@@ -130,7 +145,7 @@ public class BingoGameHandler : IBingoGameHandler
 		}
 
 		//slot.Verified = requestState;
-		await _sessionService.UpdateAsync(session.Id, session);
+		await _sessionRepo.UpdateAsync(session);
 
 		response = await MarkAllSessionTicketItemsVerified(slot);
 
@@ -143,7 +158,7 @@ public class BingoGameHandler : IBingoGameHandler
 		if (!string.IsNullOrEmpty(session.Id))
 		{
 			session.Active = false;
-			await _sessionService.UpdateAsync(session.Id, session);
+			await _sessionRepo.UpdateAsync(session);
 			return response;
 		}
 		response.SetError("Session Not Valid");
@@ -157,7 +172,7 @@ public class BingoGameHandler : IBingoGameHandler
 		try
 		{
 
-			var tickets = await _ticketService.GetAllTicketsForSession(markedItem.SessionID);
+			var tickets = await _ticketRepo.GetAllTicketsForSession(markedItem.SessionID);
 			if (tickets.Any())
 			{
 				tickets.ForEach(ticket =>
@@ -169,7 +184,7 @@ public class BingoGameHandler : IBingoGameHandler
 					}
 				});
 
-				await _ticketService.UpdateListAsync(tickets);
+				await _ticketRepo.UpdateListAsync(tickets);
 			}
 		}
 		catch (Exception e)
@@ -183,20 +198,20 @@ public class BingoGameHandler : IBingoGameHandler
 
 	#region SimpleGet
 
-	public Task<PlayerTicket?> GetLatestCardData(string cardID) => _ticketService.GetTicketByID(cardID);
+	public Task<PlayerTicket?> GetLatestCardData(string cardID) => _ticketRepo.GetTicketByID(cardID);
 
-	public Task<BingoSession?> GetCurrentSessionForStreamer(string streamerTwitchID) => _sessionService.FindActiveSessionForStreamer(streamerTwitchID);
+	public Task<BingoSession?> GetCurrentSessionForStreamer(string streamerTwitchID) => _sessionRepo.FindActiveSessionForStreamer(streamerTwitchID);
 	public async Task<BingoSessionDTO?> GetCurrentSessionForUser(Guid userID)
 	{
-		var session = await _sessionService.FindActiveSessionForUser(userID);
+		var session = await _sessionRepo.FindActiveSessionForUser(userID);
 		return session != null ? GameMapper.Map(session) : null;
 	}
 
-	public Task<PlayerTicket?> GetTicketForPlayer(string playerTwitchID, string sessionID) => _ticketService.FindTicket(playerTwitchID, sessionID);
-	public Task<BingoSession?> GetSessionData(string requestSessionID) => _sessionService.GetAsync(requestSessionID);
+	public Task<PlayerTicket?> GetTicketForPlayer(string playerTwitchID, string sessionID) => _ticketRepo.FindTicket(playerTwitchID, sessionID);
+	public Task<BingoSession?> GetSessionData(string requestSessionID) => _sessionRepo.GetByID(requestSessionID);
 
 	public async Task<BingoSessionMeta?> GetCurrentSessionMeta(Guid userID) { 		
-		var session = await _sessionService.FindActiveSessionForUser(userID);
+		var session = await _sessionRepo.FindActiveSessionForUser(userID);
 
 		return session?.Meta;
 	}

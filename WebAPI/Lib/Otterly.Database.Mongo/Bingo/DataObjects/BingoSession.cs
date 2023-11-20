@@ -16,13 +16,12 @@ public class BingoSession : MongoDataEntry
 
 	public bool Active { get; set; } = true;
 
-	public TimeSpan StampTimeLock { get; set; } = TimeSpan.FromMinutes(1.0);
+	public int StampTimeLock { get; set; } = 1;
 
-	public TimeSpan VerificationTimeout { get; set; } = TimeSpan.FromMinutes(15.0);
+	public int VerificationTimeoutMinutes { get; set; } = 15;
 
-	public TimeSpan VerificationGutterTime { get; set; } = TimeSpan.FromMinutes(15.0);
+	public int VerificationGutterTime { get; set; } = 15;
 
-	public 
 
 
 	public BingoSessionMeta Meta { get; set; } = new BingoSessionMeta();

@@ -7,9 +7,9 @@ using Otterly.Database.ActivityData.Interfaces;
 
 namespace Otterly.Database.ActivityData.Bingo.Services;
 
-public class PlayerCardDataService : MongoServiceBase<PlayerTicket>, IPlayerCardDataService
+public class PlayerTicketService : MongoServiceBase<PlayerTicket>, IPlayerTicketRepo
 {
-	public PlayerCardDataService(MongoDBConfig config, MongoClient client) : base(config, client, "bingo.playercards")
+	public PlayerTicketService(MongoDBConfig config, MongoClient client) : base(config, client, "bingo.playercards")
 	{
 
 
@@ -42,4 +42,8 @@ public class PlayerCardDataService : MongoServiceBase<PlayerTicket>, IPlayerCard
 		return await Collection.Find(ticket => ticket.SessionID == markedItemSessionID)
 							   .ToListAsync();
 	}
+
+	public Task UpdateAsync(PlayerTicket ticket) => UpdateAsync(ticket.Id, ticket);
+
+	Task IPlayerTicketRepo.UpdateListAsync(IEnumerable<PlayerTicket> tickets) => UpdateListAsync(tickets); 
 }

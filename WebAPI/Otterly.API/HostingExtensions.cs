@@ -159,8 +159,8 @@ public static class HostingExtensions
 		builder.Services.AddSingleton(_ => mongoConfig);
 		builder.Services.AddSingleton(_ => new MongoClient(settings));
 
-		builder.Services.AddSingleton<IBingoSessionService, BingoSessionService>();
-		builder.Services.AddSingleton<IPlayerCardDataService, PlayerCardDataService>();
+		builder.Services.AddSingleton<IBingoSessionRepo, BingoSessionService>();
+		builder.Services.AddSingleton<IPlayerTicketRepo, PlayerTicketService>();
 
 		return builder;
 	}

@@ -5,7 +5,7 @@ namespace Otterly.API.ManualMapper;
 
 public class UserMapper
 {
-	public static OtterlyAppsUserDTO Map(OtterlyAppsUser user)
+	public static OtterlyAppsUserDTO MapToDTO(OtterlyAppsUser user)
 	{
 		return new OtterlyAppsUserDTO()
 		{
@@ -17,7 +17,7 @@ public class UserMapper
 		};
 	}
 
-	public static OtterlyAppsUser Map(OtterlyAppsUserDTO newUser)
+	public static OtterlyAppsUser MapFromDTO(OtterlyAppsUserDTO newUser)
     {
         return new OtterlyAppsUser
         {

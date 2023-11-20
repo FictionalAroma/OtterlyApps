@@ -30,7 +30,7 @@ public class MongoServiceBase<T> : IMongoServiceBase<T> where T : MongoDataEntry
 	public async Task UpdateAsync(string id, T updatedT) =>
 		await Collection.ReplaceOneAsync(x => x.Id == id, updatedT);
 
-	public async Task UpdateListAsync(List<T> updated)
+	public async Task UpdateListAsync(IEnumerable<T> updated)
 	{
 		await Collection.BulkWriteAsync(updated.Select(entry =>
 														   new

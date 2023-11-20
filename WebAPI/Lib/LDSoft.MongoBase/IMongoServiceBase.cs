@@ -10,5 +10,5 @@ public interface IMongoServiceBase<T> where T : MongoDataEntry
     Task CreateAsync(T newT);
     Task UpdateAsync(string id, T updatedT);
     Task RemoveAsync(string id);
-	Task UpdateListAsync(List<T> updated);
+	Task UpdateListAsync(IEnumerable<T> updated);
 }

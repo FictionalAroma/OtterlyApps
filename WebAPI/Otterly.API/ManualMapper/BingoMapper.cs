@@ -6,7 +6,7 @@ namespace Otterly.API.ManualMapper;
 
 public static class BingoMapper
 {
-	public static BingoCard Map(BingoCardDTO dto)
+	public static BingoCard MapFromDTO(BingoCardDTO dto)
 	{
         return new BingoCard
         {
@@ -15,11 +15,11 @@ public static class BingoMapper
             TitleText = dto.TitleText,
             CardSize = dto.CardSize,
             FreeSpace = dto.FreeSpace,
-            Slots = dto.Slots.ConvertAll(Map)
+            Slots = dto.Slots.ConvertAll(MapFromDTO)
         };
 	}
 
-	public static BingoCardDTO Map(BingoCard entity)
+	public static BingoCardDTO MapToDTO(BingoCard entity)
     {
         return new BingoCardDTO
         {
@@ -38,12 +38,12 @@ public static class BingoMapper
         };
     }
 
-	public static List<BingoCardDTO> Map(List<BingoCard> entityList)
+	public static List<BingoCardDTO> MapToDTO(List<BingoCard> entityList)
 	{
-		return entityList.ConvertAll(Map);
+		return entityList.ConvertAll(MapToDTO);
     }
 
-	public static BingoSlot Map(BingoSlotDTO bingoSlotDTO)
+	public static BingoSlot MapFromDTO(BingoSlotDTO bingoSlotDTO)
 	{
 		return new BingoSlot
 			   {
