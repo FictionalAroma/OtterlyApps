@@ -34,12 +34,24 @@ namespace Otterly.Database.UserData
 						   .HasPrincipalKey(user => user.UserID)
 						   .HasForeignKey(auth => auth.UserID);
 			});
+
+
+			builder.Entity<VerificationQueueItem>(typeBuilder =>
+			{
+				typeBuilder.HasMany<VerificationQueuePlayerLog>(item => item.PlayerLogs)
+						   .WithOne()
+						   .HasPrincipalKey(item => item.VerificationID)
+						   .HasForeignKey(log => log.VerificationID);
+			});
 		}
 
 		public DbSet<OtterlyAppsUser> OtterlyAppsUsers { get; set; }
 		public DbSet<UserAuth> UserAuths { get; set; }
 		public DbSet<BingoCard> BingoCards { get; set; }
         public DbSet<BingoSlot> BingoSlots { get; set; }
+
+		public DbSet<VerificationQueuePlayerLog> VerificationQueuePlayerLogs { get; set; }
+		public DbSet<VerificationQueueItem> VerificationQueueItems { get; set; }
 
     }
 }
