@@ -3,11 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using LDSoft.APIClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Http;
-using Otterly.API.ClientLib;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;
-using Otterly.API.ExternalAPI;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
@@ -18,11 +15,11 @@ namespace Otterly.API.Handlers.Bingo;
 
 public class BingoGameHandler : IBingoGameHandler
 {
-	private readonly OtterlyAppsContext _context;
+	private readonly UnitOfWork _context;
 	private readonly IBingoSessionRepo _sessionRepo;
 	private readonly IPlayerTicketRepo _ticketRepo;
 
-	public BingoGameHandler(OtterlyAppsContext context, 
+	public BingoGameHandler(UnitOfWork context, 
 							IBingoSessionRepo sessionRepo, 
 							IPlayerTicketRepo ticketRepo)
 	{
@@ -34,19 +31,15 @@ public class BingoGameHandler : IBingoGameHandler
 	public async Task<CreateSessionResponse> CreateSession(Guid userID, int cardID )
 	{
 		var response = new CreateSessionResponse();
-		var user = await _context.OtterlyAppsUsers.FirstOrDefaultAsync(appsUser => appsUser.UserID == userID);
+		var user = await _context.UserRepo.GetUser(userID);
 		if (user == null)
 		{
 			 response.SetError("Unable to find user");
 			 return response;
 		}
 
-		var card = await _context.BingoCards
-								 .Include(bingoCard => bingoCard.Slots)
-								 .FirstOrDefaultAsync(bingoCard => 
-								bingoCard.CardID == cardID && 
-								bingoCard.UserID == userID &&
-								!bingoCard.Deleted);
+		var card = await _context.BingoCardRepo.GetCardForUser(userID, cardID);
+								 
 		if (card == null)
 		{
 			response.SetError("Unable to find appropriate card");
@@ -122,10 +115,9 @@ public class BingoGameHandler : IBingoGameHandler
 			response.SetError("Invalid Ticket");
 			return response;
 		}
-		var activeVerification = _context.VerificationQueueItems.OrderBy(item => item.ActivatedDateTime)
-											.FirstOrDefault(item => item.SessionID == session.Id && 
-																	item.VerificationID == request.VerificationID && 
-																	item.ExpiryDateTime < DateTime.Now);
+
+		var activeVerification =
+			await _context.VerificationRepo.GetActiveVerification(session.Id, request.VerificationID);
 
 		if (activeVerification == null)
 		{

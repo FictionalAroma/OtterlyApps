@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LDSoft.AWS", "Lib\Otterly.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LDSoft.APIClient", "Lib\LDSoft.APIClient\LDSoft.APIClient.csproj", "{E1BD6FC0-9A58-41DD-B9C9-0E88F63B9D80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LDSoft.MongoBase", "Lib\LDSoft.MongoBase\LDSoft.MongoBase.csproj", "{3001DB31-1198-47E8-8D24-FC82EC88F136}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LDSoft.MongoBase", "Lib\LDSoft.MongoBase\LDSoft.MongoBase.csproj", "{3001DB31-1198-47E8-8D24-FC82EC88F136}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
