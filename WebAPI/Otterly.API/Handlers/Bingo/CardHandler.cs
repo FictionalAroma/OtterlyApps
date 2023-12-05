@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
@@ -27,7 +26,7 @@ public class CardHandler : ICardHandler
                                   .Include(bingoCard => bingoCard.Slots.Where(slot => !slot.Deleted))
 								  .ToListAsync();
 
-        return BingoMapper.Map(card);
+        return BingoMapper.MapToDTO(card);
     }
 
     public async Task<BingoCardDTO?> GetCardDetail(int cardID, Guid requestUserID)
@@ -37,15 +36,12 @@ public class CardHandler : ICardHandler
 									  .FirstOrDefaultAsync(card => card.CardID == cardID &&
 																   card.UserID == requestUserID &&
 																   !card.Deleted);
-        return foundCard == null ? null : BingoMapper.Map(foundCard);
+        return foundCard == null ? null : BingoMapper.MapToDTO(foundCard);
 	}
 
     public async Task<BingoCardDTO?> UpdateCardDetails(Guid requestUserID, BingoCardDTO cardDTO)
     {
-        var response = new GetCardDetailsResponse();
-
-
-        var foundCard = await FindCard(requestUserID, cardDTO);
+		var foundCard = await FindCard(requestUserID, cardDTO);
         if (foundCard == null)
 		{
 			return null;
@@ -74,7 +70,7 @@ public class CardHandler : ICardHandler
 		await _context.SaveChangesAsync();
 		await _context.Entry(foundCard).ReloadAsync();
 
-        return BingoMapper.Map(foundCard);;
+        return BingoMapper.MapToDTO(foundCard);
     }
 
 	private async Task<BingoCard?> FindCard(Guid requestUserID, BingoCardDTO cardDTO)
@@ -99,7 +95,7 @@ public class CardHandler : ICardHandler
 		await _context.SaveChangesAsync();
 		await _context.Entry(cardToInsert).ReloadAsync();
 
-		return BingoMapper.Map(cardToInsert);
+		return BingoMapper.MapToDTO(cardToInsert);
 
 	}
 

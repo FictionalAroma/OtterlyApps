@@ -78,6 +78,10 @@ public class BingoGameController : ControllerBase
 		return Ok(result);
 
 	}
+
+	[HttpGet]
+
+
 	[HttpGet]
 	[Route("endSession")]
 	public async Task<IActionResult> EndSession(string sessionID)

@@ -4,18 +4,12 @@ using Otterly.Database.UserData.Interfaces;
 
 namespace Otterly.Database.UserData.Repositories;
 
-public class BingoCardRepo : IBingoCardRepo
+public class BingoCardRepo : BaseRepo, IBingoCardRepo
 {
-	private readonly OtterlyAppsContext _context;
-
-	public BingoCardRepo(OtterlyAppsContext context)
-	{
-		_context = context;
-	}
 
 	public async Task<BingoCard> GetCardForUser(Guid userID, int cardID, bool includeSlots = true)
 	{
-		var query = _context.BingoCards;
+		var query = Context.BingoCards;
 		if (includeSlots)
 		{
 			query.Include(bingoCard => bingoCard.Slots);

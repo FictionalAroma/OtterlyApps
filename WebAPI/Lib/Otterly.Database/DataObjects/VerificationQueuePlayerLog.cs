@@ -7,6 +7,7 @@ namespace Otterly.Database.UserData.DataObjects;
 public class VerificationQueuePlayerLog
 {
 	public string PlayerID { get; set; }
+	public string TicketID { get; set; }
 	public int ItemIndex { get; set; }
 
 	public int VerificationID { get; set; }

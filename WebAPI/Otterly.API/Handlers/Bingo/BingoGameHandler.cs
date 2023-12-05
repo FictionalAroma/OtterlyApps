@@ -10,6 +10,7 @@ using Otterly.API.ManualMapper;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Interfaces;
 using Otterly.Database.UserData;
+using Otterly.Database.UserData.DataObjects;
 
 namespace Otterly.API.Handlers.Bingo;
 
@@ -139,7 +140,7 @@ public class BingoGameHandler : IBingoGameHandler
 		//slot.Verified = requestState;
 		await _sessionRepo.UpdateAsync(session);
 
-		response = await MarkAllSessionTicketItemsVerified(slot);
+		response = await MarkAllSessionTicketItemsVerified(activeVerification);
 
 		return response;
 	}
@@ -158,21 +159,25 @@ public class BingoGameHandler : IBingoGameHandler
 	}
 
 
-	private async Task<BaseResponse> MarkAllSessionTicketItemsVerified(BingoSessionItem markedItem)
+	private async Task<BaseResponse> MarkAllSessionTicketItemsVerified(VerificationQueueItem markedItem)
 	{
+		bool mark = markedItem.Result.GetValueOrDefault();
+
 		var response = new BaseResponse();
 		try
 		{
-
+			var verifiedPlayerLogs = await _context.VerificationRepo.GetAllTicketsForQueueItem(markedItem.VerificationID);
 			var tickets = await _ticketRepo.GetAllTicketsForSession(markedItem.SessionID);
-			if (tickets.Any())
+			if (tickets.Any() && verifiedPlayerLogs.Any())
 			{
-				tickets.ForEach(ticket =>
+				verifiedPlayerLogs.ForEach(log =>
 				{
-					var slot = ticket.Slots.FirstOrDefault(item => item.ItemIndex == markedItem.ItemIndex);
+					var ticket = tickets.FirstOrDefault(playerTicket => playerTicket.TwitchUserID == log.PlayerID && playerTicket.Id == log.TicketID);
+					var slot = ticket?.Slots.FirstOrDefault(item => item.ItemIndex == markedItem.ItemIndex);
 					if (slot != null)
 					{
-						//slot.Verified = markedItem.Verified;
+						slot.Verified = mark;
+						slot.Selected = mark;
 					}
 				});
 

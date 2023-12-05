@@ -21,12 +21,17 @@ public class UnitOfWork : IDisposable
 	public UnitOfWork(OtterlyAppsContext context)
 	{
 		_context = context;
-		_userRepo = new Lazy<OtterlyAppsUserRepo>(() => new OtterlyAppsUserRepo(_context));
-		_cardRepo = new Lazy<BingoCardRepo>(() => new BingoCardRepo(_context));
-		_verificationRepo = new Lazy<VerificationQueueRepo>(() => new VerificationQueueRepo(_context));
+		_userRepo = new Lazy<OtterlyAppsUserRepo>(Repository<OtterlyAppsUserRepo>);
+		_cardRepo = new Lazy<BingoCardRepo>(Repository<BingoCardRepo>);
+		_verificationRepo = new Lazy<VerificationQueueRepo>(Repository<VerificationQueueRepo>);
 	}
 
-	public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+    private T Repository<T>() where T : BaseRepo, new()
+	{
+		return new T { Context = _context };
+	}
+
+    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
 	protected virtual void Dispose(bool disposing)
 	{

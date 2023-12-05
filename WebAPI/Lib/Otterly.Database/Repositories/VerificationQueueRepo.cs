@@ -4,21 +4,28 @@ using Otterly.Database.UserData.Interfaces;
 
 namespace Otterly.Database.UserData.Repositories;
 
-public class VerificationQueueRepo : IVerificationQueueRepo
+public class VerificationQueueRepo : BaseRepo, IVerificationQueueRepo
 {
-	private readonly OtterlyAppsContext _context;
-	public VerificationQueueRepo(OtterlyAppsContext context)
-	{
-		_context = context;
-	}
-
 	public async Task<VerificationQueueItem?> GetActiveVerification(string sessionId, int requestVerificationID)
 	{
-		return await _context.VerificationQueueItems
+		return await Context.VerificationQueueItems
 			.OrderBy(item => item.ActivatedDateTime)
 			.FirstOrDefaultAsync(item => item.SessionID == sessionId && 
 									 item.VerificationID == requestVerificationID && 
 									 item.ExpiryDateTime < DateTime.Now);
 
+	}
+
+	public async Task<List<VerificationQueuePlayerLog>> GetAllTicketsForQueueItem(int markedItemVerificationID)
+	{
+		return await Context.VerificationQueuePlayerLogs.Where(log => log.VerificationID == markedItemVerificationID).ToListAsync();
+	}
+
+	public async Task<List<VerificationQueueItem>> GetNonExpiredVerifications(string sessionID)
+	{
+		return await Context.VerificationQueueItems.
+							 Where(item => item.SessionID == sessionID && item.ExpiryDateTime > DateTime.Now)
+							 .OrderBy(item => item.ActivatedDateTime)
+							 .ToListAsync();
 	}
 }
