@@ -7,7 +7,7 @@ namespace Otterly.Database.UserData.Repositories;
 public class BingoCardRepo : BaseRepo, IBingoCardRepo
 {
 
-	public async Task<BingoCard> GetCardForUser(Guid userID, int cardID, bool includeSlots = true)
+	public async Task<BingoCard?> GetCardForUser(Guid userID, int cardID, bool includeSlots = true)
 	{
 		var query = Context.BingoCards;
 		if (includeSlots)

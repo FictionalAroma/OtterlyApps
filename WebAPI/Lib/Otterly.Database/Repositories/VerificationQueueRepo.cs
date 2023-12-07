@@ -28,4 +28,20 @@ public class VerificationQueueRepo : BaseRepo, IVerificationQueueRepo
 							 .OrderBy(item => item.ActivatedDateTime)
 							 .ToListAsync();
 	}
+
+	public async Task<VerificationQueueItem?> GetActiveVerificationForSessionItem(string ticketSessionID, int requestItemIndex)
+	{
+		return await Context.VerificationQueueItems
+							.Where(item => item.SessionID == ticketSessionID && 
+										   item.ExpiryDateTime > DateTime.Now && 
+										   item.ItemIndex == requestItemIndex)
+							 .OrderBy(item => item.ActivatedDateTime)
+							.Include(item => item.PlayerLogs)
+							.FirstOrDefaultAsync();
+	}
+
+	public async Task AddVerificationQueueItem(VerificationQueueItem newItem)
+	{
+		await Context.VerificationQueueItems.AddAsync(newItem);
+	}
 }

@@ -8,4 +8,6 @@ public interface IVerificationQueueRepo
 	Task<List<VerificationQueuePlayerLog>> GetAllTicketsForQueueItem(int markedItemVerificationID);
 
 	Task<List<VerificationQueueItem>> GetNonExpiredVerifications(string sessionID);
+	Task<VerificationQueueItem?> GetActiveVerificationForSessionItem(string ticketSessionID, int requestItemIndex);
+	Task AddVerificationQueueItem(VerificationQueueItem newItem);
 }

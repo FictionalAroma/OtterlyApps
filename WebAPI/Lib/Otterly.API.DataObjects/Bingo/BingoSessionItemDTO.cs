@@ -9,6 +9,5 @@ public class BingoSessionItemDTO
 
     public string DisplayText { get; set; }
 
-    public bool Verified { get; set; }
 
 }

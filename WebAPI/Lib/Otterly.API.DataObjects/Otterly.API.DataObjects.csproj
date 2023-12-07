@@ -6,8 +6,4 @@
     <Nullable>annotations</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MongoDB.Bson" Version="2.19.2" />
-  </ItemGroup>
-
 </Project>

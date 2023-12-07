@@ -90,7 +90,7 @@ namespace Otterly.API.Controllers.Bingo
 				return ValidationProblem("Ticket No Longer Valid");
 			}
 
-			var result = await _handler.MarkTicketItem(ticket, request.ItemIndex);
+			var result = await _handler.MarkTicketItem(ticket, request);
 			return result.Success ? Ok(result) : StatusCode(500, result);
 		}
 

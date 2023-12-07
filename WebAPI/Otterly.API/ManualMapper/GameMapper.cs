@@ -20,7 +20,6 @@ public class GameMapper
                 ItemIndex = ticketSlot.ItemIndex,
                 SessionID = ticketSlot.SessionID,
                 DisplayText = ticketSlot.DisplayText,
-                Verified = ticketSlot.Verified
             })
         };
     }
@@ -37,7 +36,6 @@ public class GameMapper
                 ItemIndex = sessionSessionItem.ItemIndex,
                 SessionID = sessionSessionItem.SessionID,
                 DisplayText = sessionSessionItem.DisplayText,
-                Verified = sessionSessionItem.Verified
             }),
 			Active = session.Active,
             SessionID = session.Id ?? string.Empty
@@ -62,7 +60,6 @@ public class GameMapper
             ItemIndex = randomisedSlot.ItemIndex,
             SessionID = randomisedSlot.SessionID,
             DisplayText = randomisedSlot.DisplayText,
-            Verified = randomisedSlot.Verified
         }).ToList();
     }
 }

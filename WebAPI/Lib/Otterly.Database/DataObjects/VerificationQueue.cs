@@ -14,7 +14,7 @@ public class VerificationQueueItem
 	public int ItemIndex { get; set; }
 	public DateTime ActivatedDateTime { get; set; }
 	public bool? Result { get; set; }
-	public DateTime VerifiedDateTime { get; set; }
+	public DateTime? VerifiedDateTime { get; set; }
 	public DateTime ExpiryDateTime { get; set; }
 
 	public Guid UserID { get; set; }

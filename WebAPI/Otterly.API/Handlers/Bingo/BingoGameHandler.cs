@@ -2,9 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LDSoft.APIClient;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Http;
 using Otterly.API.ClientLib.Bingo;
 using Otterly.API.DataObjects.Bingo;
+using Otterly.API.ExternalAPI;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
@@ -19,14 +20,17 @@ public class BingoGameHandler : IBingoGameHandler
 	private readonly UnitOfWork _context;
 	private readonly IBingoSessionRepo _sessionRepo;
 	private readonly IPlayerTicketRepo _ticketRepo;
+	private readonly ITypedHttpClientFactory<TwitchExtensionAPIConnector> _twitchClientFactory;
 
 	public BingoGameHandler(UnitOfWork context, 
 							IBingoSessionRepo sessionRepo, 
-							IPlayerTicketRepo ticketRepo)
+							IPlayerTicketRepo ticketRepo,
+							ITypedHttpClientFactory<TwitchExtensionAPIConnector> twitchClientFactory)
 	{
 		_context = context;
 		_sessionRepo = sessionRepo;
 		_ticketRepo = ticketRepo;
+		_twitchClientFactory = twitchClientFactory;
 	}
 
 	public async Task<CreateSessionResponse> CreateSession(Guid userID, int cardID )
@@ -40,7 +44,6 @@ public class BingoGameHandler : IBingoGameHandler
 		}
 
 		var card = await _context.BingoCardRepo.GetCardForUser(userID, cardID);
-								 
 		if (card == null)
 		{
 			response.SetError("Unable to find appropriate card");
@@ -87,8 +90,7 @@ public class BingoGameHandler : IBingoGameHandler
 		return null;
 	}
 
-
-	public async Task<BaseResponse> MarkTicketItem(PlayerTicket ticket, int requestItemIndex)
+	public async Task<BaseResponse> MarkTicketItem(PlayerTicket ticket, MarkItemRequest request)
 	{
 		var response = new BaseResponse();
 		if (string.IsNullOrEmpty(ticket.Id))
@@ -96,15 +98,54 @@ public class BingoGameHandler : IBingoGameHandler
 			response.SetError("Invalid Ticket");
 			return response;
 		}
-		var slot = ticket.Slots.FirstOrDefault(item => item.ItemIndex == requestItemIndex);
+		var slot = ticket.Slots.FirstOrDefault(item => item.ItemIndex == request.ItemIndex);
 		if (slot == null)
 		{
 			response.SetError("Unable to find item in ticket");
 			return response;
 		}
+		var session = await GetSessionData(ticket.SessionID);
+		if (session == null)
+		{
+			response.SetError("Session Invalid");
 
-		slot.Selected = !slot.Selected;
+			return response;
+		}
+
+
+		slot.Selected = true;
 		await _ticketRepo.UpdateAsync(ticket);
+
+		var activeVerification = await _context.VerificationRepo.GetActiveVerificationForSessionItem(ticket.SessionID, request.ItemIndex);
+		if (activeVerification == null)
+		{
+				activeVerification = new VerificationQueueItem()
+									 {
+										 ActivatedDateTime = DateTime.Now,
+										 SessionID = ticket.SessionID,
+										 ExpiryDateTime = DateTime.Now.AddMinutes(session.VerificationTimeoutMinutes),
+										 ItemIndex = request.ItemIndex,
+										 UserID = session.UserID,
+									 };
+				await _context.VerificationRepo.AddVerificationQueueItem(activeVerification);
+		}
+		var playerVerificationItem =
+			activeVerification.PlayerLogs.FirstOrDefault(log => log.ItemIndex == request.ItemIndex &&
+																log.PlayerID == request.PlayerTwitchID &&
+																log.TicketID == ticket.Id);
+		if (playerVerificationItem == null)
+		{
+			activeVerification.PlayerLogs.Add(new VerificationQueuePlayerLog()
+											  {
+												  ItemIndex = request.ItemIndex,
+												  PlayerID = request.PlayerTwitchID,
+												  TicketID = ticket.Id,
+												  VerificationID = activeVerification.VerificationID,
+											  });
+		}
+
+		await _context.SaveChangesAsync();
+
 		return response;
 	}
 
@@ -141,6 +182,9 @@ public class BingoGameHandler : IBingoGameHandler
 		await _sessionRepo.UpdateAsync(session);
 
 		response = await MarkAllSessionTicketItemsVerified(activeVerification);
+
+		var twitchAPI = _twitchClientFactory.GetClient();
+		twitchAPI.SendExtensionMessage(, session.TwitchUserID);
 
 		return response;
 	}
@@ -211,6 +255,16 @@ public class BingoGameHandler : IBingoGameHandler
 		var session = await _sessionRepo.FindActiveSessionForUser(userID);
 
 		return session?.Meta;
+	}
+
+	public async Task<GetVerificationQueueResponse> GetVerificationQueueForUser(string sessionID)
+	{
+		var verifications = await _context.VerificationRepo.GetNonExpiredVerifications(sessionID);
+		return new GetVerificationQueueResponse
+		{
+			Verifications = verifications.ConvertAll(VerificationQueueMapper.MapToDTO),
+		};
+
 	}
 
 	#endregion

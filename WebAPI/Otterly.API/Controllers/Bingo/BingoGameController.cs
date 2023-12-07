@@ -11,6 +11,7 @@ using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
 
 namespace Otterly.API.Controllers.Bingo;
+
 [Authorize]
 [Route("api/bingo/game")]
 [ApiController]
@@ -23,7 +24,7 @@ public class BingoGameController : ControllerBase
 	private static readonly Guid TEST_USER = new Guid("e3aeefa0-b2df-4af7-9033-914ef6936bf0");
 	private readonly ITypedHttpClientFactory<TwitchExtensionAPIConnector> _twitchClientFactory;
 
-	public BingoGameController(IBingoGameHandler handler, 
+	public BingoGameController(IBingoGameHandler handler,
 							   ITypedHttpClientFactory<TwitchExtensionAPIConnector> twitchClientFactory)
 	{
 		_handler = handler;
@@ -38,9 +39,10 @@ public class BingoGameController : ControllerBase
 		{
 			return BadRequest();
 		}
+
 		var result = await _handler.CreateSession(request.UserID, request.CardID);
 		return result.Success ? Ok(result) : StatusCode(500, result);
-		
+
 	}
 
 	[HttpGet]
@@ -58,6 +60,19 @@ public class BingoGameController : ControllerBase
 		return Ok(await _handler.GetCurrentSessionForUser(userID));
 	}
 
+	[HttpGet]
+	[Route("getVerificationForSession")]
+	public async Task<IActionResult> GetVerificationQueue(string sessionID)
+	{
+		var session = await _handler.GetSessionData(sessionID);
+		if (session == null || !session.Active )
+		{
+			return StatusCode(500, "Session No Longer Valid");
+		}
+
+		return Ok(await _handler.GetVerificationQueueForUser(sessionID));
+	}
+
 
 	[HttpPost]
 	[Authorize(AuthenticationSchemes = $"{Constants.TwitchAuthPolicyName}, {Constants.Auth0PolicyName}")]
@@ -71,10 +86,6 @@ public class BingoGameController : ControllerBase
 		}
 
 		var result = await _handler.VerifySessionItem(session, request);
-
-		var twtichClient = _twitchClientFactory.GetClient();
-		await twtichClient.SendExtensionMessage(request, session.TwitchUserID);
-
 		return Ok(result);
 
 	}
