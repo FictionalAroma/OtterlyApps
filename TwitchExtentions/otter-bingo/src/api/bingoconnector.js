@@ -49,11 +49,12 @@ export default class BingoConnector{
         this.sendRequest(`${this.apiBaseURL}/bingo/player/GetSessionAndTicket`, data, "post", dataCallback)
     }
 
-    markCellSelected(cellIndex, sessionId)
+    markCellSelected(cellIndex, sessionId, twitchUser)
     {
         const data = {
             SessionID: sessionId,
             PlayerTwitchID: this.cachedUser.userID,
+            ScreenName: twitchUser.display_name,
             ItemIndex: cellIndex
         }
         this.sendRequest(`${this.apiBaseURL}/bingo/player/markItem`, data, "post")

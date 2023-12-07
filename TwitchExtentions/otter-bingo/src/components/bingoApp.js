@@ -5,7 +5,7 @@ import SessionControl from "./streameradmin/sessionControl";
 import "../App.scss"
 
 
-export default function BingoApp({api})
+export default function BingoApp({api, twitchUser})
 {
     const [initialLoad, setLoaded] = useState(false)
     const [ticket, setTicket] = useState();
@@ -52,7 +52,7 @@ export default function BingoApp({api})
 
     const cellSelected=(cell)=>
     {
-        api.markCellSelected(cell.itemIndex, session.sessionID)
+        api.markCellSelected(cell.itemIndex, session.sessionID, twitchUser)
         const updatedTicket = {...ticketRef.current};
         for (let index = 0; index < updatedTicket.slots.length; index++) {
             const s = updatedTicket.slots[index];
