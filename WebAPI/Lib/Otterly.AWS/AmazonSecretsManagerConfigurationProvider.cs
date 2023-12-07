@@ -1,10 +1,7 @@
 ﻿using System.Text.Json;
 using Amazon.Extensions.NETCore.Setup;
-using Amazon.SecretsManager;
-using Amazon.SecretsManager.Model;
 using LDSoft.AWS.ClientWrappers;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 public class AmazonSecretsManagerConfigurationProvider : ConfigurationProvider
 {

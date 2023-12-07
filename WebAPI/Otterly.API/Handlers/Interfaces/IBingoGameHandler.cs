@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using LDSoft.APIClient;
-using Otterly.API.ClientLib.Bingo;
-using Otterly.API.DataObjects.Bingo;
+using Otterly.API.ClientLib.Messages.Bingo;
+using Otterly.API.ClientLib.Objects.Bingo;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 
 namespace Otterly.API.Handlers.Interfaces;

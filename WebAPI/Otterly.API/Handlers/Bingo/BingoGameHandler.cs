@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using LDSoft.APIClient;
 using Microsoft.Extensions.Http;
-using Otterly.API.ClientLib.Bingo;
-using Otterly.API.DataObjects.Bingo;
+using Otterly.API.ClientLib.Messages.Bingo;
+using Otterly.API.ClientLib.Objects.Bingo;
 using Otterly.API.ExternalAPI;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
@@ -184,7 +184,7 @@ public class BingoGameHandler : IBingoGameHandler
 		response = await MarkAllSessionTicketItemsVerified(activeVerification);
 
 		var twitchAPI = _twitchClientFactory.GetClient();
-		twitchAPI.SendExtensionMessage(, session.TwitchUserID);
+		//twitchAPI.SendExtensionMessage(, session.TwitchUserID);
 
 		return response;
 	}

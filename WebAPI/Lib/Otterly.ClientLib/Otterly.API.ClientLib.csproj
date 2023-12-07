@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Account\" />
-    <Folder Include="Account\" />
+    <Folder Include="Messages\Account\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LDSoft.APIClient\LDSoft.APIClient.csproj" />
-    <ProjectReference Include="..\Otterly.API.DataObjects\Otterly.API.DataObjects.csproj" />
   </ItemGroup>
 
 </Project>

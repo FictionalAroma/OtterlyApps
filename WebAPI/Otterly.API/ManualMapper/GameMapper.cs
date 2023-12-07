@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Otterly.API.DataObjects.Bingo;
+using Otterly.API.ClientLib.Objects.Bingo;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 
 namespace Otterly.API.ManualMapper;

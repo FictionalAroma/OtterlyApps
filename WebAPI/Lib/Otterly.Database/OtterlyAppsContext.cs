@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Otterly.Database.UserData.DataObjects;
 
 namespace Otterly.Database.UserData

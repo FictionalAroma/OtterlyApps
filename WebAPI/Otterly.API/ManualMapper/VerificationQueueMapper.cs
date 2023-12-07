@@ -1,4 +1,4 @@
-﻿using Otterly.API.DataObjects.Bingo;
+﻿using Otterly.API.ClientLib.Objects.Bingo;
 using Otterly.Database.UserData.DataObjects;
 
 namespace Otterly.API.ManualMapper;

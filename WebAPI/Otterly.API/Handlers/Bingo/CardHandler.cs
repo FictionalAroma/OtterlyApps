@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Otterly.API.DataObjects.Bingo;
+using Otterly.API.ClientLib.Objects.Bingo;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;
 using Otterly.Database.UserData;

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Http;
 using Otterly.API.ClientLib;
-using Otterly.API.DataObjects.User;
 
 namespace Otterly.Site.Controllers
 {

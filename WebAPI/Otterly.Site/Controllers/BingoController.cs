@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Http;
 using Otterly.API.ClientLib;
-using Otterly.API.ClientLib.Bingo;
-using Otterly.API.DataObjects.Bingo;
+using Otterly.API.ClientLib.Messages.Bingo;
+using Otterly.API.ClientLib.Objects.Bingo;
 
 namespace Otterly.Site.Controllers
 {

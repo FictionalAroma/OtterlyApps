@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using LDSoft.APIClient;
-using Otterly.API.ClientLib.Account;
-using Otterly.API.ClientLib.Bingo;
-using Otterly.API.DataObjects.Bingo;
-using Otterly.API.DataObjects.User;
+using Otterly.API.ClientLib.Messages.Account;
+using Otterly.API.ClientLib.Messages.Bingo;
+using Otterly.API.ClientLib.Objects.Bingo;
+using Otterly.API.ClientLib.Objects.User;
 
 namespace Otterly.API.ClientLib;
 

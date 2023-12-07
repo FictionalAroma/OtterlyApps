@@ -1,4 +1,4 @@
-﻿using Otterly.API.DataObjects.Bingo;
+﻿using Otterly.API.ClientLib.Objects.Bingo;
 using Otterly.API.Handlers.Interfaces;
 
 namespace Otterly.API.Tests.TestImplementations.Card;

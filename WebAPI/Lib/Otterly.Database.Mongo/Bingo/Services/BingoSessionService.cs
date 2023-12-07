@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using Otterly.API.DataObjects.Bingo;
-using Otterly.API.DataObjects.User;
+using Otterly.API.ClientLib.Objects.Bingo;
+using Otterly.API.ClientLib.Objects.User;
 using Otterly.Database.ActivityData.Bingo.DataObjects;
 using Otterly.Database.ActivityData.Configuration;
 using Otterly.Database.ActivityData.Interfaces;

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Otterly.API.ClientLib.Account;
+using Otterly.API.ClientLib.Messages.Account;
 using Otterly.API.Handlers.Interfaces;
 
 namespace Otterly.API.Controllers;

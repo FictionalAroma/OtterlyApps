@@ -4,15 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using LDSoft.APIClient;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using MongoDB.Bson;
 using Newtonsoft.Json;
-using Otterly.API.ClientLib;
 using Otterly.API.ExternalAPI.Objects;
 using JsonClaimValueTypes = Microsoft.IdentityModel.JsonWebTokens.JsonClaimValueTypes;
 

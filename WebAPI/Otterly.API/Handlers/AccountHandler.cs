@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Otterly.API.DataObjects.User;
+using Otterly.API.ClientLib.Objects.User;
 using Otterly.API.ExternalAPI.Interfaces;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;

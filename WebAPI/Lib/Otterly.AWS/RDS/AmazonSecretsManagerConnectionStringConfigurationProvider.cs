@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Amazon.Extensions.NETCore.Setup;
+﻿using Amazon.Extensions.NETCore.Setup;
 using LDSoft.AWS.ClientWrappers;
 using LDSoft.AWS.Models;
 using Microsoft.Extensions.Configuration;

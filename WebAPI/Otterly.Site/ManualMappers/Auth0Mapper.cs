@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Auth0.ManagementApi.Models;
-using Otterly.API.DataObjects.User;
+using Otterly.API.ClientLib.Objects.User;
 
 namespace Otterly.Site.ManualMappers;
 

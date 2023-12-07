@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Otterly.Database.ActivityData.Interfaces;
+﻿namespace Otterly.Database.ActivityData.Interfaces;
 
 public interface IMongoServiceBase<T> where T : MongoDataEntry
 {

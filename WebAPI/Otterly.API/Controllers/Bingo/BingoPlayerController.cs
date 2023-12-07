@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Otterly.API.ClientLib.Bingo;
+using Otterly.API.ClientLib.Messages.Bingo;
 using Otterly.API.Configuration;
 using Otterly.API.Handlers.Interfaces;
 using Otterly.API.ManualMapper;

@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LDSoft.MongoBase\LDSoft.MongoBase.csproj" />
-    <ProjectReference Include="..\Otterly.API.DataObjects\Otterly.API.DataObjects.csproj" />
     <ProjectReference Include="..\Otterly.ClientLib\Otterly.API.ClientLib.csproj" />
   </ItemGroup>
 

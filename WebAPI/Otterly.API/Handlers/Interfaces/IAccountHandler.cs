@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Otterly.API.DataObjects.User;
-using Otterly.Database.UserData.DataObjects;
+using Otterly.API.ClientLib.Objects.User;
 
 namespace Otterly.API.Handlers.Interfaces;
 

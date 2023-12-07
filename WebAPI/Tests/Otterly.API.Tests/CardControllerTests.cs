@@ -1,8 +1,7 @@
 using System.Net;
 using LDSoft.APIClient;
 using Microsoft.AspNetCore.Mvc;
-using Otterly.API.ClientLib;
-using Otterly.API.ClientLib.Bingo;
+using Otterly.API.ClientLib.Messages.Bingo;
 using Otterly.API.Controllers.Bingo;
 using Otterly.API.Tests.Helpers;
 using Otterly.API.Tests.TestImplementations.Card;

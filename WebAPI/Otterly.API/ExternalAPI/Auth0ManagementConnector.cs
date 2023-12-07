@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
-using Otterly.API.DataObjects.User;
 using Otterly.API.ExternalAPI.Interfaces;
 using Otterly.Database.UserData.DataObjects;
 

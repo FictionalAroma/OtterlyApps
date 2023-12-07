@@ -2,13 +2,12 @@
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Amazon.Runtime;
 using Auth0.ManagementApi.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Http;
 using Otterly.API.ClientLib;
-using Otterly.API.ClientLib.Account;
+using Otterly.API.ClientLib.Messages.Account;
 using Otterly.Site.Configuration;
 using Otterly.Site.ManualMappers;
 

@@ -1,5 +1,4 @@
-﻿using Otterly.Database.UserData.DataObjects;
-using Otterly.Database.UserData.Interfaces;
+﻿using Otterly.Database.UserData.Interfaces;
 using Otterly.Database.UserData.Repositories;
 
 namespace Otterly.Database.UserData;

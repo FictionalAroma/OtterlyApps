@@ -2,13 +2,12 @@
 using LDSoft.APIClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Otterly.API.ClientLib.Bingo;
+using Otterly.API.ClientLib.Messages.Bingo;
 using Otterly.API.Handlers.Interfaces;
-using Otterly.API.ClientLib;
 
 namespace Otterly.API.Controllers.Bingo
 {
-	[Authorize]
+    [Authorize]
     [Route("api/bingo/[controller]")]
     [ApiController]
 	public class CardController : ControllerBase
