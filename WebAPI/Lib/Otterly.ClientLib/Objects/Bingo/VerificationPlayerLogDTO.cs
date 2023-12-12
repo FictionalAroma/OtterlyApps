@@ -3,6 +3,7 @@
 public class VerificationPlayerLogDTO
 {
 	public string PlayerID { get; set; }
+	public string PlayerDisplayName { get; set; }
 	public string TicketID { get; set; }
 	public int ItemIndex { get; set; }
 	public int VerificationID { get; set; }

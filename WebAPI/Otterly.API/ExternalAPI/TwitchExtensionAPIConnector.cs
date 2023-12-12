@@ -9,6 +9,7 @@ using LDSoft.APIClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Otterly.API.ClientLib.Messages.TwitchPubSub;
 using Otterly.API.ExternalAPI.Objects;
 using JsonClaimValueTypes = Microsoft.IdentityModel.JsonWebTokens.JsonClaimValueTypes;
 
@@ -43,7 +44,7 @@ public class TwitchExtensionAPIConnector : FactoryAPIClientBase
 		return new JwtSecurityTokenHandler().WriteToken(token);
 	}
 
-	public async Task<bool> SendExtensionMessage<T>(T messageToSend, string broadcastTwitchID)
+	public async Task<bool> SendExtensionMessage<T>(T messageToSend, string broadcastTwitchID) where T : TwitchMessageBase
 	{
 		try
 		{

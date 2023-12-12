@@ -62,7 +62,7 @@ public class BingoGameHandler : IBingoGameHandler
 		};
 	}
 
-	public async Task<PlayerTicket?> CreatePlayerTicket(string playerTwitchID, BingoSession session)
+	public async Task<PlayerTicket?> CreatePlayerTicket(StreamerTicketRequest request, BingoSession session)
 	{
 		int totalNumberSpots = (int)Math.Pow(session.Size, 2);
 		if (session.FreeSpace)
@@ -81,7 +81,7 @@ public class BingoGameHandler : IBingoGameHandler
 			}
 
 
-			var ticket = await _ticketRepo.CreatePlayerTicket(playerTwitchID, session.Id, playeritems);
+			var ticket = await _ticketRepo.CreatePlayerTicket(request.PlayerTwitchID, request.PlayerScreenName, session.Id, playeritems);
 			session.Meta.NumberTickets++;
 			await _sessionRepo.UpdateAsync(session);
 			return ticket;
@@ -116,6 +116,7 @@ public class BingoGameHandler : IBingoGameHandler
 		slot.Selected = true;
 		await _ticketRepo.UpdateAsync(ticket);
 
+		bool sendStreamerUpdate = false;
 		var activeVerification = await _context.VerificationRepo.GetActiveVerificationForSessionItem(ticket.SessionID, request.ItemIndex);
 		if (activeVerification == null)
 		{
@@ -128,6 +129,7 @@ public class BingoGameHandler : IBingoGameHandler
 										 UserID = session.UserID,
 									 };
 				await _context.VerificationRepo.AddVerificationQueueItem(activeVerification);
+				sendStreamerUpdate = true;
 		}
 		var playerVerificationItem =
 			activeVerification.PlayerLogs.FirstOrDefault(log => log.ItemIndex == request.ItemIndex &&
@@ -142,10 +144,16 @@ public class BingoGameHandler : IBingoGameHandler
 												  TicketID = ticket.Id,
 												  VerificationID = activeVerification.VerificationID,
 											  });
+			sendStreamerUpdate = true;
 		}
 
 		await _context.SaveChangesAsync();
 
+		if (sendStreamerUpdate)
+		{
+			var twtichClient = _twitchClientFactory.GetClient();
+			twtichClient.SendExtensionMessage();
+		}
 		return response;
 	}
 

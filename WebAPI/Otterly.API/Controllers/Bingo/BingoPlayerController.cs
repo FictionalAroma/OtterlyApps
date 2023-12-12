@@ -41,7 +41,7 @@ namespace Otterly.API.Controllers.Bingo
 				return Ok(existingTicket);
 			}
 
-			var result = await _handler.CreatePlayerTicket(request.PlayerTwitchID, session);
+			var result = await _handler.CreatePlayerTicket(request, session);
 			return result != null ? Ok(GameMapper.Map(result)) : StatusCode(500, "unable to create ticket");
 		}
 		[HttpGet]

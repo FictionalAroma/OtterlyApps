@@ -12,6 +12,7 @@ public class GameMapper
         return new PlayerTicketDTO
         {
             TwitchUserID = ticket.TwitchUserID,
+            TwitchDisplayName = ticket.TwitchDisplayName,
             SessionID = ticket.SessionID,
             LastStampedDateTIme = ticket.LastStampeDateTime,
             Slots = ticket.Slots.Select(ticketSlot => new PlayerTicketItemDTO

@@ -16,13 +16,17 @@ public class PlayerTicketService : MongoServiceBase<PlayerTicket>, IPlayerTicket
 	}
 
 
-	public async Task<PlayerTicket> CreatePlayerTicket(string playerTwitchID, string sessionId, IEnumerable<PlayerTicketItem> randomisedSlots)
+	public async Task<PlayerTicket> CreatePlayerTicket(string playerTwitchID,
+													   string requestPlayerScreenName,
+													   string sessionId,
+													   IEnumerable<PlayerTicketItem> randomisedSlots)
 	{
 
 		var newTicket = new PlayerTicket()
 						{
 							SessionID = sessionId,
 							TwitchUserID = playerTwitchID,
+							TwitchDisplayName = requestPlayerScreenName,
 							Slots = randomisedSlots
 						};
 		await CreateAsync(newTicket);

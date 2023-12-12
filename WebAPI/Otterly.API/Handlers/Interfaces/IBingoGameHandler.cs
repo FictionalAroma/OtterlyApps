@@ -10,7 +10,7 @@ namespace Otterly.API.Handlers.Interfaces;
 public interface IBingoGameHandler
 {
     Task<CreateSessionResponse> CreateSession(Guid userID, int cardID);
-    Task<PlayerTicket?> CreatePlayerTicket(string playerTwitchID, BingoSession sessionID);
+    Task<PlayerTicket?> CreatePlayerTicket(StreamerTicketRequest playerTwitchID, BingoSession sessionID);
     Task<PlayerTicket?> GetLatestCardData(string cardID);
 	Task<BingoSession?> GetCurrentSessionForStreamer(string streamerTwitchID);
 	Task<BingoSessionDTO?> GetCurrentSessionForUser(Guid userID);
